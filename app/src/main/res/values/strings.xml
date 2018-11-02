@@ -5,7 +5,7 @@
     <string-array name="how_did">
         <item>How did you come to know about us ?</item>
         <item>Facebook</item>
-        <item>Refferred by Friend</item>
+        <item>Referred by Friend</item>
         <item>Google Search</item>
         <item>Quora</item>
         <item>Direct</item>
@@ -22,6 +22,19 @@
     <string name="terms">By signing up you agree to our <u>Terms and Conditions </u>.</string>
     <string name="create"><u>Create an account</u>.</string>
     <string name="signup">Create an account? <u>Sign Up</u>.</string>
+
+    <string name="intro_slide1_title">Maximize your potential</string>
+    <string name="intro_slide1_desc">Score high in competitive exams with us</string>
+    <string name="intro_slide2_title">Master the contemporary skills</string>
+    <string name="intro_slide2_desc">Our courses are created by industy leaders</string>
+    <string name="intro_slide3_title">Get hired by dream companies</string>
+    <string name="intro_slide3_desc">Stand out from all the applicants</string>
+
+
+    <string name="signin">Sign In</string>
+    <string name="free_vid">Free Videos</string>
+    <string name="trending_vid">Trending Videos</string>
+    <string name="top_vid">Top Courses</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

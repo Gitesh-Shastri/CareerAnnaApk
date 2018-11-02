@@ -55,6 +55,7 @@
         <activity android:name=".ExploreCourses" />
         <activity android:name=".CategoriesSection" />
         <activity android:name=".ParticularCourse"></activity>
+        <activity android:name=".ExploreNotSIActivity"/>
     </application>
 
 </manifest>

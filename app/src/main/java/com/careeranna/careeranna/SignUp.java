@@ -168,6 +168,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w("SignUp1", "Google sign in failed", e);
+                Toast.makeText(this, "Google sign-in failed!", Toast.LENGTH_SHORT).show() ;
                 // ...
             }
         } else {
@@ -191,6 +192,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("SignUp1", "signInWithCredential:failure", task.getException());
+                            Toast.makeText(SignUp.this, "Firebase auth failed!", Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
 
