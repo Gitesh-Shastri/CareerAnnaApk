@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/drawelayout"
+    tools:context=".MyCourses">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v4.view.ViewPager
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:id="@+id/viewPager" >
+        </android.support.v4.view.ViewPager>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sliderDots"
+            android:layout_marginTop="77dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:orientation="horizontal" >
+        </LinearLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/main_content"
+                android:layout_below="@id/viewPager">
+            </FrameLayout>
+
+    </RelativeLayout>
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        app:headerLayout="@layout/header"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:itemTextColor="@color/colorPrimary"
+        app:itemIconTint="@color/colorPrimary"
+        android:background="@color/white"
+        android:fitsSystemWindows="true"
+        app:menu="@menu/my_courses" >
+    </android.support.design.widget.NavigationView>
+
+</android.support.v4.widget.DrawerLayout>

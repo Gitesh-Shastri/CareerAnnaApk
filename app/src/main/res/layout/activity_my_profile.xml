@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MyProfile">
+
+    <ImageView
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/profile_pic"
+        android:src="@drawable/common_google_signin_btn_icon_light"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/username"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/profile_pic"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/colorPrimary"
+        android:text="UserName"
+        style="@style/Base.TextAppearance.AppCompat.Medium"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/username"
+        android:id="@+id/useremail"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/colorPrimary"
+        android:text="UserEmail"
+        style="@style/Base.TextAppearance.AppCompat.Medium"
+        />
+
+    <Button
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_curved"
+        android:text="My Courses"
+        android:id="@+id/myCourses"
+        android:layout_below="@id/useremail"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        />
+
+
+    <Button
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_curved"
+        android:text="Certificates"
+        android:id="@+id/myCertificates"
+        android:layout_below="@id/myCourses"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        />
+
+    <Button
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_curved"
+        android:text="Achievements"
+        android:id="@+id/myAchievements"
+        android:layout_below="@id/myCertificates"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Terms and Conditions"
+        android:layout_below="@id/myAchievements"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        style="@style/Base.TextAppearance.AppCompat.Medium"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_centerHorizontal="true"
+        android:text="Sign Out"
+        android:id="@+id/signOut"
+        android:background="@drawable/border_curved"
+        />
+</RelativeLayout>
