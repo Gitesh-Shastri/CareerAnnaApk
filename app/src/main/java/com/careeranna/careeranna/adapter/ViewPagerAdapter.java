@@ -1,4 +1,4 @@
-package com.careeranna.careeranna;
+package com.careeranna.careeranna.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -13,21 +13,25 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.careeranna.careeranna.R;
+import com.careeranna.careeranna.data.Banner;
+
+import java.util.ArrayList;
 
 public class ViewPagerAdapter extends PagerAdapter {
 
     private Context mContext;
     private LayoutInflater layoutInflater;
-    private String[] urls;
+    private ArrayList<Banner> mBanners;
 
-    public ViewPagerAdapter(Context mContext, String[] urls) {
+    public ViewPagerAdapter(Context mContext, ArrayList<Banner> mBanners) {
         this.mContext = mContext;
-        this.urls  = urls;
+        this.mBanners = mBanners;
     }
 
     @Override
     public int getCount() {
-        return urls.length;
+        return mBanners.size();
     }
 
     @Override
@@ -42,7 +46,7 @@ public class ViewPagerAdapter extends PagerAdapter {
         View view = layoutInflater.inflate(R.layout.banner_layout, null);
         ImageView imageView = (ImageView) view.findViewById(R.id.bannerImage);
         Glide.with(view)
-                .load(urls[position])
+                .load(mBanners.get(position).getmLink())
                 .into(imageView);
         ViewPager vp = (ViewPager) container;
         vp.addView(view,0);

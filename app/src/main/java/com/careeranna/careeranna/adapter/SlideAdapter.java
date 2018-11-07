@@ -1,4 +1,4 @@
-package com.careeranna.careeranna;
+package com.careeranna.careeranna.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.careeranna.careeranna.R;
 
 public class SlideAdapter extends PagerAdapter {
 

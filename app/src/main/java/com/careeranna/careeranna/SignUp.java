@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.careeranna.careeranna.data.User;
 import com.careeranna.careeranna.fragement.ExploreFragement;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
