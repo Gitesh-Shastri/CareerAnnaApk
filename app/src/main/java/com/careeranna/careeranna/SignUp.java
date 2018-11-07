@@ -1,6 +1,11 @@
 package com.careeranna.careeranna;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
@@ -54,6 +59,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     RelativeLayout relativeLayout;
 
     Snackbar snackbar;
+    AlertDialog alert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,17 +173,32 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
             switch (view.getId()) {
                 case R.id.google_sign_in_button:
                     Log.d(TAG, "Google signin clicked ");
-                    snackbar = Snackbar.make(relativeLayout, "Sign In Please Wait", Snackbar.LENGTH_INDEFINITE);
-                    snackbar.show();
-                    progressBar.setVisibility(View.VISIBLE);
-                    signIn();
+                    if(!amIConnect()) {
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+                        builder.setTitle("No Internet Connection");
+                        builder.setIcon(R.mipmap.ic_launcher);
+                        builder.setCancelable(false);
+                        builder.setMessage("Please Connect To The Internet")
+                                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        alert.dismiss();
+                                    }
+                                });
+                        alert = builder.create();
+                        alert.show();
+                    } else {
+                        signIn();
+                    }
                     break;
             }
     }
 
     private void signIn() {
         Log.d(TAG, "Inside signIn function");
-
+        snackbar = Snackbar.make(relativeLayout, "Sign In Please Wait", Snackbar.LENGTH_INDEFINITE);
+        snackbar.show();
+        progressBar.setVisibility(View.VISIBLE);
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -265,5 +286,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
             startActivity(intent);
             finish();
         }
+    }
+
+    private boolean amIConnect() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
