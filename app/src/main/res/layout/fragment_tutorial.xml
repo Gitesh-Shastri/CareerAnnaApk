@@ -7,12 +7,25 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <VideoView
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/unitText"
+            android:text="Unit 2 - Topic 2 "
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textColor="@color/colorPrimary"
+            style="@style/Base.TextAppearance.AppCompat.Medium"
+            />
+        <VideoView
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:id="@+id/videoView"
+            android:layout_below="@id/unitText"
         android:layout_marginTop="10dp"
         />
         <TextView
@@ -38,21 +51,23 @@
             android:id="@+id/progressBar"
             android:progress="20"
             />
-        <android.support.v7.widget.RecyclerView
+        <ExpandableListView
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
+            android:layout_above="@+id/rest"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal"
             android:layout_below="@+id/progressBar"
             android:layout_marginRight="20dp"
-            android:id="@+id/week">
-        </android.support.v7.widget.RecyclerView>
+            android:id="@+id/expandableunit" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reset"
+            android:id="@+id/rest"
             android:background="@color/colorPrimary"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="20dp"

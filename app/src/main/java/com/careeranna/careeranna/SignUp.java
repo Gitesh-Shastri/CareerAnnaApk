@@ -174,7 +174,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                 case R.id.google_sign_in_button:
                     Log.d(TAG, "Google signin clicked ");
                     if(!amIConnect()) {
-                        final AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
                         builder.setTitle("No Internet Connection");
                         builder.setIcon(R.mipmap.ic_launcher);
                         builder.setCancelable(false);
