@@ -12,6 +12,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -67,9 +69,8 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
             "https://www.digitalvidya.com/wp-content/uploads/2016/02/Master_Digital_marketng-1170x630.jpg"
     };
 
-    int dotsCount;
+    private int currentPage;
     int page = 0;
-    private ImageView[] dots;
     ViewPager viewPager;
     ViewPagerAdapter viewPagerAdapter;
 
@@ -85,8 +86,8 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
         setContentView(R.layout.activity_my_couses);
 
         //  Initialize Layout Variable
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawelayout);
-        navigationView = (NavigationView)findViewById(R.id.nav_view);
+        drawerLayout = findViewById(R.id.drawelayout);
+        navigationView = findViewById(R.id.nav_view);
         viewPager = findViewById(R.id.viewPager);
         linearLayout = findViewById(R.id.sliderDots);
 
@@ -100,8 +101,8 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
         FirebaseUser user = mAuth.getCurrentUser();
 
         profile_pic_url = user.getPhotoUrl().toString();
-        mUsername = user.getDisplayName().toString();
-        mEmail = user.getEmail().toString();
+        mUsername = user.getDisplayName();
+        mEmail = user.getEmail();
 
         // Initalize Fragements For main container
         myCoursesFragement = new MyCoursesFragment();
@@ -150,76 +151,53 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
         // Initializing ArrayList
         mBanners = new ArrayList<>();
 
-        RequestQueue queue = Volley.newRequestQueue(MyCourses.this);
-        String bannerUrl = "https://api.myjson.com/bins/qzwja";
+        mBanners.add(new Banner("1", "Machine Learning", imageUrls[0]));
+        mBanners.add(new Banner("2", "Python", imageUrls[1]));
+        mBanners.add(new Banner("3", "Marketing", imageUrls[2]));
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, bannerUrl,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if (!response.equals("")) {
-                            try {
-                                JSONArray bannerArray = new JSONArray(response.toString());
-                                for(int i=0;i<bannerArray.length();i++) {
-                                    JSONObject bannerObject = bannerArray.getJSONObject(i);
-                                    mBanners.add(new Banner(bannerObject.getString("id"),
-                                            bannerObject.getString("title"),
-                                            bannerObject.getString("image_url")
-                                            ));
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MyCourses.this, "Something has happened " + error.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-        );
-        queue.add(stringRequest);
-
-        // Setting Adapter for banner viewPage
         viewPagerAdapter = new ViewPagerAdapter(getApplicationContext(), mBanners);
         viewPager.setAdapter(viewPagerAdapter);
-
         // Initializing dots for swipping banner layout
-        dotsCount = viewPagerAdapter.getCount();
-        dots = new ImageView[dotsCount];
+        viewPager.addOnPageChangeListener(bannerListener);
+        currentPage = 0;
+        addDots(0);
 
-        // Setting Non Active and active dots
-        for(int i=0;i<dotsCount;i++) {
-            dots[i] = new ImageView(getApplicationContext());
-            dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_panorama_fish_eye_black_24dp));
-            linearLayout.addView(dots[i]);
-        }
-        dots[0].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_fiber_manual_record_black_24dp));
-
-        // Changing of active and Non active dots after swipping
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
-
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-                for(int j=0;j< dotsCount;j++) {
-                    dots[j].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_panorama_fish_eye_black_24dp));
-                }
-                dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_fiber_manual_record_black_24dp));
-                page = i;
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
     }
+
+
+    private void addDots(int i){
+        linearLayout.removeAllViews();
+        TextView[] dots = new TextView[viewPagerAdapter.getCount()];
+
+        for(int x=0; x<dots.length; x++){
+            dots[x] = new TextView(this);
+            dots[x].setText(String.valueOf(Html.fromHtml("&#8226")));
+            dots[x].setTextSize(40);
+            dots[x].setTextColor(getResources().getColor(R.color.intro_dot_dark));
+
+            linearLayout.addView(dots[x]);
+        }
+        dots[i].setTextColor(getResources().getColor(R.color.intro_dot_light));
+    }
+
+
+    ViewPager.OnPageChangeListener bannerListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int i, float v, int i1) {
+
+        }
+
+        @Override
+        public void onPageSelected(int i) {
+            addDots(i);
+            currentPage = i;
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int i) {
+
+        }
+    };
 
     public void setNavigationView() {
         // Initialize Views for navigation

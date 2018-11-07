@@ -2,6 +2,7 @@ package com.careeranna.careeranna;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -50,10 +51,17 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     Button signIn;
     ProgressBar progressBar;
 
+    RelativeLayout relativeLayout;
+
+    Snackbar snackbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        relativeLayout = findViewById(R.id.snackbar);
+
         mGoogleBtn = findViewById(R.id.google_sign_in_button);
         mGoogleBtn.setOnClickListener(this);
         signUp = findViewById(R.id.signUp);
@@ -94,6 +102,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                snackbar = Snackbar.make(relativeLayout, "Sign In Please Wait", Snackbar.LENGTH_INDEFINITE);
+                snackbar.show();
+                progressBar.setVisibility(View.VISIBLE);
                 Log.d("facebook", "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
@@ -156,6 +167,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
             switch (view.getId()) {
                 case R.id.google_sign_in_button:
                     Log.d(TAG, "Google signin clicked ");
+                    snackbar = Snackbar.make(relativeLayout, "Sign In Please Wait", Snackbar.LENGTH_INDEFINITE);
+                    snackbar.show();
                     progressBar.setVisibility(View.VISIBLE);
                     signIn();
                     break;
@@ -175,7 +188,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
         Log.d(TAG, "Inside onActivityResult function");
 
-        progressBar.setVisibility(View.GONE);
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -247,6 +259,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
     private void updateUI(FirebaseUser user) {
         if(user != null) {
+            snackbar.dismiss();
+            progressBar.setVisibility(View.INVISIBLE);
             Intent intent = new Intent(SignUp.this, MyCourses.class);
             startActivity(intent);
             finish();

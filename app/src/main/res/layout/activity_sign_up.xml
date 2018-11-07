@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/snackbar"
     android:layout_height="match_parent"
     tools:context=".SignUp">
 
@@ -46,10 +47,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/fb_login_button"
             android:textColor="#000"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:id="@+id/or"
             android:layout_centerHorizontal="true"
-            android:text="------------ OR ------------"
+            android:text="@string/or"
             />
 
         <android.support.design.widget.TextInputLayout
@@ -65,7 +66,7 @@
                 android:inputType="text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter Username or Email"
+                android:hint="@string/enter_username_or_email"
                 />
         </android.support.design.widget.TextInputLayout>
 
@@ -84,7 +85,7 @@
             android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter Password"
+            android:hint="@string/enter_password"
             />
     </android.support.design.widget.TextInputLayout>
 
@@ -97,7 +98,7 @@
             android:background="@drawable/border_curved"
             android:text="Sign In"
             android:gravity="center"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:textColor="#ffffff"
             />
 
@@ -106,11 +107,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/signInAccount"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         android:textColor="@color/colorAccent"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:id="@+id/forgot"
-        android:text="Forgot Your Password?"
+        android:text="@string/forgot_your_password"
         />
 
     <View
@@ -129,10 +130,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/sep"
         android:textColor="#000"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:clickable="true"
+        android:focusable="true"
         android:id="@+id/signUp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         android:text="@string/signup"
         />
 

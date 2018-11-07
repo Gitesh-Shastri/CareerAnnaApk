@@ -39,4 +39,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="courses1"><u>Courses</u></string>
+    <string name="or">------------ OR ------------</string>
+    <string name="enter_username_or_email">Enter Username or Email</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="forgot_your_password">Forgot Your Password?</string>
 </resources>

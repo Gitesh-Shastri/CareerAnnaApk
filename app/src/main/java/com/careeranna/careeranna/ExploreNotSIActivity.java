@@ -2,10 +2,12 @@ package com.careeranna.careeranna;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,8 +15,22 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.careeranna.careeranna.adapter.ViewPagerAdapter;
+import com.careeranna.careeranna.data.Banner;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class ExploreNotSIActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -24,6 +40,8 @@ public class ExploreNotSIActivity extends AppCompatActivity implements View.OnCl
     private ViewPagerAdapter bannerAdapter;
     private LinearLayout dotsLayout;
     private ViewPager banner;
+
+    ArrayList<Banner> mBanners;
 
     private int currentPage;
     private Runnable runnable;
@@ -57,11 +75,7 @@ public class ExploreNotSIActivity extends AppCompatActivity implements View.OnCl
         /*
         Setting the banners and it's adapter
          */
-        bannerAdapter = new ViewPagerAdapter(this, imageUrls);
-        banner.setAdapter(bannerAdapter);
-        banner.addOnPageChangeListener(bannerListener);
-        currentPage = 0;
-        addDots(0);
+        initializeBanner();
 
         LayoutInflater layoutInflater = LayoutInflater.from(this);
 
@@ -124,6 +138,22 @@ public class ExploreNotSIActivity extends AppCompatActivity implements View.OnCl
         }
 
         // *************ONLY FOR TESTING PURPOSE CODE, ENDS HERE***********************************
+    }
+
+    public void initializeBanner() {
+        // Initializing ArrayList
+        mBanners = new ArrayList<>();
+
+        mBanners.add(new Banner("1", "Machine Learning", imageUrls[0]));
+        mBanners.add(new Banner("2", "Python", imageUrls[1]));
+        mBanners.add(new Banner("3", "Marketing", imageUrls[2]));
+
+        // Setting Adapter for banner viewPage
+        bannerAdapter = new ViewPagerAdapter(getApplicationContext(), mBanners);
+        banner.setAdapter(bannerAdapter);
+        banner.addOnPageChangeListener(bannerListener);
+        currentPage = 0;
+        addDots(0);
     }
 
     @Override
