@@ -6,6 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".SignUp">
 
+        <ProgressBar
+            android:id="@+id/signUp_progressCircle"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="40dp"

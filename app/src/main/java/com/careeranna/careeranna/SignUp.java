@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +37,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
+    public static final String TAG = "SignUp Activity";
+
     SignInButton mGoogleBtn;
     private GoogleSignInClient mGoogleSignInClient;
     private final static int RC_SIGN_IN = 2;
@@ -43,6 +47,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     TextView signUp;
     TextInputLayout textInputEmail, textInputPassword;
     Button signIn;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
         textInputEmail = findViewById(R.id.useremailL);
         textInputPassword = findViewById(R.id.userpasswordL);
+
+        //Hide the circuler progress bar and only show when needed
+        progressBar = findViewById(R.id.signUp_progressCircle);
+        progressBar.bringToFront();
+        progressBar.setVisibility(View.GONE);
 
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +122,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     private boolean validateEmailTv() {
         String emailInput = textInputEmail.getEditText().getText().toString().trim();
         if(emailInput.isEmpty()) {
-            textInputEmail.setError("UserEmail can't be emplty ");
+            textInputEmail.setError("UserEmail can't be empty ");
             return false;
         } else {
             textInputEmail.setError(null);
@@ -124,7 +134,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     private boolean validatePassTv() {
         String emailInput = textInputPassword.getEditText().getText().toString().trim();
         if(emailInput.isEmpty()) {
-            textInputPassword.setError("UserPassword can't be emplty ");
+            textInputPassword.setError("UserPassword can't be empty ");
             return false;
         } else {
             textInputPassword.setError(null);
@@ -144,12 +154,16 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.google_sign_in_button:
+                    Log.d(TAG, "Google signin clicked ");
+                    progressBar.setVisibility(View.VISIBLE);
                     signIn();
                     break;
             }
     }
 
     private void signIn() {
+        Log.d(TAG, "Inside signIn function");
+
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -158,6 +172,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        Log.d(TAG, "Inside onActivityResult function");
+
+        progressBar.setVisibility(View.GONE);
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -165,6 +182,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
+                Log.d(TAG, "onActivityResult: Successful sign in");
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w("SignUp1", "Google sign in failed", e);
