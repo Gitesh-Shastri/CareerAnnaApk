@@ -4,15 +4,18 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="10dp"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
     <TextView
         android:id="@+id/headeritem"
-        android:paddingTop="5dp"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:paddingLeft="?android:expandableListPreferredChildPaddingLeft"
-        android:paddingBottom="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        />
 </LinearLayout>

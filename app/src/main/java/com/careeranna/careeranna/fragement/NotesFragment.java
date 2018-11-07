@@ -1,7 +1,6 @@
 package com.careeranna.careeranna.fragement;
 
 
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
 import com.careeranna.careeranna.R;
-import com.careeranna.careeranna.adapter.ExpandableListAdapter;
+import com.careeranna.careeranna.adapter.ExpandableList_Adapter;
+import com.careeranna.careeranna.data.Topic;
+import com.careeranna.careeranna.data.Unit;
 import com.github.barteksc.pdfviewer.PDFView;
 
 import java.io.BufferedInputStream;
@@ -31,11 +32,10 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  */
 public class NotesFragment extends Fragment {
 
-    PDFView pdfView;
     ExpandableListView listView;
-    ExpandableListAdapter listAdapter;
-    HashMap<String, List<String>> listHash;
+    ExpandableList_Adapter listAdapter;
 
+    ArrayList<Unit> mUnits;
     ArrayList<String> names;
     ArrayList<String> urls;
 
@@ -72,70 +72,47 @@ public class NotesFragment extends Fragment {
         names.add("Unit 6");
 
         listView = view.findViewById(R.id.expandableunit);
+        ArrayList<Topic> topic1 = new ArrayList<>();
+        topic1.add(new Topic("Topic 1", true));
 
-        listHash = new HashMap<>();
-        List<String> unit1 = new ArrayList<>();
-        unit1.add("Topic 1");
+        ArrayList<Topic> topic2 = new ArrayList<>();
+        topic2.add(new Topic("Topic 1", true));
+        topic2.add(new Topic("Topic 2", true));
 
-        List<String> unit2 = new ArrayList<>();
-        unit2.add("Topic 1");
-        unit2.add("Topic 2");
+        ArrayList<Topic> topic3 = new ArrayList<>();
+        topic3.add(new Topic("Topic 1", true));
+        topic3.add(new Topic("Topic 2", false));
 
-        List<String> unit3 = new ArrayList<>();
-        unit3.add("Topic 1");
-        unit3.add("Topic 2");
+        ArrayList<Topic> topic4 = new ArrayList<>();
+        topic4.add(new Topic("Topic 1", false));
 
-        List<String> unit4 = new ArrayList<>();
-        unit4.add("Topic 1");
+        ArrayList<Topic> topic5 = new ArrayList<>();
+        topic5.add(new Topic("Topic 1", false));
+        topic5.add(new Topic("Topic 2", false));
 
-        List<String> unit5 = new ArrayList<>();
-        unit5.add("Topic 1");
-        unit5.add("Topic 2");
+        ArrayList<Topic> topic6 = new ArrayList<>();
+        topic6.add(new Topic("Topic 1", false));
+        topic6.add(new Topic("Topic 2", false));
+        topic6.add(new Topic("Topic 3", false));
 
+        mUnits = new ArrayList<>();
+        mUnits.add(new Unit("Unit 1"));
+        mUnits.get(0).topics = topic1;
+        mUnits.add(new Unit("Unit 2"));
+        mUnits.get(1).topics = topic2;
+        mUnits.add(new Unit("Unit 3"));
+        mUnits.get(2).topics = topic3;
+        mUnits.add(new Unit("Unit 4"));
+        mUnits.get(3).topics = topic4;
+        mUnits.add(new Unit("Unit 5"));
+        mUnits.get(4).topics = topic5;
+        mUnits.add(new Unit("Unit 6"));
+        mUnits.get(5).topics = topic6;
 
-        List<String> unit6 = new ArrayList<>();
-        unit6.add("Topic 1");
-        unit6.add("Topic 2");
-        unit6.add("Topic 3");
-
-        listHash.put(names.get(0), unit1);
-        listHash.put(names.get(1), unit2);
-        listHash.put(names.get(2), unit3);
-        listHash.put(names.get(3), unit4);
-        listHash.put(names.get(4), unit5);
-        listHash.put(names.get(5), unit6);
-
-        listAdapter = new ExpandableListAdapter(getApplicationContext(), names ,listHash);
+        listAdapter = new ExpandableList_Adapter(getApplicationContext(), mUnits);
         listView.setAdapter(listAdapter);
 
-        pdfView = view.findViewById(R.id.pdfViewer);
-        pdfView.fromAsset("pdfview.pdf").load();
         return view;
-    }
-
-    class Retrieve extends AsyncTask<String,Void,InputStream> {
-        @Override
-        protected InputStream doInBackground(String... strings) {
-            InputStream inputStream = null;
-            try {
-                URL url = new URL(strings[0]);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                if(httpURLConnection.getResponseCode() == 200) {
-                    inputStream = new BufferedInputStream(httpURLConnection.getInputStream());
-
-                }
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return inputStream;
-        }
-
-        @Override
-        protected void onPostExecute(InputStream inputStream) {
-            pdfView.fromStream(inputStream);
-        }
     }
 
 }

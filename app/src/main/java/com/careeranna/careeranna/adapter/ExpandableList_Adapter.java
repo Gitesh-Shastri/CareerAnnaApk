@@ -2,47 +2,48 @@ package com.careeranna.careeranna.adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.careeranna.careeranna.R;
+import com.careeranna.careeranna.data.Topic;
+import com.careeranna.careeranna.data.Unit;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.ArrayList;
 
-public class ExpandableListAdapter extends BaseExpandableListAdapter {
+public class ExpandableList_Adapter extends BaseExpandableListAdapter {
     private Context mContext;
-    private List<String> listDataHeader;
-    private HashMap<String, List<String>> listHashMap;
+    private ArrayList<Unit> unit;
+    private LayoutInflater layoutInflater;
 
-    public ExpandableListAdapter(Context mContext, List<String> listDataHeader, HashMap<String, List<String>> listHashMap) {
+    public ExpandableList_Adapter(Context mContext, ArrayList<Unit> unit) {
         this.mContext = mContext;
-        this.listDataHeader = listDataHeader;
-        this.listHashMap = listHashMap;
+        this.unit = unit;
+        layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getGroupCount() {
-        return listDataHeader.size();
+        return unit.size();
     }
 
     @Override
     public int getChildrenCount(int i) {
-        return listHashMap.get(listDataHeader.get(i)).size();
+        return unit.get(i).topics.size();
     }
 
     @Override
-    public Object getGroup(int i) {
-        return listDataHeader.get(i);
+    public Unit getGroup(int i) {
+        return unit.get(i);
     }
 
     @Override
-    public Object getChild(int i, int i1) {
-        return listHashMap.get(listDataHeader.get(i)).get(i1);
+    public Topic getChild(int i, int i1) {
+        return unit.get(i).topics.get(i1);
     }
 
     @Override
@@ -62,7 +63,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int i, boolean b, View view, ViewGroup viewGroup) {
-        String headerTitle = (String) getGroup(i);
+        String headerTitle = getGroup(i).Name;
         if(view == null) {
             LayoutInflater inflater = (LayoutInflater)this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.list_unit_group, null);
@@ -75,14 +76,18 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int i, int i1, boolean b, View view, ViewGroup viewGroup) {
-        final String childText = (String) getChild(i, i1);
         if(view == null) {
-            LayoutInflater inflater = (LayoutInflater)this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.list_group_item, null);
+            view = layoutInflater.inflate(R.layout.list_group_item, null);
         }
+        String childText = getChild(i, i1).getName();
+        boolean isComplete = getChild(i, i1).isComplete();
+        ImageView listChildImage = view.findViewById(R.id.imageView);
         TextView listChild = (TextView) view.findViewById(R.id.headeritem);
         listChild.setText(childText);
-        return  view;
+        if(isComplete) {
+            listChildImage.setImageResource(R.drawable.ic_check_circle_black_24dp);
+        }
+        return view;
     }
 
     @Override

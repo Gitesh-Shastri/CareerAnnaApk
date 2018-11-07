@@ -4,8 +4,6 @@ package com.careeranna.careeranna.fragement;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +12,11 @@ import android.widget.MediaController;
 import android.widget.VideoView;
 
 import com.careeranna.careeranna.R;
-import com.careeranna.careeranna.adapter.ExpandableListAdapter;
-import com.careeranna.careeranna.helper.RecyclerViewAdapter;
+import com.careeranna.careeranna.adapter.ExpandableList_Adapter;
+import com.careeranna.careeranna.data.Topic;
+import com.careeranna.careeranna.data.Unit;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -31,8 +29,8 @@ public class TutorialFragment extends Fragment {
     ArrayList<String> urls;
 
     ExpandableListView listView;
-    ExpandableListAdapter listAdapter;
-    HashMap<String, List<String>> listHash;
+    ExpandableList_Adapter listAdapter;
+    ArrayList<Unit> mUnits;
 
     private String[] imageUrls = new String[] {
         "https://cdn2.iconfinder.com/data/icons/web-and-apps-interface/32/OK-512.png",
@@ -77,39 +75,44 @@ public class TutorialFragment extends Fragment {
 
         listView = view.findViewById(R.id.expandableunit);
 
-        listHash = new HashMap<>();
-        List<String> unit1 = new ArrayList<>();
-        unit1.add("Topic 1");
+        ArrayList<Topic> topic1 = new ArrayList<>();
+        topic1.add(new Topic("Topic 1", true));
 
-        List<String> unit2 = new ArrayList<>();
-        unit2.add("Topic 1");
-        unit2.add("Topic 2");
+        ArrayList<Topic> topic2 = new ArrayList<>();
+        topic2.add(new Topic("Topic 1", true));
+        topic2.add(new Topic("Topic 2", true));
 
-        List<String> unit3 = new ArrayList<>();
-        unit3.add("Topic 1");
-        unit3.add("Topic 2");
+        ArrayList<Topic> topic3 = new ArrayList<>();
+        topic3.add(new Topic("Topic 1", true));
+        topic3.add(new Topic("Topic 2", false));
 
-        List<String> unit4 = new ArrayList<>();
-        unit4.add("Topic 1");
+        ArrayList<Topic> topic4 = new ArrayList<>();
+        topic4.add(new Topic("Topic 1", false));
 
-        List<String> unit5 = new ArrayList<>();
-        unit5.add("Topic 1");
-        unit5.add("Topic 2");
+        ArrayList<Topic> topic5 = new ArrayList<>();
+        topic5.add(new Topic("Topic 1", false));
+        topic5.add(new Topic("Topic 2", false));
 
+        ArrayList<Topic> topic6 = new ArrayList<>();
+        topic6.add(new Topic("Topic 1", false));
+        topic6.add(new Topic("Topic 2", false));
+        topic6.add(new Topic("Topic 3", false));
 
-        List<String> unit6 = new ArrayList<>();
-        unit6.add("Topic 1");
-        unit6.add("Topic 2");
-        unit6.add("Topic 3");
+        mUnits = new ArrayList<>();
+        mUnits.add(new Unit("Unit 1"));
+        mUnits.get(0).topics = topic1;
+        mUnits.add(new Unit("Unit 2"));
+        mUnits.get(1).topics = topic2;
+        mUnits.add(new Unit("Unit 3"));
+        mUnits.get(2).topics = topic3;
+        mUnits.add(new Unit("Unit 4"));
+        mUnits.get(3).topics = topic4;
+        mUnits.add(new Unit("Unit 5"));
+        mUnits.get(4).topics = topic5;
+        mUnits.add(new Unit("Unit 6"));
+        mUnits.get(5).topics = topic6;
 
-        listHash.put(names.get(0), unit1);
-        listHash.put(names.get(1), unit2);
-        listHash.put(names.get(2), unit3);
-        listHash.put(names.get(3), unit4);
-        listHash.put(names.get(4), unit5);
-        listHash.put(names.get(5), unit6);
-
-        listAdapter = new ExpandableListAdapter(getApplicationContext(), names ,listHash);
+        listAdapter = new ExpandableList_Adapter(getApplicationContext(), mUnits);
         listView.setAdapter(listAdapter);
 
         return view;
