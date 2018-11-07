@@ -22,14 +22,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.careeranna.careeranna.fragement.ExploreFragement;
 import com.careeranna.careeranna.fragement.MyCoursesFragment;
-import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -60,7 +57,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
     int page = 0;
     private ImageView[] dots;
     ViewPager viewPager;
-    viewPagerAdapter viewPagerAdapter;
+    ViewPagerAdapter viewPagerAdapter;
 
     private Handler handler;
     private int delay = 5000;
@@ -105,7 +102,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
 
         handler = new Handler();
         viewPager = findViewById(R.id.viewPager);
-        viewPagerAdapter = new viewPagerAdapter(getApplicationContext(), imageUrls);
+        viewPagerAdapter = new ViewPagerAdapter(getApplicationContext(), imageUrls);
         viewPager.setAdapter(viewPagerAdapter);
         dotsCount = viewPagerAdapter.getCount();
         dots = new ImageView[dotsCount];

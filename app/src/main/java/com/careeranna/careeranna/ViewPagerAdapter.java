@@ -14,13 +14,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
-public class viewPagerAdapter extends PagerAdapter {
+public class ViewPagerAdapter extends PagerAdapter {
 
     private Context mContext;
     private LayoutInflater layoutInflater;
     private String[] urls;
 
-    public viewPagerAdapter(Context mContext, String[] urls) {
+    public ViewPagerAdapter(Context mContext, String[] urls) {
         this.mContext = mContext;
         this.urls  = urls;
     }

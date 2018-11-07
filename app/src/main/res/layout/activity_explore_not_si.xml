@@ -6,6 +6,28 @@
     android:orientation="vertical"
     tools:context=".ExploreNotSIActivity">
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/banner"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+        </android.support.v4.view.ViewPager>
+
+        <LinearLayout
+            android:id="@+id/bannerDots"
+            android:layout_marginTop="70dp"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </LinearLayout>
+
+    </RelativeLayout>
+
     <TextView
         android:text="@string/free_vid"
         android:layout_marginLeft="10dp"

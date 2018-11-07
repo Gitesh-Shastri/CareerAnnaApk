@@ -4,22 +4,17 @@ package com.careeranna.careeranna.fragement;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.careeranna.careeranna.CategoriesSection;
 import com.careeranna.careeranna.ExploreCourses;
 import com.careeranna.careeranna.R;
 import com.careeranna.careeranna.helper.RecyclerViewAdapter;
 import com.careeranna.careeranna.helper.RecyclerViewTopAdapter;
-import com.careeranna.careeranna.viewPagerAdapter;
 
 import java.util.ArrayList;
 
