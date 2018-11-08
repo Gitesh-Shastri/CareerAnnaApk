@@ -1,13 +1,17 @@
 package com.careeranna.careeranna.data;
 
+import android.graphics.drawable.Drawable;
+
+import com.careeranna.careeranna.R;
+
 public class Topic {
 
     private String Name;
-    private boolean isComplete;
+    private Drawable icon;
 
-    public Topic(String name, boolean isComplete) {
+    public Topic(String name, Drawable icon) {
         Name = name;
-        this.isComplete = isComplete;
+        this.icon = icon;
     }
 
     public String getName() {
@@ -18,11 +22,11 @@ public class Topic {
         Name = name;
     }
 
-    public boolean isComplete() {
-        return isComplete;
+    public Drawable getIcon() {
+        return icon;
     }
 
-    public void setComplete(boolean complete) {
-        isComplete = complete;
+    public void setIcon(Drawable icon) {
+        this.icon = icon;
     }
 }

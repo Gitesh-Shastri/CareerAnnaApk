@@ -29,7 +29,8 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="751a85" />
-                            <entry key="outputName" value="ic_check_circle_black_24dp" />
+                            <entry key="opacityPercent" value="0" />
+                            <entry key="outputName" value="ic_check_circle_black1_24dp" />
                             <entry key="sourceFile" value="C:\Users\gitesh" />
                           </map>
                         </option>

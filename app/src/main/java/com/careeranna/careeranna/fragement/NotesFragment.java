@@ -1,6 +1,7 @@
 package com.careeranna.careeranna.fragement;
 
 
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -71,42 +72,45 @@ public class NotesFragment extends Fragment {
         urls.add(imageUrls[2]);
         names.add("Unit 6");
 
+        Drawable check = getApplicationContext().getResources().getDrawable(R.drawable.ic_check_circle_black_24dp);
+        Drawable unCheck = getApplicationContext().getResources().getDrawable(R.drawable.ic_check_circle_black1_24dp);
+
         listView = view.findViewById(R.id.expandableunit);
         ArrayList<Topic> topic1 = new ArrayList<>();
-        topic1.add(new Topic("Topic 1", true));
+        topic1.add(new Topic("Topic 1", check));
 
         ArrayList<Topic> topic2 = new ArrayList<>();
-        topic2.add(new Topic("Topic 1", true));
-        topic2.add(new Topic("Topic 2", true));
+        topic2.add(new Topic("Topic 1", check));
+        topic2.add(new Topic("Topic 2", check));
 
         ArrayList<Topic> topic3 = new ArrayList<>();
-        topic3.add(new Topic("Topic 1", true));
-        topic3.add(new Topic("Topic 2", false));
+        topic3.add(new Topic("Topic 1", check));
+        topic3.add(new Topic("Topic 2", unCheck));
 
         ArrayList<Topic> topic4 = new ArrayList<>();
-        topic4.add(new Topic("Topic 1", false));
+        topic4.add(new Topic("Topic 1", unCheck));
 
         ArrayList<Topic> topic5 = new ArrayList<>();
-        topic5.add(new Topic("Topic 1", false));
-        topic5.add(new Topic("Topic 2", false));
+        topic5.add(new Topic("Topic 1", unCheck));
+        topic5.add(new Topic("Topic 2", unCheck));
 
         ArrayList<Topic> topic6 = new ArrayList<>();
-        topic6.add(new Topic("Topic 1", false));
-        topic6.add(new Topic("Topic 2", false));
-        topic6.add(new Topic("Topic 3", false));
+        topic6.add(new Topic("Topic 1", unCheck));
+        topic6.add(new Topic("Topic 2", unCheck));
+        topic6.add(new Topic("Topic 3", unCheck));
 
         mUnits = new ArrayList<>();
-        mUnits.add(new Unit("Unit 1"));
+        mUnits.add(new Unit("Unit 1", check));
         mUnits.get(0).topics = topic1;
-        mUnits.add(new Unit("Unit 2"));
+        mUnits.add(new Unit("Unit 2", check));
         mUnits.get(1).topics = topic2;
-        mUnits.add(new Unit("Unit 3"));
+        mUnits.add(new Unit("Unit 3", unCheck));
         mUnits.get(2).topics = topic3;
-        mUnits.add(new Unit("Unit 4"));
+        mUnits.add(new Unit("Unit 4", unCheck));
         mUnits.get(3).topics = topic4;
-        mUnits.add(new Unit("Unit 5"));
+        mUnits.add(new Unit("Unit 5", unCheck));
         mUnits.get(4).topics = topic5;
-        mUnits.add(new Unit("Unit 6"));
+        mUnits.add(new Unit("Unit 6", unCheck));
         mUnits.get(5).topics = topic6;
 
         listAdapter = new ExpandableList_Adapter(getApplicationContext(), mUnits);
