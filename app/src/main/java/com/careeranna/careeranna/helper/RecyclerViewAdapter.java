@@ -12,13 +12,13 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.careeranna.careeranna.R;
+import com.careeranna.careeranna.data.Category;
 
 import java.util.ArrayList;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
-    private ArrayList<String> names = new ArrayList<>();
-    private ArrayList<String> urls = new ArrayList<>();
+    private ArrayList<Category> mCategories = new ArrayList<>();
     private Context mContext;
     private OnItemClickListener mListener;
 
@@ -30,10 +30,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         mListener = listener;
     }
 
-    public RecyclerViewAdapter(ArrayList<String> names, ArrayList<String> urls, Context mContext) {
-        this.names = names;
-        this.urls = urls;
+    public RecyclerViewAdapter(ArrayList<Category> mCategories, Context mContext) {
         this.mContext = mContext;
+        this.mCategories = mCategories;
     }
 
     @NonNull
@@ -46,14 +45,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder,final int i) {
         Glide.with(mContext)
-                .load(urls.get(i))
+                .load(mCategories.get(i).getImage_url())
                 .into(viewHolder.imageView);
-        viewHolder.textView.setText(names.get(i));
+        viewHolder.textView.setText(mCategories.get(i).getName());
     }
 
     @Override
     public int getItemCount() {
-        return urls.size();
+        return mCategories.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -77,5 +76,4 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             });
         }
     }
-
 }

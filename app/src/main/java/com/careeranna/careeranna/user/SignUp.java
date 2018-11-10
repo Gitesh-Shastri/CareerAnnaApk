@@ -1,4 +1,4 @@
-package com.careeranna.careeranna;
+package com.careeranna.careeranna.user;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -19,8 +19,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.careeranna.careeranna.data.User;
-import com.careeranna.careeranna.fragement.ExploreFragement;
+import com.careeranna.careeranna.MyCourses;
+import com.careeranna.careeranna.R;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -45,21 +45,34 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
     public static final String TAG = "SignUp Activity";
-
-    SignInButton mGoogleBtn;
-    private GoogleSignInClient mGoogleSignInClient;
     private final static int RC_SIGN_IN = 2;
-    FirebaseAuth mAuth;
-    private CallbackManager mCallbackManager;
-    TextView signUp;
-    TextInputLayout textInputEmail, textInputPassword;
-    Button signIn;
-    ProgressBar progressBar;
+
+    TextInputLayout textInputEmail,
+            textInputPassword;
 
     RelativeLayout relativeLayout;
 
+    FirebaseAuth mAuth;
+
+    private GoogleSignInClient mGoogleSignInClient;
+
+    SignInButton mGoogleBtn;
+
+    private CallbackManager mCallbackManager;
+
+    LoginButton loginButton;
+
+    ProgressBar progressBar;
+
+    AlertDialog.Builder builder;
+
     Snackbar snackbar;
+
     AlertDialog alert;
+
+    TextView signUp;
+
+    Button signIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,65 +82,33 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         relativeLayout = findViewById(R.id.snackbar);
 
         mGoogleBtn = findViewById(R.id.google_sign_in_button);
-        mGoogleBtn.setOnClickListener(this);
+
         signUp = findViewById(R.id.signUp);
+
         signIn = findViewById(R.id.signInAccount);
 
         textInputEmail = findViewById(R.id.useremailL);
         textInputPassword = findViewById(R.id.userpasswordL);
 
-        //Hide the circuler progress bar and only show when needed
         progressBar = findViewById(R.id.signUp_progressCircle);
+
+        loginButton =  findViewById(R.id.fb_login_button);
+
+        mGoogleBtn.setOnClickListener(this);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        //Hide the circuler progress bar and only show when needed
         progressBar.bringToFront();
         progressBar.setVisibility(View.GONE);
 
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SignUp.this, Register.class);
-                startActivity(intent);
             }
         });
 
-        signIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!validateEmailTv() | !validatePassTv()) {
-                    return;
-                }
-                Toast.makeText(SignUp.this, "username/username : " + textInputEmail.getEditText().getText().toString().trim(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        mAuth = FirebaseAuth.getInstance();
-
-        // Initialize Facebook Login button
-        mCallbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton =  findViewById(R.id.fb_login_button);
-        loginButton.setReadPermissions("email");
-        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                snackbar = Snackbar.make(relativeLayout, "Sign In Please Wait", Snackbar.LENGTH_INDEFINITE);
-                snackbar.show();
-                progressBar.setVisibility(View.VISIBLE);
-                Log.d("facebook", "facebook:onSuccess:" + loginResult);
-                handleFacebookAccessToken(loginResult.getAccessToken());
-            }
-
-            @Override
-            public void onCancel() {
-                Log.d("facebook", "facebook:onCancel");
-                // ...
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Log.d("facebook", "facebook:onError", error);
-                // ...
-            }
-        });
-
+        signIn.setOnClickListener(this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -135,46 +116,66 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(SignUp.this, gso);
-    }
 
-    private boolean validateEmailTv() {
-        String emailInput = textInputEmail.getEditText().getText().toString().trim();
-        if(emailInput.isEmpty()) {
-            textInputEmail.setError("UserEmail can't be empty ");
-            return false;
-        } else {
-            textInputEmail.setError(null);
-            return true;
-        }
-    }
+        // Initialize Facebook Login button
+        mCallbackManager = CallbackManager.Factory.create();
 
+        loginButton.setReadPermissions("email");
 
-    private boolean validatePassTv() {
-        String emailInput = textInputPassword.getEditText().getText().toString().trim();
-        if(emailInput.isEmpty()) {
-            textInputPassword.setError("UserPassword can't be empty ");
-            return false;
-        } else {
-            textInputPassword.setError(null);
-            return true;
-        }
+        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+
+                snackbar = Snackbar.make(relativeLayout, "Sign In Please Wait", Snackbar.LENGTH_INDEFINITE);
+                snackbar.show();
+                progressBar.setVisibility(View.VISIBLE);
+
+                Log.d("facebook", "facebook:onSuccess:" + loginResult);
+                handleFacebookAccessToken(loginResult.getAccessToken());
+
+            }
+
+            @Override
+            public void onCancel() {
+
+                Log.d("facebook", "facebook:onCancel");
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+                Log.d("facebook", "facebook:onError", error);
+
+            }
+
+        });
     }
 
     @Override
     public void onStart() {
+
         super.onStart();
+
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
+
     }
 
     @Override
     public void onClick(View view) {
-            switch (view.getId()) {
+
+        switch (view.getId()) {
+
                 case R.id.google_sign_in_button:
+
                     Log.d(TAG, "Google signin clicked ");
+
                     if(!amIConnect()) {
-                        final AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
+
+                        builder = new AlertDialog.Builder(SignUp.this);
                         builder.setTitle("No Internet Connection");
                         builder.setIcon(R.mipmap.ic_launcher);
                         builder.setCancelable(false);
@@ -187,11 +188,26 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                                 });
                         alert = builder.create();
                         alert.show();
+
                     } else {
                         signIn();
                     }
                     break;
-            }
+
+            case R.id.signInAccount:
+
+                if(!validateEmailTv() | !validatePassTv()) {
+                    return;
+                }
+                Toast.makeText(SignUp.this, "username/username : " + textInputEmail.getEditText().getText().toString().trim(), Toast.LENGTH_SHORT).show();
+
+                break;
+
+            case R.id.signUp:
+
+                Intent intent = new Intent(SignUp.this, Register.class);
+                startActivity(intent);
+        }
     }
 
     private void signIn() {
@@ -288,9 +304,46 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
+
+    private boolean validateEmailTv() {
+
+        String emailInput = textInputEmail.getEditText().getText().toString().trim();
+
+        if(emailInput.isEmpty()) {
+
+            textInputEmail.setError("UserEmail can't be empty ");
+            return false;
+
+        } else {
+
+            textInputEmail.setError(null);
+            return true;
+
+        }
+    }
+
+    private boolean validatePassTv() {
+
+        String emailInput = textInputPassword.getEditText().getText().toString().trim();
+
+        if(emailInput.isEmpty()) {
+
+            textInputPassword.setError("UserPassword can't be empty ");
+            return false;
+
+        } else {
+
+            textInputPassword.setError(null);
+            return true;
+
+        }
+    }
+
     private boolean amIConnect() {
+
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+
     }
 }

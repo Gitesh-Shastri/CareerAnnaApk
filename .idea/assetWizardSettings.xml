@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_check_circle_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_event_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,10 +28,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="751a85" />
-                            <entry key="opacityPercent" value="0" />
-                            <entry key="outputName" value="ic_check_circle_black1_24dp" />
-                            <entry key="sourceFile" value="C:\Users\gitesh" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="outputName" value="ic_plus" />
+                            <entry key="sourceFile" value="C:\Users\gitesh\Downloads\plus.svg" />
                           </map>
                         </option>
                       </PersistentState>

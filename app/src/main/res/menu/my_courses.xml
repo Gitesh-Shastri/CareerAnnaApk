@@ -5,7 +5,8 @@
         android:checkableBehavior="single">
     <item android:id="@+id/myCourses" android:title="MyCourses" android:checked="true" android:icon="@drawable/ic_event_note_black_24dp"/>
     <item android:id="@+id/explore" android:title="Explore" android:checked="false" android:icon="@drawable/ic_youtube_searched_for_black_24dp"/>
-    <item android:id="@+id/profile" android:title="My Profile" android:checked="false" android:icon="@drawable/ic_person_black_24dp"/>
+        <item android:id="@+id/article" android:title="Articles" android:icon="@drawable/ic_art_track_black_24dp"/>
+        <item android:id="@+id/profile" android:title="My Profile" android:checked="false" android:icon="@drawable/ic_person_black_24dp"/>
     <item android:id="@+id/signOut" android:title="SignOut" android:checked="false" android:icon="@drawable/ic_input_black_24dp"/>
     </group>
 </menu>

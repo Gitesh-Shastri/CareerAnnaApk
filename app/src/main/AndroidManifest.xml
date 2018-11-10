@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -42,21 +42,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SignUp"
+            android:name=".user.SignUp"
             android:label="Sign In" />
         <activity
-            android:name=".MyProfile"
+            android:name=".user.MyProfile"
             android:label="My Profile" />
         <activity
             android:name=".MyCourses"
             android:label="MyCourses" />
         <activity
-            android:name=".Register"
+            android:name=".user.Register"
             android:label="Create An Account" />
         <activity android:name=".ExploreCourses" />
         <activity android:name=".CategoriesSection" />
-        <activity android:name=".ParticularCourse"></activity>
-        <activity android:name=".ExploreNotSIActivity"/>
+        <activity android:name=".ParticularCourse" />
+        <activity android:name=".user.ExploreNotSIActivity" />
+        <activity android:name=".Pdf" />
+        <activity android:name=".ParticularArticleActivity"
+            android:label="Article" />
     </application>
 
 </manifest>

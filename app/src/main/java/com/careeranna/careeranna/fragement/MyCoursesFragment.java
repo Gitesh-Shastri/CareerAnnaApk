@@ -13,10 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.careeranna.careeranna.CategoriesSection;
 import com.careeranna.careeranna.ParticularCourse;
 import com.careeranna.careeranna.R;
-import com.careeranna.careeranna.helper.RecyclerViewAdapter;
 import com.careeranna.careeranna.helper.RecyclerViewCoursesAdapter;
 
 import java.util.ArrayList;
@@ -49,7 +47,7 @@ public class MyCoursesFragment extends Fragment implements RecyclerViewCoursesAd
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_my_courses2, container, false);
+        View view = inflater.inflate(R.layout.fragment_my_course, container, false);
         names = new ArrayList<>();
         urls = new ArrayList<>();
         imageView = view.findViewById(R.id.categoryImageC);

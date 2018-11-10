@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.MediaController;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.careeranna.careeranna.R;
@@ -23,7 +24,7 @@ import java.util.List;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
-public class TutorialFragment extends Fragment {
+public class TutorialFragment extends Fragment implements ExpandableList_Adapter.OnItemClickListener{
 
     VideoView videoView;
     ArrayList<String> names;
@@ -117,8 +118,12 @@ public class TutorialFragment extends Fragment {
 
         listAdapter = new ExpandableList_Adapter(getApplicationContext(), mUnits);
         listView.setAdapter(listAdapter);
-
+        listAdapter.setOnItemClicklistener(this);
         return view;
     }
 
+    @Override
+    public void onItemClick1(int position, int position2) {
+        Toast.makeText(getApplicationContext(), "Parent : " + position + " Child : " + position2, Toast.LENGTH_SHORT).show();
+    }
 }

@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -13,33 +12,22 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.careeranna.careeranna.user.MyProfile;
 import com.careeranna.careeranna.adapter.ViewPagerAdapter;
 import com.careeranna.careeranna.data.Banner;
+import com.careeranna.careeranna.fragement.ArticlesFragment;
 import com.careeranna.careeranna.fragement.ExploreFragement;
 import com.careeranna.careeranna.fragement.MyCoursesFragment;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -48,18 +36,28 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MyCourses extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
+
     private ActionBarDrawerToggle mToggle;
+
     LinearLayout linearLayout;
+
     CircleImageView imageView;
     TextView username;
+
     FirebaseAuth mAuth;
+
     String mUsername, profile_pic_url, mEmail;
+
     ExploreFragement myExplorerFragement;
     MyCoursesFragment myCoursesFragement;
+    ArticlesFragment myArticleFragment;
+
     FragmentManager fragmentManager;
-    Button myCourses,myExplorer;
+
+    Button myCourses;
 
     ArrayList<Banner> mBanners;
+
     private ArrayList<String> names;
     private ArrayList<String> urls;
 
@@ -69,11 +67,13 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
             "https://www.digitalvidya.com/wp-content/uploads/2016/02/Master_Digital_marketng-1170x630.jpg"
     };
 
-    private int currentPage;
     int page = 0;
+
     ViewPager viewPager;
+
     ViewPagerAdapter viewPagerAdapter;
 
+    private int currentPage;
     private Handler handler;
     private int delay = 5000;
     Runnable runnable;
@@ -107,6 +107,8 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
         // Initalize Fragements For main container
         myCoursesFragement = new MyCoursesFragment();
         myExplorerFragement = new ExploreFragement();
+        myArticleFragment = new ArticlesFragment();
+
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.main_content, myCoursesFragement).commit();
 
@@ -166,6 +168,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
 
 
     private void addDots(int i){
+
         linearLayout.removeAllViews();
         TextView[] dots = new TextView[viewPagerAdapter.getCount()];
 
@@ -177,14 +180,15 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
 
             linearLayout.addView(dots[x]);
         }
+
         dots[i].setTextColor(getResources().getColor(R.color.intro_dot_light));
     }
 
 
     ViewPager.OnPageChangeListener bannerListener = new ViewPager.OnPageChangeListener() {
+
         @Override
         public void onPageScrolled(int i, float v, int i1) {
-
         }
 
         @Override
@@ -195,14 +199,15 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
 
         @Override
         public void onPageScrollStateChanged(int i) {
-
         }
     };
 
     public void setNavigationView() {
+
         // Initialize Views for navigation
         TextView username, useremail;
         CircleImageView profile;
+
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerView = navigationView.getHeaderView(0);
@@ -224,22 +229,26 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
         if(mToggle.onOptionsItemSelected(item)) {
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onResume() {
+
         super.onResume();
         handler.postDelayed(runnable, delay);
     }
 
     @Override
     protected void onPause() {
+
         super.onPause();
         handler.removeCallbacks(runnable);
     }
 
     public void signOut(View view) {
+
         mAuth.signOut();
         LoginManager.getInstance().logOut();
         startActivity(new Intent(this, MainActivity.class));
@@ -248,24 +257,39 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
         int id = menuItem.getItemId();
 
         if(id == R.id.signOut) {
+
             mAuth.signOut();
             LoginManager.getInstance().logOut();
             startActivity(new Intent(this, MainActivity.class));
             finish();
+
         } else if(id == R.id.myCourses) {
+
             fragmentManager.beginTransaction().replace(R.id.main_content, myCoursesFragement).commit();
             navigationView.setCheckedItem(R.id.myCourses);
             getSupportActionBar().setTitle("My Courses");
+
         } else if(id == R.id.explore) {
+
             fragmentManager.beginTransaction().replace(R.id.main_content, myExplorerFragement).commit();
             navigationView.setCheckedItem(R.id.explore);
             getSupportActionBar().setTitle("Explorer");
-        } else if(id == R.id.profile) {
+
+        } else if(id == R.id.article) {
+
+            fragmentManager.beginTransaction().replace(R.id.main_content, myArticleFragment).commit();
+            navigationView.setCheckedItem(R.id.article);
+            getSupportActionBar().setTitle("Articles");
+
+        }else if(id == R.id.profile) {
+
             startActivity(new Intent(this, MyProfile.class));
         }
+
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }

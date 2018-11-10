@@ -1,6 +1,7 @@
 package com.careeranna.careeranna.fragement;
 
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
+import com.careeranna.careeranna.Pdf;
 import com.careeranna.careeranna.R;
 import com.careeranna.careeranna.adapter.ExpandableList_Adapter;
 import com.careeranna.careeranna.data.Topic;
@@ -31,7 +33,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NotesFragment extends Fragment {
+public class NotesFragment extends Fragment implements ExpandableList_Adapter.OnItemClickListener{
 
     ExpandableListView listView;
     ExpandableList_Adapter listAdapter;
@@ -115,8 +117,12 @@ public class NotesFragment extends Fragment {
 
         listAdapter = new ExpandableList_Adapter(getApplicationContext(), mUnits);
         listView.setAdapter(listAdapter);
-
+        listAdapter.setOnItemClicklistener(this);
         return view;
     }
 
+    @Override
+    public void onItemClick1(int position, int position2) {
+        startActivity(new Intent(getApplicationContext(), Pdf.class));
+    }
 }
