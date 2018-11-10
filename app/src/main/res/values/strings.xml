@@ -22,6 +22,9 @@
     <string name="terms">By signing up you agree to our <u>Terms and Conditions </u>.</string>
     <string name="create"><u>Create an account</u>.</string>
     <string name="signup">Create an account? <u>Sign Up</u>.</string>
+    <string name="tnc">Terms and Conditions</string>
+    <string name="cert_date">Date of completion</string>
+    <string name="cert_download">Download Certificate</string>
 
     <string name="intro_slide1_title">Maximize your potential</string>
     <string name="intro_slide1_desc">Score high in competitive exams with us</string>
@@ -30,7 +33,7 @@
     <string name="intro_slide3_title">Get hired by dream companies</string>
     <string name="intro_slide3_desc">Stand out from all the applicants</string>
 
-
+    <string name="signout">Sign out</string>
     <string name="signin">Sign In</string>
     <string name="free_vid">Free Videos</string>
     <string name="trending_vid">Trending Videos</string>
