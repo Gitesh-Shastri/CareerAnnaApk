@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".user.MyProfile">
 
+
     <ImageView
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
