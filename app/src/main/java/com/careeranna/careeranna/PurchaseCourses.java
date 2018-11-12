@@ -17,7 +17,7 @@ import android.widget.VideoView;
 
 import com.careeranna.careeranna.data.Course;
 
-public class ExploreCourses extends AppCompatActivity {
+public class PurchaseCourses extends AppCompatActivity {
 
     TextView price,desc;
 

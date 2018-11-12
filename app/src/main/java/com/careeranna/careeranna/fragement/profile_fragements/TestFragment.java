@@ -1,4 +1,4 @@
-package com.careeranna.careeranna.fragement;
+package com.careeranna.careeranna.fragement.profile_fragements;
 
 import android.content.Context;
 import android.content.Intent;
@@ -87,7 +87,5 @@ public class TestFragment extends Fragment {
 
         recyclerViewTopAdapter = new RecyclerViewTopAdapter(courses, getApplicationContext());
         recyclerViewCourses.setAdapter(recyclerViewTopAdapter);
-
-
     }
 }

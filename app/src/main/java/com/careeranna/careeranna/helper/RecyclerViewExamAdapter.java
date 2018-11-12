@@ -11,50 +11,52 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.careeranna.careeranna.R;
-import com.careeranna.careeranna.data.Course;
+import com.careeranna.careeranna.data.ExamPrep;
 
 import java.util.ArrayList;
 
-public class RecyclerViewTopAdapter extends RecyclerView.Adapter<RecyclerViewTopAdapter.ViewHolder>{
+public class RecyclerViewExamAdapter extends RecyclerView.Adapter<RecyclerViewExamAdapter.ViewHolder>{
 
-    private ArrayList<Course> courses;
+    private ArrayList<ExamPrep> mExamPreps;
     private Context mContext;
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void onItemClickExamp(int position);
     }
 
     public void setOnItemClicklistener(OnItemClickListener listener) {
         mListener = listener;
     }
 
-    public RecyclerViewTopAdapter(ArrayList<Course> courses, Context mContext) {
+    public RecyclerViewExamAdapter(ArrayList<ExamPrep> mExamPreps, Context mContext) {
+        this.mExamPreps = mExamPreps;
         this.mContext = mContext;
-        this.courses = courses;
     }
+
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_category, viewGroup, false);
-        return new ViewHolder(view);
+        return new RecyclerViewExamAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder,final int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         Glide.with(mContext)
-                .load(courses.get(i).getImageUrl())
+                .load(mExamPreps.get(i).getImageUrl())
                 .into(viewHolder.imageView);
-        viewHolder.textView.setText(courses.get(i).getName());
+        viewHolder.textView.setText(mExamPreps.get(i).getName());
     }
 
     @Override
     public int getItemCount() {
-        return courses.size();
+        return mExamPreps.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+
         ImageView imageView;
         TextView textView;
 
@@ -65,15 +67,14 @@ public class RecyclerViewTopAdapter extends RecyclerView.Adapter<RecyclerViewTop
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(mListener != null) {
+                    if (mListener != null) {
                         int position = getAdapterPosition();
-                        if(position != RecyclerView.NO_POSITION) {
-                            mListener.onItemClick(position);
+                        if (position != RecyclerView.NO_POSITION) {
+                            mListener.onItemClickExamp(position);
                         }
                     }
                 }
             });
         }
     }
-
 }

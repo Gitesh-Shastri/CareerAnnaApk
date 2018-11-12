@@ -3,19 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragement.dashboard_fragements.MyCoursesFragment">
+    tools:context=".fragement.dashboard_fragements.ExamPrepFragment">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/mycourses"
+            android:text="My Exam Prep Courses"
             android:layout_marginTop="10dp"
-            android:id="@+id/all_courses"
+            android:id="@+id/examp_courses"
             android:textColor="@color/colorPrimary"
-            android:layout_marginLeft="10dp"
             style="@style/Base.TextAppearance.AppCompat.Medium"
             />
 
@@ -23,10 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_below="@+id/all_courses"
-            android:layout_marginRight="10dp"
-            android:id="@+id/my_courses">
+            android:layout_below="@+id/examp_courses"
+            android:id="@+id/examprep_courses">
         </android.support.v7.widget.RecyclerView>
 
     </RelativeLayout>

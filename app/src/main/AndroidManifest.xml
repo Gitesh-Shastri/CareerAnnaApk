@@ -53,13 +53,19 @@
         <activity
             android:name=".user.Register"
             android:label="Create An Account" />
-        <activity android:name=".ExploreCourses" />
+        <activity android:name=".PurchaseCourses" />
         <activity android:name=".CategoriesSection" />
         <activity android:name=".ParticularCourse" />
         <activity android:name=".user.ExploreNotSIActivity" />
         <activity android:name=".Pdf" />
-        <activity android:name=".ParticularArticleActivity"
+        <activity
+            android:name=".ParticularArticleActivity"
             android:label="Article" />
+        <activity
+            android:name=".ExamPrepActivity"
+            android:label="Examp Prep" />
+        <activity android:name=".MyExamPrepActivity"
+            android:label="My Exam Prep" />
     </application>
 
 </manifest>

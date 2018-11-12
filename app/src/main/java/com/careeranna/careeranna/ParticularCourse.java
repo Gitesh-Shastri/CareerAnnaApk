@@ -11,14 +11,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.careeranna.careeranna.fragement.CertificateFragment;
-import com.careeranna.careeranna.fragement.NotesFragment;
-import com.careeranna.careeranna.fragement.TestFragment;
-import com.careeranna.careeranna.fragement.TutorialFragment;
+import com.careeranna.careeranna.fragement.profile_fragements.CertificateFragment;
+import com.careeranna.careeranna.fragement.profile_fragements.NotesFragment;
+import com.careeranna.careeranna.fragement.profile_fragements.TestFragment;
+import com.careeranna.careeranna.fragement.profile_fragements.TutorialFragment;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -149,6 +148,10 @@ public class ParticularCourse extends AppCompatActivity implements NavigationVie
             fragmentManager.beginTransaction().replace(R.id.main_content,certificateFragment).commit();
             getSupportActionBar().setTitle("Certificate");
 
+        } else if(id == R.id.goBackHome) {
+
+            startActivity(new Intent(ParticularCourse.this, MyCourses.class));
+            finish();
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);

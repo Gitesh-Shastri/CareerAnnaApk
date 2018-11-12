@@ -1,4 +1,4 @@
-package com.careeranna.careeranna.fragement;
+package com.careeranna.careeranna.fragement.profile_fragements;
 
 import android.content.Context;
 import android.net.Uri;

@@ -1,4 +1,4 @@
-package com.careeranna.careeranna.fragement;
+package com.careeranna.careeranna.fragement.dashboard_fragements;
 
 
 import android.content.Intent;
@@ -29,8 +29,6 @@ public class MyCoursesFragment extends Fragment implements RecyclerViewCoursesAd
 
     private ArrayList<String> names;
     private ArrayList<String> urls;
-    ImageView imageView;
-    TextView textView;
 
     private String[] imageUrls = new String[] {
             "https://4.bp.blogspot.com/-qf3t5bKLvUE/WfwT-s2IHmI/AAAAAAAABJE/RTy60uoIDCoVYzaRd4GtxCeXrj1zAwVAQCLcBGAs/s1600/Machine-Learning.png",
@@ -48,23 +46,10 @@ public class MyCoursesFragment extends Fragment implements RecyclerViewCoursesAd
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_course, container, false);
+
         names = new ArrayList<>();
         urls = new ArrayList<>();
-        imageView = view.findViewById(R.id.categoryImageC);
-        textView = view.findViewById(R.id.categoriesTC);
-        Glide.with(getApplicationContext())
-                .load(imageUrls[0])
-                .into(imageView);
-        textView.setText("Machine Learning");
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ParticularCourse.class);
-                intent.putExtra("category_name", imageUrls[0]);
-                intent.putExtra("category_image", textView.getText().toString());
-                getContext().startActivity(intent);
-            }
-        });
+
         urls.add(imageUrls[1]);
         names.add("Python");
         urls.add(imageUrls[2]);
@@ -88,6 +73,7 @@ public class MyCoursesFragment extends Fragment implements RecyclerViewCoursesAd
 
     @Override
     public void onItemClick(int position) {
+
         Intent intent = new Intent(getApplicationContext(), ParticularCourse.class);
         intent.putExtra("category_name", names.get(position));
         intent.putExtra("category_image", urls.get(position));

@@ -1,4 +1,4 @@
-package com.careeranna.careeranna.fragement;
+package com.careeranna.careeranna.fragement.dashboard_fragements;
 
 
 import android.content.Intent;
@@ -11,26 +11,33 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.careeranna.careeranna.CategoriesSection;
-import com.careeranna.careeranna.ExploreCourses;
+import com.careeranna.careeranna.ExamPrepActivity;
+import com.careeranna.careeranna.PurchaseCourses;
 import com.careeranna.careeranna.R;
 import com.careeranna.careeranna.data.Category;
 import com.careeranna.careeranna.data.Course;
+import com.careeranna.careeranna.data.ExamPrep;
 import com.careeranna.careeranna.helper.RecyclerViewAdapter;
+import com.careeranna.careeranna.helper.RecyclerViewExamAdapter;
 import com.careeranna.careeranna.helper.RecyclerViewTopAdapter;
 
 import java.util.ArrayList;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
-public class ExploreFragement extends Fragment implements RecyclerViewTopAdapter.OnItemClickListener,RecyclerViewAdapter.OnItemClickListener {
+public class ExploreFragement extends Fragment implements RecyclerViewTopAdapter.OnItemClickListener,
+        RecyclerViewAdapter.OnItemClickListener,
+        RecyclerViewExamAdapter.OnItemClickListener{
 
     ArrayList<Category> categories;
     ArrayList<Course> courses;
+    ArrayList<ExamPrep> examPreps;
 
-    RecyclerView recyclerViewCourses, recyclerViewCategory;
+    RecyclerView recyclerViewCourses, recyclerViewCategory, recyclerViewExamp;
 
     RecyclerViewAdapter recyclerViewAdapter;
     RecyclerViewTopAdapter recyclerViewTopAdapter;
+    RecyclerViewExamAdapter recyclerViewExamAdapter;
 
     private String[] imageUrls = new String[] {
             "https://4.bp.blogspot.com/-qf3t5bKLvUE/WfwT-s2IHmI/AAAAAAAABJE/RTy60uoIDCoVYzaRd4GtxCeXrj1zAwVAQCLcBGAs/s1600/Machine-Learning.png",
@@ -51,9 +58,11 @@ public class ExploreFragement extends Fragment implements RecyclerViewTopAdapter
 
         recyclerViewCategory = view.findViewById(R.id.categories);
         recyclerViewCourses = view.findViewById(R.id.top_coursesT);
+        recyclerViewExamp = view.findViewById(R.id.exam_prep_rv);
 
         initializeCategory();
         initializeCourse();
+        initializeExamprep();
 
         return view;
     }
@@ -113,14 +122,51 @@ public class ExploreFragement extends Fragment implements RecyclerViewTopAdapter
         recyclerViewCourses.setAdapter(recyclerViewTopAdapter);
 
         recyclerViewTopAdapter.setOnItemClicklistener(this);
-
     }
 
+    private void initializeExamprep() {
+
+
+        String desc = "Organizations of all sizes and Industries, be it a financial institution or a small big data start up, everyone is using Python for their business.\n" +
+                "Python is among the popular data science programming languages not only in Big data companies but also in the tech start up crowd. Around 46% of data scientists use Python.\n" +
+                "Python has overtaken Java as the preferred programming language and is only second to SQL in usage today. \n" +
+                "Python is finding Increased adoption in numerical computations, machine learning and several data science applications.\n" +
+                "Python for data science requires data scientists to learn the usage of regular expressions, work with the scientific libraries and master the data visualization concepts.";
+
+        examPreps = new ArrayList<>();
+
+        examPreps.add(new ExamPrep("1",  "Machine Learning", imageUrls[0], "1", "6999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        examPreps.add(new ExamPrep("2",  "Python", imageUrls[1], "2", "4999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        examPreps.add(new ExamPrep("3",  "Marketing", imageUrls[2], "3", "5999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        examPreps.add(new ExamPrep("4",  "Machine Learning", imageUrls[0], "4", "6999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        examPreps.add(new ExamPrep("5",  "Python", imageUrls[1], "5", "3999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        examPreps.add(new ExamPrep("6",  "Marketing", imageUrls[2], "1", "7999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        examPreps.add(new ExamPrep("7",  "Machine Learning", imageUrls[0], "2", "8999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        examPreps.add(new ExamPrep("8",  "Python", imageUrls[1], "2", "3999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        examPreps.add(new ExamPrep("8",  "Marketing", imageUrls[2], "1", "4999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL,false);
+        recyclerViewExamp.setLayoutManager(linearLayoutManager);
+
+        recyclerViewExamAdapter = new RecyclerViewExamAdapter(examPreps, getApplicationContext());
+        recyclerViewExamp.setAdapter(recyclerViewExamAdapter);
+
+        recyclerViewExamAdapter.setOnItemClicklistener(this);
+    }
 
     @Override
     public void onItemClick(int position) {
 
-        Intent intent = new Intent(getApplicationContext(), ExploreCourses.class);
+        Intent intent = new Intent(getApplicationContext(), PurchaseCourses.class);
         intent.putExtra("Course", courses.get(position));
         getContext().startActivity(intent);
 
@@ -133,5 +179,13 @@ public class ExploreFragement extends Fragment implements RecyclerViewTopAdapter
         intent.putExtra("Category", categories.get(position));
         getContext().startActivity(intent);
 
+    }
+
+    @Override
+    public void onItemClickExamp(int position) {
+
+        Intent intent = new Intent(getApplicationContext(), ExamPrepActivity.class);
+        intent.putExtra("Examp", examPreps.get(position));
+        getContext().startActivity(intent);
     }
 }

@@ -33,28 +33,36 @@
             android:id="@+id/particle_image"
             android:layout_below="@id/particle_name"
             />
-        <TextView
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/particle_author"
-            android:drawableStart="@drawable/ic_person_black_24dp"
-            android:layout_below="@id/particle_image"
-            />
-        <TextView
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/particle_author"
-            android:drawableLeft="@drawable/ic_event_note_black_24dp"
-            android:id="@+id/particle_created"
-            android:layout_marginLeft="10dp"
-            android:layout_below="@id/particle_image"
-            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:id="@+id/layout"
+            android:weightSum="10"
+            android:layout_below="@+id/particle_image"
+            >
+            <TextView
+                android:layout_weight="5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/particle_author"
+                android:drawableStart="@drawable/ic_person_black_24dp"
+                />
+            <com.github.curioustechizen.ago.RelativeTimeTextView
+                android:layout_weight="5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/particle_author"
+                android:drawableLeft="@drawable/ic_event_note_black_24dp"
+                android:id="@+id/particle_created"
+                />
+        </LinearLayout>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/particle_category"
             android:layout_marginTop="10dp"
-            android:layout_below="@id/particle_author"
+            android:layout_below="@id/layout"
             />
         <View
             android:layout_width="match_parent"
@@ -69,55 +77,21 @@
             android:layout_marginTop="10dp"
             android:layout_below="@id/particle_category"
             />
-        <com.github.clans.fab.FloatingActionMenu
+        <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@id/particle_category"
-            app:menu_animationDelayPerItem="55"
-            app:menu_backgroundColor="@android:color/transparent"
-            app:menu_buttonSpacing="0dp"
-            app:menu_colorNormal="#da3c21"
-            app:menu_colorRipple="#99d4d4d4"
-            app:menu_colorPressed="#dc4b3f"
-            app:menu_fab_size="normal"
-            app:menu_icon="@drawable/ic_plus"
-            app:menu_labels_colorNormal="#333"
-            app:menu_labels_colorPressed="#444"
-            app:menu_labels_colorRipple="#66efee"
-            app:menu_labels_ellipsize="none"
-            app:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
-            app:menu_labels_maxLines="-1"
-            android:padding="8dp"
-            app:menu_labels_position="left"
-            app:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
-            app:menu_labels_showShadow="true"
-            app:menu_labels_singleLine="false"
-            app:menu_labels_textColor="#f2f1f1"
-            app:menu_labels_textSize="15sp"
-            app:menu_openDirection="up"
-            app:menu_shadowColor="#66aff198"
-            app:menu_shadowRadius="4dp"
-            app:menu_shadowYOffset="4dp"
-            app:menu_shadowXOffset="1dp"
-            app:menu_showShadow="true">
-            
-            <com.github.clans.fab.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/google_fab"
-                android:src="@drawable/ic_google_plus"
-                android:background="#dc4b3f"
-                />
-
-            <com.github.clans.fab.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/fb_fab"
-                android:src="@drawable/ic_facebook_circular_logo"
-                android:background="@color/colorAccent"
-                />
-
-        </com.github.clans.fab.FloatingActionMenu>
+            android:id="@+id/fab_menu"
+            android:src="@drawable/ic_plus"
+            android:layout_margin="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:backgroundTint="#da3c21"
+            />
+        <include layout="@layout/fab_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            />
     </RelativeLayout>
 </ScrollView>

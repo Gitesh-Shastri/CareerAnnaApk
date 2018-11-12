@@ -12,8 +12,12 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.careeranna.careeranna.R;
 import com.careeranna.careeranna.data.Article;
+import com.careeranna.careeranna.data.ISO8601Parse;
+import com.github.curioustechizen.ago.RelativeTimeTextView;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder> {
 
@@ -44,11 +48,21 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
     @Override
     public void onBindViewHolder(@NonNull ArticleViewHolder articleViewHolder, int i) {
+
+        Date date = null;
+
+        try {
+            date = ISO8601Parse.parse(mArticles.get(i).getCreated_at());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         articleViewHolder.articleTitle.setText(mArticles.get(i).getName());
         articleViewHolder.articleAuthor.setText(mArticles.get(i).getAuthor());
-        articleViewHolder.articleCreated.setText(mArticles.get(i).getCreated_at());
+        articleViewHolder.articleCreated.setReferenceTime(date.getTime());
         articleViewHolder.articleAuthor.setText(mArticles.get(i).getAuthor());
         articleViewHolder.articleContent.setText(mArticles.get(i).getContent());
+        Glide.with(mContext).load(mArticles.get(i).getImage_url()).into(articleViewHolder.articleImage);
     }
 
     @Override
@@ -59,11 +73,14 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
     public class ArticleViewHolder extends RecyclerView.ViewHolder {
 
-        TextView articleTitle, articleAuthor, articleCreated, articleContent;
+        TextView articleTitle, articleAuthor, articleContent;
+        RelativeTimeTextView articleCreated;
+        ImageView articleImage;
 
         public ArticleViewHolder(View itemView) {
             super(itemView);
 
+            articleImage = itemView.findViewById(R.id.article_image);
             articleTitle = itemView.findViewById(R.id.article_name);
             articleAuthor = itemView.findViewById(R.id.article_author);
             articleCreated = itemView.findViewById(R.id.article_created);

@@ -1,4 +1,4 @@
-package com.careeranna.careeranna.fragement;
+package com.careeranna.careeranna.fragement.dashboard_fragements;
 
 
 import android.content.Intent;
@@ -49,8 +49,8 @@ public class ArticlesFragment extends Fragment implements ArticleAdapter.OnItemC
 
         mArticles = new ArrayList<>();
 
-        Article article = new Article("1", "IIM Banglore Admission", "https://cdn-images-1.medium.com/max/2000/1*SSutxOFoBUaUmgeNWAPeBA.jpeg", "Nishta Sood", "CAT", "IIM banglore has a selection for admission of the students in their Admission Programme", "November 6, 2018");
-        Article article1 = new Article("2", "IIM Delhi Admission", "https://cdn-images-1.medium.com/max/2000/1*SSutxOFoBUaUmgeNWAPeBA.jpeg", "Gitesh Shastri", "CAT", "IIM Delhi has a selection for admission of the students in their Admission Programme", "November 7, 2018");
+        Article article = new Article("1", "IIM Banglore Admission", "https://cdn-images-1.medium.com/max/2000/1*SSutxOFoBUaUmgeNWAPeBA.jpeg", "Nishta Sood", "CAT", "IIM banglore has a selection for admission of the students in their Admission Programme", "2018-11-11T06:30:59Z");
+        Article article1 = new Article("2", "IIM Delhi Admission", "https://cdn-images-1.medium.com/max/2000/1*SSutxOFoBUaUmgeNWAPeBA.jpeg", "Gitesh Shastri", "CAT", "IIM Delhi has a selection for admission of the students in their Admission Programme", "2018-11-12T06:30:59Z");
 
         mArticles.add(article);
         mArticles.add(article1);

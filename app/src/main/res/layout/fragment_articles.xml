@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
-    tools:context=".fragement.ArticlesFragment">
+    tools:context=".fragement.dashboard_fragements.ArticlesFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

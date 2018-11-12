@@ -1,4 +1,4 @@
-package com.careeranna.careeranna;
+package com.careeranna.careeranna.user;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.careeranna.careeranna.MainActivity;
+import com.careeranna.careeranna.R;
 import com.careeranna.careeranna.adapter.MyCerti_Adapter;
 import com.careeranna.careeranna.adapter.MyCourses_Adapter;
 import com.careeranna.careeranna.dummy_data.ProfileCerti;
@@ -42,7 +44,7 @@ public class MyProfile extends AppCompatActivity implements View.OnClickListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_profile_2);
+        setContentView(R.layout.activity_my_profile);
 
        iv_profilePic = findViewById(R.id.iv_profileImage);
        tv_profileName = findViewById(R.id.tv_profileName);

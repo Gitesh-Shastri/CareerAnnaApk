@@ -5,15 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.TextView;
 
 import com.careeranna.careeranna.data.Category;
 import com.careeranna.careeranna.data.Course;
 import com.careeranna.careeranna.helper.RecyclerViewCoursesAdapter;
 
 import java.util.ArrayList;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class CategoriesSection extends AppCompatActivity implements RecyclerViewCoursesAdapter.OnItemClickListener {
 
@@ -64,7 +61,7 @@ public class CategoriesSection extends AppCompatActivity implements RecyclerView
 
     @Override
     public void onItemClick(int position) {
-        Intent intent = new Intent(getApplicationContext(), ExploreCourses.class);
+        Intent intent = new Intent(getApplicationContext(), PurchaseCourses.class);
         intent.putExtra("Course", courses.get(position));
         startActivity(intent);
     }
