@@ -25,7 +25,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
     private Context mContext;
     private OnItemClickListener mListener;
 
-
     public interface OnItemClickListener {
         void onItemClick1(int position);
     }
