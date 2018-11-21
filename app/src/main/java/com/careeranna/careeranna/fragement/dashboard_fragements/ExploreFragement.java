@@ -49,6 +49,15 @@ public class ExploreFragement extends Fragment implements RecyclerViewTopAdapter
         // Required empty public constructor
     }
 
+    public void setCategories(ArrayList<Category> mcategories, ArrayList<Course> mCourses, ArrayList<ExamPrep> mExam) {
+
+        categories = mcategories;
+        courses = mCourses;
+        examPreps = mExam;
+        if(categories.size() > 0) {
+            initializeCategory();
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,14 +78,6 @@ public class ExploreFragement extends Fragment implements RecyclerViewTopAdapter
 
     private void initializeCategory() {
 
-        categories = new ArrayList<>();
-        categories.add(new Category("1", "Machine Learning", imageUrls[0]));
-        categories.add(new Category("2", "Python", imageUrls[1]));
-        categories.add(new Category("3", "Marketing", imageUrls[2]));
-        categories.add(new Category("4", "Machine Learning", imageUrls[0]));
-        categories.add(new Category("5", "Python", imageUrls[1]));
-        categories.add(new Category("6", "Maeketing", imageUrls[2]));
-
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL,false);
         recyclerViewCategory.setLayoutManager(linearLayoutManager1);
 
@@ -89,32 +90,6 @@ public class ExploreFragement extends Fragment implements RecyclerViewTopAdapter
 
     private void initializeCourse() {
 
-        String desc = "Organizations of all sizes and Industries, be it a financial institution or a small big data start up, everyone is using Python for their business.\n" +
-                "Python is among the popular data science programming languages not only in Big data companies but also in the tech start up crowd. Around 46% of data scientists use Python.\n" +
-                "Python has overtaken Java as the preferred programming language and is only second to SQL in usage today. \n" +
-                "Python is finding Increased adoption in numerical computations, machine learning and several data science applications.\n" +
-                "Python for data science requires data scientists to learn the usage of regular expressions, work with the scientific libraries and master the data visualization concepts.";
-
-        courses = new ArrayList<>();
-        courses.add(new Course("1",  "Machine Learning", imageUrls[0], "1", "6999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        courses.add(new Course("2",  "Python", imageUrls[1], "2", "4999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        courses.add(new Course("3",  "Marketing", imageUrls[2], "3", "5999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        courses.add(new Course("4",  "Machine Learning", imageUrls[0], "4", "6999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        courses.add(new Course("5",  "Python", imageUrls[1], "5", "3999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        courses.add(new Course("6",  "Marketing", imageUrls[2], "1", "7999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        courses.add(new Course("7",  "Machine Learning", imageUrls[0], "2", "8999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        courses.add(new Course("8",  "Python", imageUrls[1], "2", "3999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        courses.add(new Course("8",  "Marketing", imageUrls[2], "1", "4999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL,false);
         recyclerViewCourses.setLayoutManager(linearLayoutManager);
 
@@ -125,34 +100,6 @@ public class ExploreFragement extends Fragment implements RecyclerViewTopAdapter
     }
 
     private void initializeExamprep() {
-
-
-        String desc = "Organizations of all sizes and Industries, be it a financial institution or a small big data start up, everyone is using Python for their business.\n" +
-                "Python is among the popular data science programming languages not only in Big data companies but also in the tech start up crowd. Around 46% of data scientists use Python.\n" +
-                "Python has overtaken Java as the preferred programming language and is only second to SQL in usage today. \n" +
-                "Python is finding Increased adoption in numerical computations, machine learning and several data science applications.\n" +
-                "Python for data science requires data scientists to learn the usage of regular expressions, work with the scientific libraries and master the data visualization concepts.";
-
-        examPreps = new ArrayList<>();
-
-        examPreps.add(new ExamPrep("1",  "Machine Learning", imageUrls[0], "1", "6999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        examPreps.add(new ExamPrep("2",  "Python", imageUrls[1], "2", "4999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        examPreps.add(new ExamPrep("3",  "Marketing", imageUrls[2], "3", "5999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        examPreps.add(new ExamPrep("4",  "Machine Learning", imageUrls[0], "4", "6999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        examPreps.add(new ExamPrep("5",  "Python", imageUrls[1], "5", "3999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        examPreps.add(new ExamPrep("6",  "Marketing", imageUrls[2], "1", "7999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        examPreps.add(new ExamPrep("7",  "Machine Learning", imageUrls[0], "2", "8999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        examPreps.add(new ExamPrep("8",  "Python", imageUrls[1], "2", "3999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        examPreps.add(new ExamPrep("8",  "Marketing", imageUrls[2], "1", "4999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL,false);
         recyclerViewExamp.setLayoutManager(linearLayoutManager);

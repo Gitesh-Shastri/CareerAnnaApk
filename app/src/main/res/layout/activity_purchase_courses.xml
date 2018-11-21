@@ -104,6 +104,7 @@
         android:layout_below="@id/demoView"
         android:layout_marginLeft="20dp"
         android:text="Purchase  "
+        android:visibility="gone"
         android:drawableRight="@drawable/ic_add_shopping_cart_black_24dp"
         android:background="@color/intro_button"
         android:textColor="@color/white"
@@ -125,20 +126,14 @@
         android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
         style="@style/Base.TextAppearance.AppCompat.Medium"
         android:layout_marginLeft="20dp" />
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:id="@+id/scroll"
-        android:layout_below="@+id/descText"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
-        <TextView
+        <WebView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/desc"
             android:id="@+id/descTextDetails"
-            style="@style/Base.TextAppearance.AppCompat.Small"
+            android:layout_below="@id/descText"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
             />
-    </ScrollView>
 </RelativeLayout>

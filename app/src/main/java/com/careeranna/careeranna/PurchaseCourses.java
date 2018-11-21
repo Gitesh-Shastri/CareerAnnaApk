@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.TextView;
@@ -20,6 +22,8 @@ import com.careeranna.careeranna.data.Course;
 public class PurchaseCourses extends AppCompatActivity {
 
     TextView price,desc;
+
+    WebView description;
 
     Button purchaseCourse;
 
@@ -33,6 +37,8 @@ public class PurchaseCourses extends AppCompatActivity {
 
     AlertDialog alertDialog;
 
+    WebSettings webSettings;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,11 +46,16 @@ public class PurchaseCourses extends AppCompatActivity {
 
         price = findViewById(R.id.dollar);
         videoView =  findViewById(R.id.playerView);
-        desc = findViewById(R.id.descTextDetails);
+        description = findViewById(R.id.descTextDetails);
         purchaseCourse = findViewById(R.id.purchase);
 
         Intent intent = getIntent();
         course = (Course) intent.getSerializableExtra("Course");
+
+        webSettings = description.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+
+        description.loadData(course.getDesc(),"text/html", null);
 
         mediaController = new MediaController(this);
         videoView.setMediaController(mediaController);
@@ -108,9 +119,7 @@ public class PurchaseCourses extends AppCompatActivity {
     private void setCourse() {
 
         Uri uri = Uri.parse(course.getDemo_url());
-        videoView.setVideoPath(uri.toString());
-
-        desc.setText(course.getDesc());
+        videoView.setVideoURI(uri);
 
         price.setText(course.getPrice());
 
@@ -120,10 +129,10 @@ public class PurchaseCourses extends AppCompatActivity {
 
     public void hideDesc(View view) {
 
-        if(desc.getVisibility() == View.INVISIBLE) {
-            desc.setVisibility(View.VISIBLE);
+        if(description.getVisibility() == View.INVISIBLE) {
+            description.setVisibility(View.VISIBLE);
         } else {
-            desc.setVisibility(View.INVISIBLE);
+            description.setVisibility(View.INVISIBLE);
         }
 
     }

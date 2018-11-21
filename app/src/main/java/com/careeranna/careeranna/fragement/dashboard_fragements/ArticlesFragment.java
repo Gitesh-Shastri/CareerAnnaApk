@@ -3,18 +3,33 @@ package com.careeranna.careeranna.fragement.dashboard_fragements;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.careeranna.careeranna.ParticularArticleActivity;
 import com.careeranna.careeranna.R;
 import com.careeranna.careeranna.adapter.ArticleAdapter;
 import com.careeranna.careeranna.data.Article;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -27,10 +42,30 @@ public class ArticlesFragment extends Fragment implements ArticleAdapter.OnItemC
     RecyclerView recyclerView;
     ArticleAdapter articleAdapter;
 
+    Boolean isScrolling = false;
+
+    ProgressBar progressBar;
+
+    int currentItems, TotalItems, scrolledOut;
+
+    LinearLayoutManager linearLayoutManager;
+
+    int page = 1;
+
+    Boolean isLoading = false;
+
+    ArrayList<Article> articles;
+;
+
     public ArticlesFragment() {
         // Required empty public constructor
     }
 
+    public void setmArticles(ArrayList<Article> articles) {
+
+        mArticles.addAll(articles);
+        populateArticles();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,30 +73,97 @@ public class ArticlesFragment extends Fragment implements ArticleAdapter.OnItemC
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_articles, container, false);
 
+        progressBar = view.findViewById(R.id.progress_bar_rv);
+
         recyclerView = view.findViewById(R.id.article_rv);
 
-        populateArticles();
+        mArticles = new ArrayList<>();
+
 
         return view;
     }
 
     public void populateArticles() {
 
-        mArticles = new ArrayList<>();
-
-        Article article = new Article("1", "IIM Banglore Admission", "https://cdn-images-1.medium.com/max/2000/1*SSutxOFoBUaUmgeNWAPeBA.jpeg", "Nishta Sood", "CAT", "IIM banglore has a selection for admission of the students in their Admission Programme", "2018-11-11T06:30:59Z");
-        Article article1 = new Article("2", "IIM Delhi Admission", "https://cdn-images-1.medium.com/max/2000/1*SSutxOFoBUaUmgeNWAPeBA.jpeg", "Gitesh Shastri", "CAT", "IIM Delhi has a selection for admission of the students in their Admission Programme", "2018-11-12T06:30:59Z");
-
-        mArticles.add(article);
-        mArticles.add(article1);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
         articleAdapter = new ArticleAdapter(mArticles, getApplicationContext());
         recyclerView.setAdapter(articleAdapter);
 
         articleAdapter.setOnItemClicklistener(this);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    isScrolling = true;
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                currentItems = linearLayoutManager.getChildCount();
+                TotalItems = linearLayoutManager.getItemCount();
+                scrolledOut = linearLayoutManager.findFirstVisibleItemPosition();
+                if(!isLoading && isScrolling && (currentItems + scrolledOut == TotalItems )) {
+
+                    isLoading = true;
+                    progressBar.setVisibility(View.VISIBLE);
+                    Snackbar.make(getActivity().findViewById(R.id.main_content), "Loading More Article", Snackbar.LENGTH_SHORT).show();
+                    final String desc = "Organizations of all sizes and Industries, be it a financial institution or a small big data start up, everyone is using Python for their business.\n" +
+                            "Python is among the popular data science programming languages not only in Big data companies but also in the tech start up crowd. Around 46% of data scientists use Python.\n" +
+                            "Python has overtaken Java as the preferred programming language and is only second to SQL in usage today. \n" +
+                            "Python is finding Increased adoption in numerical computations, machine learning and several data science applications.\n" +
+                            "Python for data science requires data scientists to learn the usage of regular expressions, work with the scientific libraries and master the data visualization concepts.";
+
+                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                    String url = "http://careeranna.in/articles.php?pageno="+page;
+                    page += 1;
+                    articles = new ArrayList<>();
+                    StringRequest stringRequest  = new StringRequest(Request.Method.GET, url,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    try {
+                                        Log.i("url_response", response.toString());
+                                        JSONArray ArticlesArray = new JSONArray(response.toString());
+                                        for(int i=0;i<ArticlesArray.length();i++) {
+                                            JSONObject Articles = ArticlesArray.getJSONObject(i);
+                                            articles.add(new Article(Articles.getString("ID"),
+                                                    Articles.getString("post_title"),
+                                                    "",
+                                                    Articles.getString("display_name"),
+                                                    "CAT",
+                                                    desc,
+                                                    Articles.getString("post_date")));
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    isLoading = false;
+                                    articleAdapter.addArticles(articles);
+                                    articleAdapter.notifyDataSetChanged();
+                                progressBar.setVisibility(View.INVISIBLE);
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                    isLoading = false;
+                                }
+                            }
+                    );
+
+                    requestQueue.add(stringRequest);
+
+                }
+            }
+        });
     }
 
     @Override
@@ -69,6 +171,5 @@ public class ArticlesFragment extends Fragment implements ArticleAdapter.OnItemC
         Intent intent = new Intent(getApplicationContext(), ParticularArticleActivity.class);
         intent.putExtra("article", mArticles.get(position));
         getContext().startActivity(intent);
-        Toast.makeText(getApplicationContext(), "Article Title : " + mArticles.get(position).getName(), Toast.LENGTH_SHORT).show();
     }
 }

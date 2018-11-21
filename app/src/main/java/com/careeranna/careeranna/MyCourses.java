@@ -29,7 +29,11 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 
 import com.careeranna.careeranna.adapter.ViewPagerAdapter;
+import com.careeranna.careeranna.data.Article;
 import com.careeranna.careeranna.data.Banner;
+import com.careeranna.careeranna.data.Category;
+import com.careeranna.careeranna.data.Course;
+import com.careeranna.careeranna.data.ExamPrep;
 import com.careeranna.careeranna.fragement.dashboard_fragements.ExamPrepFragment;
 import com.careeranna.careeranna.user.MyProfile;
 import com.careeranna.careeranna.fragement.dashboard_fragements.ArticlesFragment;
@@ -88,7 +92,19 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
     private int delay = 5000;
     Runnable runnable;
 
+    ArrayList<Category> categories;
+    ArrayList<Course> courses;
+    ArrayList<ExamPrep> examPreps;
+    ArrayList<Article> mArticles;
+
+    private String[] imageUrls = new String[] {
+            "https://4.bp.blogspot.com/-qf3t5bKLvUE/WfwT-s2IHmI/AAAAAAAABJE/RTy60uoIDCoVYzaRd4GtxCeXrj1zAwVAQCLcBGAs/s1600/Machine-Learning.png",
+            "https://cdn-images-1.medium.com/max/2000/1*SSutxOFoBUaUmgeNWAPeBA.jpeg",
+            "https://www.digitalvidya.com/wp-content/uploads/2016/02/Master_Digital_marketng-1170x630.jpg"
+    };
+
     NavigationView navigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -317,7 +333,13 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
             fragmentManager.beginTransaction().replace(R.id.main_content, myExamPrepFragment).commit();
             navigationView.setCheckedItem(R.id.examprep);
             getSupportActionBar().setTitle("Examp Prep");
+
         }else if(id == R.id.explore) {
+
+            initCategory();
+            initCourse();
+            initExam();
+            myExplorerFragement.setCategories(categories, courses, examPreps);
 
             fragmentManager.beginTransaction().replace(R.id.main_content, myExplorerFragement).commit();
             navigationView.setCheckedItem(R.id.explore);
@@ -325,6 +347,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
 
         } else if(id == R.id.article) {
 
+            initArticle();
             fragmentManager.beginTransaction().replace(R.id.main_content, myArticleFragment).commit();
             navigationView.setCheckedItem(R.id.article);
             getSupportActionBar().setTitle("Articles");
@@ -336,5 +359,170 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void initArticle() {
+
+        mArticles = new ArrayList<>();
+
+        progressDialog = new ProgressDialog(this);
+
+        progressDialog.setMessage("Loading Articles Please Wait ... ");
+        progressDialog.show();
+
+        progressDialog.setCancelable(false);
+
+
+        final String desc = "Organizations of all sizes and Industries, be it a financial institution or a small big data start up, everyone is using Python for their business.\n" +
+                "Python is among the popular data science programming languages not only in Big data companies but also in the tech start up crowd. Around 46% of data scientists use Python.\n" +
+                "Python has overtaken Java as the preferred programming language and is only second to SQL in usage today. \n" +
+                "Python is finding Increased adoption in numerical computations, machine learning and several data science applications.\n" +
+                "Python for data science requires data scientists to learn the usage of regular expressions, work with the scientific libraries and master the data visualization concepts.";
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        String url = "http://careeranna.in/articles.php";
+        StringRequest stringRequest  = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("url_response", response.toString());
+                            JSONArray ArticlesArray = new JSONArray(response.toString());
+                            for(int i=0;i<ArticlesArray.length();i++) {
+                                JSONObject Articles = ArticlesArray.getJSONObject(i);
+                                mArticles.add(new Article(Articles.getString("ID"),
+                                        Articles.getString("post_title"),
+                                        "",
+                                        Articles.getString("display_name"),
+                                        "CAT",
+                                        desc,
+                                        Articles.getString("post_date")));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        progressDialog.dismiss();
+                        myArticleFragment.setmArticles(mArticles);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.dismiss();
+                    }
+                }
+        );
+
+        requestQueue.add(stringRequest);
+
+
+    }
+
+    public void initCourse() {
+
+        String desc = "Organizations of all sizes and Industries, be it a financial institution or a small big data start up, everyone is using Python for their business.\n" +
+                "Python is among the popular data science programming languages not only in Big data companies but also in the tech start up crowd. Around 46% of data scientists use Python.\n" +
+                "Python has overtaken Java as the preferred programming language and is only second to SQL in usage today. \n" +
+                "Python is finding Increased adoption in numerical computations, machine learning and several data science applications.\n" +
+                "Python for data science requires data scientists to learn the usage of regular expressions, work with the scientific libraries and master the data visualization concepts.";
+
+        courses = new ArrayList<>();
+        courses.add(new Course("1",  "Machine Learning", imageUrls[0], "1", "6999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        courses.add(new Course("2",  "Python", imageUrls[1], "2", "4999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        courses.add(new Course("3",  "Marketing", imageUrls[2], "3", "5999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        courses.add(new Course("4",  "Machine Learning", imageUrls[0], "4", "6999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        courses.add(new Course("5",  "Python", imageUrls[1], "5", "3999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        courses.add(new Course("6",  "Marketing", imageUrls[2], "1", "7999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        courses.add(new Course("7",  "Machine Learning", imageUrls[0], "2", "8999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        courses.add(new Course("8",  "Python", imageUrls[1], "2", "3999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        courses.add(new Course("8",  "Marketing", imageUrls[2], "1", "4999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+
+    }
+
+    public void initCategory() {
+
+        categories = new ArrayList<>();
+
+        progressDialog = new ProgressDialog(this);
+
+        progressDialog.setMessage("Loading Category Please Wait ... ");
+        progressDialog.show();
+
+        progressDialog.setCancelable(false);
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        String url = "http://careeranna.in/category.php";
+        StringRequest stringRequest  = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("url_response", response.toString());
+                            JSONArray CategoryArray = new JSONArray(response.toString());
+                            for(int i=0;i<CategoryArray.length();i++) {
+                                JSONObject Category = CategoryArray.getJSONObject(i);
+                                categories.add(new Category(Integer.toString(Category.getInt("CATEGORY_ID")),
+                                        Category.getString("CATEGORY_NAME"),
+                                        Category.getString("cimage").replace("\\","")));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        progressDialog.dismiss();
+                        myExplorerFragement.setCategories(categories, courses, examPreps);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.dismiss();
+                    }
+                }
+        );
+
+        requestQueue.add(stringRequest);
+
+    }
+
+    public void initExam() {
+
+        String desc = "Organizations of all sizes and Industries, be it a financial institution or a small big data start up, everyone is using Python for their business.\n" +
+                "Python is among the popular data science programming languages not only in Big data companies but also in the tech start up crowd. Around 46% of data scientists use Python.\n" +
+                "Python has overtaken Java as the preferred programming language and is only second to SQL in usage today. \n" +
+                "Python is finding Increased adoption in numerical computations, machine learning and several data science applications.\n" +
+                "Python for data science requires data scientists to learn the usage of regular expressions, work with the scientific libraries and master the data visualization concepts.";
+
+        examPreps = new ArrayList<>();
+
+        examPreps.add(new ExamPrep("1",  "Machine Learning", imageUrls[0], "1", "6999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        examPreps.add(new ExamPrep("2",  "Python", imageUrls[1], "2", "4999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        examPreps.add(new ExamPrep("3",  "Marketing", imageUrls[2], "3", "5999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        examPreps.add(new ExamPrep("4",  "Machine Learning", imageUrls[0], "4", "6999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        examPreps.add(new ExamPrep("5",  "Python", imageUrls[1], "5", "3999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        examPreps.add(new ExamPrep("6",  "Marketing", imageUrls[2], "1", "7999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        examPreps.add(new ExamPrep("7",  "Machine Learning", imageUrls[0], "2", "8999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        examPreps.add(new ExamPrep("8",  "Python", imageUrls[1], "2", "3999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+        examPreps.add(new ExamPrep("8",  "Marketing", imageUrls[2], "1", "4999",
+                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
+
     }
 }

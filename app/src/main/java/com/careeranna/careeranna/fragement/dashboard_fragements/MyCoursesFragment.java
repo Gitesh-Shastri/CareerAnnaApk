@@ -15,6 +15,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.careeranna.careeranna.ParticularCourse;
 import com.careeranna.careeranna.R;
+import com.careeranna.careeranna.data.Category;
+import com.careeranna.careeranna.data.Course;
+import com.careeranna.careeranna.data.ExamPrep;
 import com.careeranna.careeranna.helper.RecyclerViewCoursesAdapter;
 
 import java.util.ArrayList;
@@ -26,6 +29,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * A simple {@link Fragment} subclass.
  */
 public class MyCoursesFragment extends Fragment implements RecyclerViewCoursesAdapter.OnItemClickListener {
+
 
     private ArrayList<String> names;
     private ArrayList<String> urls;

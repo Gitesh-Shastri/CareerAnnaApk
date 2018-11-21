@@ -48,20 +48,17 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
     @Override
     public void onBindViewHolder(@NonNull ArticleViewHolder articleViewHolder, int i) {
 
-        Date date = null;
-
-        try {
-            date = ISO8601Parse.parse(mArticles.get(i).getCreated_at());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
         articleViewHolder.articleTitle.setText(mArticles.get(i).getName());
         articleViewHolder.articleAuthor.setText(mArticles.get(i).getAuthor());
-        articleViewHolder.articleCreated.setReferenceTime(date.getTime());
+        articleViewHolder.articleCreated.setText(mArticles.get(i).getCreated_at().substring(0, 10));
         articleViewHolder.articleAuthor.setText(mArticles.get(i).getAuthor());
         articleViewHolder.articleContent.setText(mArticles.get(i).getContent());
         Glide.with(mContext).load(mArticles.get(i).getImage_url()).into(articleViewHolder.articleImage);
+    }
+
+    public void addArticles(ArrayList<Article> articles) {
+        mArticles.addAll(articles);
+        notifyDataSetChanged();
     }
 
     @Override
