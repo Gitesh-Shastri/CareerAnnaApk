@@ -104,7 +104,7 @@ public class ParticularArticleActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Log.i("url_response", response.toString());
-                        String html = "<h3>"+article.getName()+"</h3>"+response.toString();
+                        String html = "<h3>"+article.getName()+"</h3><hr/><h5>By : "+article.getAuthor()+"</h5>"+response.toString();
                         webview.loadData(html, "text/html", null);
                         progressBar.setVisibility(View.INVISIBLE);
                     }
