@@ -83,7 +83,7 @@ public class CategoriesSection extends AppCompatActivity implements RecyclerView
         String id = category.getId();
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "http://careeranna.in/subCategory.php?id="+id;
+        final String url = "http://careeranna.in/subCategory.php?id="+id;
         Log.d("url_res", url);
         StringRequest stringRequest  = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -140,7 +140,11 @@ public class CategoriesSection extends AppCompatActivity implements RecyclerView
                             @Override
                             public void onResponse(String response) {
                                 try {
+
                                     courses = new ArrayList<>();
+                                    names = new ArrayList<>();
+                                    urls = new ArrayList<>();
+
                                     Log.i("url_response", response.toString());
                                     JSONArray CategoryArray = new JSONArray(response.toString());
                                     for(int i=0;i<CategoryArray.length();i++) {
