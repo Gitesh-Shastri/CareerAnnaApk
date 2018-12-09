@@ -8,11 +8,6 @@
             android:icon="@drawable/ic_event_note_black_24dp">
             <menu>
                 <item
-                    android:id="@+id/particularCourses"
-                    android:title="Current Course"
-                    android:icon="@drawable/ic_local_library_black_24dp"
-                    android:checked="false"/>
-                <item
                     android:id="@+id/myCourses"
                     android:title="MyCourses"
                     android:icon="@drawable/ic_event_note_black_24dp"

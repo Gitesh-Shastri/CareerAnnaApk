@@ -11,7 +11,7 @@
         android:layout_height="200dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:id="@+id/playerView"
+        android:id="@+id/playerView1"
         android:layout_marginTop="20dp"
         />
     <RelativeLayout
@@ -20,8 +20,8 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:id="@+id/demoView"
-        android:layout_below="@id/playerView">
+        android:id="@+id/demoView1"
+        android:layout_below="@id/playerView1">
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:text="@string/Rs"
             android:textStyle="bold"
-            android:id="@+id/rupee"
+            android:id="@+id/rupee1"
             android:layout_toRightOf="@id/price"
             android:layout_below="@id/star2"
             android:layout_marginLeft="50dp"
@@ -88,26 +88,34 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/rupee"
+            android:layout_toRightOf="@+id/rupee1"
             android:text="99"
-            android:id="@+id/dollar"
+            android:id="@+id/dollar1"
             android:layout_below="@id/star1"
             android:layout_marginTop="12dp"
             android:layout_marginLeft="5dp"
             android:textStyle="bold"
             />
     </RelativeLayout>
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"
+        android:id="@+id/progress1"
+        />
     <Button
         android:padding="7dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/demoView"
+        android:layout_below="@id/demoView1"
         android:layout_marginLeft="20dp"
         android:text="Purchase  "
+        android:visibility="gone"
         android:drawableRight="@drawable/ic_add_shopping_cart_black_24dp"
         android:background="@color/intro_button"
         android:textColor="@color/white"
-        android:id="@+id/purchase"
+        android:id="@+id/purchase1"
         />
     <TextView
         android:gravity="center"
@@ -116,8 +124,8 @@
         android:layout_height="wrap_content"
         android:text="@string/desc"
         android:layout_marginTop="10dp"
-        android:layout_below="@+id/purchase"
-        android:id="@+id/descText"
+        android:layout_below="@+id/purchase1"
+        android:id="@+id/descText1"
         android:textStyle="bold"
         android:layout_marginRight="20dp"
         android:onClick="hideDesc"
@@ -127,18 +135,16 @@
         android:layout_marginLeft="20dp" />
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:id="@+id/scroll"
-        android:layout_below="@+id/descText"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:layout_height="match_parent"
+        android:layout_below="@id/descText1">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/desc"
-            android:id="@+id/descTextDetails"
-            style="@style/Base.TextAppearance.AppCompat.Small"
+            android:id="@+id/descTextDetails1"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
             />
     </ScrollView>
 </RelativeLayout>

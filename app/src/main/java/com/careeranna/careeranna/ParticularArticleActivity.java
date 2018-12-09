@@ -104,7 +104,32 @@ public class ParticularArticleActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Log.i("url_response", response.toString());
-                        String html = "<h3>"+article.getName()+"</h3><hr/><h5>By : "+article.getAuthor()+"</h5>"+response.toString();
+                        response = response.replace("<img ", "<img class=\"img-thumbnail\" ");
+                        String html = "<html>" +
+                                "<head>" +
+                                "<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\" integrity=\"sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm\" crossorigin=\"anonymous\">" +
+                                "<style>" +
+                                "img {" +
+                                "width:300;" +
+                                "height:280;" +
+                                "" +
+                                "}" +
+                                "body {\n" +
+                                "    font-family: \"Times New Roman\", Times, serif;\n" +
+                                "}" +
+                                "h1,h2,h3,h4,h5,h6{" +
+                                "font-size: 1em;" +
+                                "}" +
+                                "</style>" +
+                                "</head>" +
+                                "<body>" +
+                                "<div class=\"container\">" +
+                                "<h2><strong>"+article.getName()+"</strong></h2><hr/>" +
+                                "<img class=\"img-thumbnail\" src=" + article.getImage_url() + " width=300 height=300>"+
+                                "<h5>"+article.getAuthor()+"  <br />" +
+                                ""+article.getCreated_at()+"</h5>"+response.toString().replace("<table ", "<table class=\"table table-striped\"")+
+                                "</div>" +
+                                "</html>";
                         webview.loadData(html, "text/html", null);
                         progressBar.setVisibility(View.INVISIBLE);
                     }

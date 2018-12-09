@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.careeranna.careeranna.MyExamPrepActivity;
 import com.careeranna.careeranna.R;
 import com.careeranna.careeranna.data.ExamPrep;
+import com.careeranna.careeranna.helper.RecyclerViewCoursesAdapter;
 import com.careeranna.careeranna.helper.RecyclerViewExamAdapter;
 import com.careeranna.careeranna.helper.RecyclerViewMyExamAdapter;
 
@@ -38,6 +39,16 @@ public class ExamPrepFragment extends Fragment implements RecyclerViewMyExamAdap
         // Required empty public constructor
     }
 
+
+    public void add(ArrayList<String> names, ArrayList<String> urls) {
+        this.names = names;
+        this.urls = urls;
+
+        recyclerViewMyExamAdapter = new RecyclerViewMyExamAdapter(names, urls, getApplicationContext());
+        recyclerViewExamp.setAdapter(recyclerViewMyExamAdapter);
+
+        recyclerViewMyExamAdapter.setOnItemClicklistener(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

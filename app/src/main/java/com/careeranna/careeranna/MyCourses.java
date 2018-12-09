@@ -2,6 +2,7 @@ package com.careeranna.careeranna;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -12,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
@@ -19,6 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,13 +31,16 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 
+import com.careeranna.careeranna.adapter.CoursesSectionAdapter;
 import com.careeranna.careeranna.adapter.ViewPagerAdapter;
 import com.careeranna.careeranna.data.Article;
 import com.careeranna.careeranna.data.Banner;
 import com.careeranna.careeranna.data.Category;
 import com.careeranna.careeranna.data.Course;
 import com.careeranna.careeranna.data.ExamPrep;
+import com.careeranna.careeranna.data.User;
 import com.careeranna.careeranna.fragement.dashboard_fragements.ExamPrepFragment;
+import com.careeranna.careeranna.helper.RecyclerViewCoursesAdapter;
 import com.careeranna.careeranna.user.MyProfile;
 import com.careeranna.careeranna.fragement.dashboard_fragements.ArticlesFragment;
 import com.careeranna.careeranna.fragement.dashboard_fragements.ExploreFragement;
@@ -42,14 +48,18 @@ import com.careeranna.careeranna.fragement.dashboard_fragements.MyCoursesFragmen
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.paperdb.Paper;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -92,6 +102,8 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
     private int delay = 5000;
     Runnable runnable;
 
+    User user;
+
     ArrayList<Category> categories;
     ArrayList<Course> courses;
     ArrayList<ExamPrep> examPreps;
@@ -103,8 +115,24 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
             "https://www.digitalvidya.com/wp-content/uploads/2016/02/Master_Digital_marketng-1170x630.jpg"
     };
 
+    private long backPressed;
+
     NavigationView navigationView;
 
+    ArrayList<String> names, urls, ids;
+
+    @Override
+    public void onBackPressed() {
+
+        if(backPressed + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+            return;
+        } else {
+            Toast.makeText(this, "Please Click Again To Exit !", Toast.LENGTH_SHORT).show();
+        }
+
+        backPressed = System.currentTimeMillis();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,24 +145,71 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
         viewPager = findViewById(R.id.viewPager);
         linearLayout = findViewById(R.id.sliderDots);
 
+        Paper.init(this);
+
         // Binding NavigationView To Toolbar
         mToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
+        String cache = Paper.book().read("user");
+        if(cache != null && !cache.isEmpty()) {
+            user =  new Gson().fromJson(cache, User.class);
 
-        profile_pic_url = user.getPhotoUrl().toString();
-        mUsername = user.getDisplayName();
-        mEmail = user.getEmail();
+            profile_pic_url = user.getUser_photo().replace("\\", "");
+            mUsername = user.getUser_username();
+            mEmail = user.getUser_email();
+        }
 
         // Initalize Fragements For main container
         myCoursesFragement = new MyCoursesFragment();
         myExplorerFragement = new ExploreFragement();
         myArticleFragment = new ArticlesFragment();
         myExamPrepFragment = new ExamPrepFragment();
+
+        names = new ArrayList<>();
+        urls = new ArrayList<>();
+        ids = new ArrayList<>();
+
+        progressDialog = new ProgressDialog(this);
+
+        progressDialog.setMessage("Loading My Courses Please Wait ... ");
+        progressDialog.show();
+
+        progressDialog.setCancelable(false);
+
+        RequestQueue requestQueue1 = Volley.newRequestQueue(MyCourses.this);
+        final String url1 = "http://careeranna.in/getMyCourse.php?user="+user.getUser_id()+"&category=15";
+        Log.d("url_res", url1);
+        StringRequest stringRequest1  = new StringRequest(Request.Method.GET, url1,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("url_response", response.toString());
+                            JSONArray CategoryArray = new JSONArray(response);
+                            for(int i=0;i<10;i++) {
+                                JSONObject Category = CategoryArray.getJSONObject(i);
+                                ids.add(Category.getString("product_id"));
+                                names.add(Category.getString("product_name"));
+                                urls.add(Category.getString("product_image").replace("\\",""));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                        myCoursesFragement.add(names, urls, ids);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.dismiss();
+                    }
+                });
+
+        requestQueue1.add(stringRequest1);
 
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.main_content, myCoursesFragement).commit();
@@ -152,11 +227,6 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
     public void getBanner() {
 
         mBanners = new ArrayList<>();
-
-        progressDialog = new ProgressDialog(this);
-
-        progressDialog.setMessage("Loading Banner Please Wait ... ");
-        progressDialog.show();
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         String url = "https://api.myjson.com/bins/te3gu";
@@ -187,7 +257,6 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
 
                         makeRunnable();
 
-                        progressDialog.dismiss();
                     }
                 },
                 new Response.ErrorListener() {
@@ -285,6 +354,14 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
 
         super.onResume();
         handler.postDelayed(runnable, delay);
+        String cache = Paper.book().read("user");
+        if(cache != null && !cache.isEmpty()) {
+            User user =  new Gson().fromJson(cache, User.class);
+
+            profile_pic_url = user.getUser_photo().replace("//", "");
+            mUsername = user.getUser_username();
+            mEmail = user.getUser_email();
+        }
     }
 
     @Override
@@ -296,8 +373,11 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
 
     public void signOut(View view) {
 
-        mAuth.signOut();
-        LoginManager.getInstance().logOut();
+        mAuth = FirebaseAuth.getInstance();
+        if(mAuth != null) {
+            mAuth.signOut();
+            LoginManager.getInstance().logOut();
+        }
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }
@@ -309,27 +389,24 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
 
         if(id == R.id.signOut) {
 
-            mAuth.signOut();
-            LoginManager.getInstance().logOut();
+            mAuth = FirebaseAuth.getInstance();
+            if(mAuth != null) {
+                mAuth.signOut();
+                LoginManager.getInstance().logOut();
+            }
             startActivity(new Intent(this, MainActivity.class));
             finish();
 
-        } else if(id == R.id.particularCourses) {
-
-            Intent intent = new Intent(MyCourses.this, ParticularCourse.class);
-            intent.putExtra("category_name",
-                    "Machine Learning");
-            intent.putExtra("category_image",
-                    "https://4.bp.blogspot.com/-qf3t5bKLvUE/WfwT-s2IHmI/AAAAAAAABJE/RTy60uoIDCoVYzaRd4GtxCeXrj1zAwVAQCLcBGAs/s1600/Machine-Learning.png");;
-            startActivity(intent);
         } else if(id == R.id.myCourses) {
 
+            myCourse();
             fragmentManager.beginTransaction().replace(R.id.main_content, myCoursesFragement).commit();
             navigationView.setCheckedItem(R.id.myCourses);
             getSupportActionBar().setTitle("My Courses");
 
         } else if(id == R.id.examprep) {
 
+            myExam();
             fragmentManager.beginTransaction().replace(R.id.main_content, myExamPrepFragment).commit();
             navigationView.setCheckedItem(R.id.examprep);
             getSupportActionBar().setTitle("Examp Prep");
@@ -337,8 +414,10 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
         }else if(id == R.id.explore) {
 
             initCategory();
-            initCourse();
-            initExam();
+
+            courses = new ArrayList<>();
+            examPreps = new ArrayList<>();
+
             myExplorerFragement.setCategories(categories, courses, examPreps);
 
             fragmentManager.beginTransaction().replace(R.id.main_content, myExplorerFragement).commit();
@@ -361,6 +440,106 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
         return true;
     }
 
+    private void myExam() {
+
+        names = new ArrayList<>();
+        urls = new ArrayList<>();
+
+        progressDialog = new ProgressDialog(this);
+
+        progressDialog.setMessage("Loading My Courses Please Wait ... ");
+        progressDialog.show();
+
+        progressDialog.setCancelable(false);
+
+        RequestQueue requestQueue1 = Volley.newRequestQueue(MyCourses.this);
+        final String url1 = "http://careeranna.in/getMyExam.php?user="+user.getUser_id();
+        Log.d("url_res", url1);
+        StringRequest stringRequest1  = new StringRequest(Request.Method.GET, url1,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("url_response", response.toString());
+                            JSONArray CategoryArray = new JSONArray(response);
+                            for(int i=0;i<10;i++) {
+                                JSONObject Category = CategoryArray.getJSONObject(i);
+                                names.add(Category.getString("product_name"));
+                                urls.add(Category.getString("product_image").replace("\\",""));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                        myExamPrepFragment.add(names, urls);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.dismiss();
+                    }
+                });
+
+        requestQueue1.add(stringRequest1);
+    }
+
+    public void myCourse() {
+        names = new ArrayList<>();
+        urls = new ArrayList<>();
+        ids = new ArrayList<>();
+
+        progressDialog = new ProgressDialog(this);
+
+        progressDialog.setMessage("Loading My Courses Please Wait ... ");
+        progressDialog.show();
+
+        progressDialog.setCancelable(false);
+
+        RequestQueue requestQueue1 = Volley.newRequestQueue(MyCourses.this);
+        final String url1 = "http://careeranna.in/getMyCourse.php?user="+user.getUser_id()+"&category=15";
+        Log.d("url_res", url1);
+        StringRequest stringRequest1  = new StringRequest(Request.Method.GET, url1,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("url_response", response.toString());
+                            JSONArray CategoryArray = new JSONArray(response);
+                            for(int i=0;i<10;i++) {
+                                JSONObject Category = CategoryArray.getJSONObject(i);
+                                ids.add(Category.getString("product_id"));
+                                names.add(Category.getString("product_name"));
+                                urls.add(Category.getString("product_image").replace("\\",""));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                        myCoursesFragement.add(names, urls, ids);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.dismiss();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to login url
+                Map<String, String> params = new HashMap<>();
+                params.put("user", user.getUser_id());
+                params.put("category", "15");
+                return params;
+
+            }
+        };
+
+        requestQueue1.add(stringRequest1);
+    }
+
     public void initArticle() {
 
         mArticles = new ArrayList<>();
@@ -380,7 +559,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
                 "Python for data science requires data scientists to learn the usage of regular expressions, work with the scientific libraries and master the data visualization concepts.";
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "http://careeranna.in/articles.php";
+        String url = "http://careeranna.in/articlewithimage.php";
         StringRequest stringRequest  = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -392,7 +571,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
                                 JSONObject Articles = ArticlesArray.getJSONObject(i);
                                 mArticles.add(new Article(Articles.getString("ID"),
                                         Articles.getString("post_title"),
-                                        "",
+                                        "https://www.careeranna.com/articles/wp-content/uploads/"+Articles.getString("meta_value").replace("\\",""),
                                         Articles.getString("display_name"),
                                         "CAT",
                                         desc,
@@ -478,10 +657,44 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        RequestQueue requestQueue1 = Volley.newRequestQueue(MyCourses.this);
+                        String url1 = "http://careeranna.in/getCertficateCourse.php";
+                        Log.d("url_res", url1);
+                        StringRequest stringRequest1  = new StringRequest(Request.Method.GET, url1,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        try {
+                                            Log.i("url_response", response.toString());
+                                            JSONArray CategoryArray = new JSONArray(response.toString());
+                                            for(int i=0;i<10;i++) {
+                                                JSONObject Category = CategoryArray.getJSONObject(i);
+                                                courses.add(new Course(Category.getString("product_id"),
+                                                        Category.getString("course_name"),
+                                                        "https://www.careeranna.com/"+Category.getString("product_image").replace("\\",""),
+                                                        "15",
+                                                        Category.getString("price")
+                                                        , Category.getString("description"),
+                                                        Category.getString("video_url").replace("\\","")));
+                                                }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                        addExam();
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        progressDialog.dismiss();
+                                        addExam();
+                                    }
+                                }
+                        );
 
-                        progressDialog.dismiss();
-                        myExplorerFragement.setCategories(categories, courses, examPreps);
-                    }
+                        requestQueue1.add(stringRequest1);
+                        }
                 },
                 new Response.ErrorListener() {
                     @Override
@@ -492,37 +705,45 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
         );
 
         requestQueue.add(stringRequest);
-
     }
 
-    public void initExam() {
+    private  void addExam() {
 
-        String desc = "Organizations of all sizes and Industries, be it a financial institution or a small big data start up, everyone is using Python for their business.\n" +
-                "Python is among the popular data science programming languages not only in Big data companies but also in the tech start up crowd. Around 46% of data scientists use Python.\n" +
-                "Python has overtaken Java as the preferred programming language and is only second to SQL in usage today. \n" +
-                "Python is finding Increased adoption in numerical computations, machine learning and several data science applications.\n" +
-                "Python for data science requires data scientists to learn the usage of regular expressions, work with the scientific libraries and master the data visualization concepts.";
-
-        examPreps = new ArrayList<>();
-
-        examPreps.add(new ExamPrep("1",  "Machine Learning", imageUrls[0], "1", "6999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        examPreps.add(new ExamPrep("2",  "Python", imageUrls[1], "2", "4999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        examPreps.add(new ExamPrep("3",  "Marketing", imageUrls[2], "3", "5999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        examPreps.add(new ExamPrep("4",  "Machine Learning", imageUrls[0], "4", "6999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        examPreps.add(new ExamPrep("5",  "Python", imageUrls[1], "5", "3999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        examPreps.add(new ExamPrep("6",  "Marketing", imageUrls[2], "1", "7999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        examPreps.add(new ExamPrep("7",  "Machine Learning", imageUrls[0], "2", "8999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        examPreps.add(new ExamPrep("8",  "Python", imageUrls[1], "2", "3999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        examPreps.add(new ExamPrep("8",  "Marketing", imageUrls[2], "1", "4999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-
+        RequestQueue requestQueue1 = Volley.newRequestQueue(MyCourses.this);
+        String url1 = "http://careeranna.in/explore.php";
+        Log.d("url_res", url1);
+        StringRequest stringRequest1  = new StringRequest(Request.Method.GET, url1,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("url_response", response.toString());
+                            JSONArray CategoryArray = new JSONArray(response.toString());
+                            for(int i=0;i<10;i++) {
+                                JSONObject Category = CategoryArray.getJSONObject(i);
+                                examPreps.add(new ExamPrep(Category.getString("product_id"),
+                                        Category.getString("course_name"),
+                                        "https://www.careeranna.com/"+Category.getString("product_image").replace("\\",""),
+                                        Category.getString("category_id"),
+                                        Category.getString("price")
+                                        , Category.getString("description"),
+                                        Category.getString("video_url").replace("\\","")));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                        myExplorerFragement.setCategories(categories, courses, examPreps);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.dismiss();
+                        myExplorerFragement.setCategories(categories, courses, examPreps);
+                    }
+                }
+        );
+        requestQueue1.add(stringRequest1);
     }
 }

@@ -19,8 +19,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.careeranna.careeranna.MyCourses;
+import com.careeranna.careeranna.PasswordReset;
 import com.careeranna.careeranna.R;
+import com.careeranna.careeranna.data.User;
+import com.careeranna.careeranna.helper.ForgetDialog;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -41,8 +50,18 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.gson.Gson;
 
-public class SignUp extends AppCompatActivity implements View.OnClickListener {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
+import io.paperdb.Paper;
+
+public class SignUp extends AppCompatActivity implements View.OnClickListener, ForgetDialog.ForgetPasswordClickListener {
 
     public static final String TAG = "SignUp Activity";
     private final static int RC_SIGN_IN = 2;
@@ -70,14 +89,18 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
     AlertDialog alert;
 
-    TextView signUp;
+    Button signIn, signUp, forgetPassword;
 
-    Button signIn;
+    String userphone = "";
+
+    String verificationCode, email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        Paper.init(this);
 
         relativeLayout = findViewById(R.id.snackbar);
 
@@ -86,6 +109,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         signUp = findViewById(R.id.signUp);
 
         signIn = findViewById(R.id.signInAccount);
+
+        forgetPassword = findViewById(R.id.forgot);
 
         textInputEmail = findViewById(R.id.useremailL);
         textInputPassword = findViewById(R.id.userpasswordL);
@@ -102,13 +127,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         progressBar.bringToFront();
         progressBar.setVisibility(View.GONE);
 
-        signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
+        signUp.setOnClickListener(this);
 
         signIn.setOnClickListener(this);
+
+        forgetPassword.setOnClickListener(this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -199,24 +222,75 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                 if(!validateEmailTv() | !validatePassTv()) {
                     return;
                 }
-                Toast.makeText(SignUp.this, "username/username : " + textInputEmail.getEditText().getText().toString().trim(), Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.VISIBLE);
 
+                StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                        "http://careeranna.in/login.php", new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("url_respon", response.toString());
+                            User user = new User();
+                            try {
+                                JSONObject userObject = new JSONObject(response.toString());
+                                user.setUser_username(userObject.getString("USER_USERNAME"));
+                                user.setUser_id(userObject.getString("USER_ID"));
+                                user.setGoogle_id(userObject.getString("google_id"));
+                                user.setFacebook_id(userObject.getString("facebook_id"));
+                                user.setUser_photo(userObject.getString("img_url_app"));
+                                user.setUser_email(userObject.getString("USER_EMAIL"));
+                                Paper.book().write("user", new Gson().toJson(user));
+                                snackbar = Snackbar.make(relativeLayout, "Sign In As " + user.getUser_username(), Snackbar.LENGTH_SHORT);
+                                snackbar.show();
+                                startActivity(new Intent(SignUp.this, MyCourses.class));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                snackbar = Snackbar.make(relativeLayout,response.toString(), Snackbar.LENGTH_SHORT);
+                                snackbar.show();
+                            }
+                        progressBar.setVisibility(View.INVISIBLE);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        snackbar = Snackbar.make(relativeLayout, "Something ", Snackbar.LENGTH_SHORT);
+                        snackbar.show();
+                        progressBar.setVisibility(View.INVISIBLE);
+                    }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() {
+                        // Posting params to login url
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("email", textInputEmail.getEditText().getText().toString());
+                        params.put("password", textInputPassword.getEditText().getText().toString());
+                        return params;
+                    }
+                };
+                RequestQueue requestQueue = Volley.newRequestQueue(SignUp.this);
+                requestQueue.add(stringRequest);
                 break;
 
             case R.id.signUp:
 
                 Intent intent = new Intent(SignUp.this, Register.class);
                 startActivity(intent);
+                break;
+
+            case R.id.forgot:
+
+                ForgetDialog forgetDialog = new ForgetDialog();
+                forgetDialog.show(getSupportFragmentManager(), "Forget Password");
         }
     }
 
     private void signIn() {
-        Log.d(TAG, "Inside signIn function");
+
         snackbar = Snackbar.make(relativeLayout, "Sign In Please Wait", Snackbar.LENGTH_INDEFINITE);
         snackbar.show();
         progressBar.setVisibility(View.VISIBLE);
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+
     }
 
     @Override
@@ -294,13 +368,69 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                 });
     }
 
-    private void updateUI(FirebaseUser user) {
-        if(user != null) {
+    private void updateUI(final FirebaseUser userAccount) {
+
+        if(userAccount != null) {
             snackbar.dismiss();
+
+            if(userAccount.getPhoneNumber() != null) {
+                userphone = userAccount.getPhoneNumber();
+            }
+            final String username = userAccount.getDisplayName().toString();
+            final String useremail = userAccount.getEmail().toString();
+            final String userPhoto = userAccount.getPhotoUrl().toString();
+
             progressBar.setVisibility(View.INVISIBLE);
-            Intent intent = new Intent(SignUp.this, MyCourses.class);
-            startActivity(intent);
-            finish();
+            progressBar.setVisibility(View.VISIBLE);
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                    "http://careeranna.in/google_login.php", new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.i("url_respon", response.toString());
+                        User user = new User();
+                        try {
+                            JSONObject userObject = new JSONObject(response.toString());
+                            user.setUser_username(userObject.getString("USER_USERNAME"));
+                            user.setUser_id(userObject.getString("USER_ID"));
+                            user.setGoogle_id(userObject.getString("google_id"));
+                            user.setFacebook_id(userObject.getString("facebook_id"));
+                            user.setUser_photo(userObject.getString("img_url_app"));
+                            user.setUser_email(userObject.getString("USER_EMAIL"));
+                            Paper.book().write("user", new Gson().toJson(user));
+                            snackbar = Snackbar.make(relativeLayout, "Sign In As " + user.getUser_username(), Snackbar.LENGTH_SHORT);
+                            snackbar.show();
+                            Intent intent =  new Intent(SignUp.this, MyCourses.class);
+                            startActivity(intent);
+                            finish();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            snackbar = Snackbar.make(relativeLayout, response.toString(), Snackbar.LENGTH_SHORT);
+                            snackbar.show();
+                        }
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    snackbar = Snackbar.make(relativeLayout, "Something Went Wrong!", Snackbar.LENGTH_SHORT);
+                    snackbar.show();
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    // Posting params to login url
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("email", useremail);
+                    params.put("username", username);
+                    params.put("phone", userphone);
+                    params.put("photo", userPhoto);
+                    return params;
+                }
+            };
+            RequestQueue requestQueue = Volley.newRequestQueue(SignUp.this);
+            requestQueue.add(stringRequest);
         }
     }
 
@@ -346,4 +476,46 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 
     }
+
+    @Override
+    public void sendMail(final String useremail) {
+        email = useremail;
+        int number = (int) Math.abs(Math.floor(Math.random()*90000)-10000);
+        verificationCode =String.valueOf(number);
+        Log.i("valus", "email : "+email + " code : " + verificationCode);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                "http://careeranna.in/forgotEmail.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.i("url_respon", response.toString());
+                if(response.toString().equals("No User Exists Please Sign Up !")) {
+                    snackbar = Snackbar.make(relativeLayout, response.toString(), Snackbar.LENGTH_SHORT);
+                    snackbar.show();
+                } else {
+                    Intent intent = new Intent(SignUp.this, PasswordReset.class);
+                    intent.putExtra("email", email);
+                    intent.putExtra("code", verificationCode);
+                    startActivity(intent);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                snackbar = Snackbar.make(relativeLayout, "Something Went Wrong!", Snackbar.LENGTH_SHORT);
+                snackbar.show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to login url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", email);
+                params.put("code", verificationCode);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(SignUp.this);
+        requestQueue.add(stringRequest);
+    }
+
 }

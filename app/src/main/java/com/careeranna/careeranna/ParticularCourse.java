@@ -1,5 +1,6 @@
 package com.careeranna.careeranna;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -9,11 +10,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.careeranna.careeranna.data.User;
 import com.careeranna.careeranna.fragement.profile_fragements.CertificateFragment;
 import com.careeranna.careeranna.fragement.profile_fragements.NotesFragment;
 import com.careeranna.careeranna.fragement.profile_fragements.TestFragment;
@@ -21,8 +31,16 @@ import com.careeranna.careeranna.fragement.profile_fragements.TutorialFragment;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.paperdb.Paper;
 
 public class ParticularCourse extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -39,9 +57,18 @@ public class ParticularCourse extends AppCompatActivity implements NavigationVie
     TestFragment testFragment;
     CertificateFragment certificateFragment;
 
+    User user;
+
+    String material;
+
+    String id, name, urls;
+
+    ProgressDialog progressDialog;
+
     String mUsername, profile_pic_url, mEmail;
 
     FragmentManager fragmentManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,11 +87,20 @@ public class ParticularCourse extends AppCompatActivity implements NavigationVie
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        FirebaseUser user = mAuth.getCurrentUser();
+        Paper.init(this);
 
-        profile_pic_url = user.getPhotoUrl().toString();
-        mUsername = user.getDisplayName();
-        mEmail = user.getEmail();
+        id = getIntent().getStringExtra("course_ids");
+        name = getIntent().getStringExtra("course_name");
+        urls = getIntent().getStringExtra("course_image");
+
+        String cache = Paper.book().read("user");
+        if(cache != null && !cache.isEmpty()) {
+            user =  new Gson().fromJson(cache, User.class);
+
+            profile_pic_url = user.getUser_photo().replace("\\", "");
+            mUsername = user.getUser_username();
+            mEmail = user.getUser_email();
+        }
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -74,6 +110,8 @@ public class ParticularCourse extends AppCompatActivity implements NavigationVie
         navigationView.setCheckedItem(R.id.tutorial);
 
         initializeFragement();
+
+        fetchUnit();
 
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.main_content, tutorialFragment).commit();
@@ -126,11 +164,14 @@ public class ParticularCourse extends AppCompatActivity implements NavigationVie
 
         } else if(id == R.id.tutorial) {
 
+            fetchUnit();
             navigationView.setCheckedItem(R.id.tutorial);
             fragmentManager.beginTransaction().replace(R.id.main_content,tutorialFragment).commit();
             getSupportActionBar().setTitle("Tutorial");
 
         } else if(id == R.id.notes) {
+
+            fetchPdf();
 
             navigationView.setCheckedItem(R.id.notes);
             fragmentManager.beginTransaction().replace(R.id.main_content,notesFragment).commit();
@@ -157,6 +198,91 @@ public class ParticularCourse extends AppCompatActivity implements NavigationVie
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
 
+    }
+
+    private void fetchUnit() {
+
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading Videos .. ");
+        progressDialog.show();
+
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        String url = "http://careeranna.in/course_videos.php?product_id="+id;
+        Log.i("url", url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        String courses = " ";
+                        try {
+                            Log.i("pdf", response);
+                            if(!response.equals("No results")) {
+                                JSONArray jsonArray = new JSONArray(response);
+                                JSONObject jsonObject = jsonArray.getJSONObject(0);
+                                courses = jsonObject.getString("course_content");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        tutorialFragment.addCourseUnits(courses);
+                        progressDialog.dismiss();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(ParticularCourse.this, "Error Occured", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
+        requestQueue.add(stringRequest);
+    }
+
+    private void fetchPdf() {
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading Materilal .. ");
+        progressDialog.show();
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        String url = "http://careeranna.in/coursePdf.php?id="+id;
+        Log.i("url", url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                url,
+                    new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        String status = "No pdf";
+                        try {
+                            Log.i("pdf", response);
+                            JSONObject jsonObject = new JSONObject(response);
+                            material = jsonObject.getString("material_file");
+                            if(!material.equals("null")) {
+                                status = "Select Pdf from Below !";
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            material = "No Pdf";
+                            status = "No Pdf";
+                        }
+                        progressDialog.dismiss();
+                        ArrayList<String> pdfs = new ArrayList<>();
+                        String[] pdfs1 = material.split(",");
+                        for(String pdf : pdfs1) {
+                            pdfs.add(pdf);
+                        }
+                        notesFragment.addPdf(pdfs, status);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(ParticularCourse.this, "Error Occured", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                    }
+                });
+        requestQueue.add(stringRequest);
     }
 
 }

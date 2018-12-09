@@ -12,16 +12,22 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.careeranna.careeranna.data.User;
 import com.careeranna.careeranna.user.ExploreNotSIActivity;
 import com.careeranna.careeranna.user.SignUp;
 import com.careeranna.careeranna.adapter.SlideAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
+
+import io.paperdb.Paper;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     FirebaseAuth mAuth;
     public static final String TAG = "MainAct";
+
+    public static int counter = 0;
 
     private LinearLayout dotsLayout;
     private ViewPager introSlider;
@@ -38,8 +44,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mAuth = FirebaseAuth.getInstance();
 
+        Paper.init(this);
+
         if(getSupportActionBar() != null)
             getSupportActionBar().hide();
+
+        int cache = Paper.book().read("counter");
+        if(cache > -1 ) {
+            Log.i("counter", String.valueOf(cache));
+            counter = cache;
+            if(counter > 2) {
+                Intent intent = new Intent(this, SignUp.class);
+                startActivity(intent);
+            } else {
+                counter++;
+                Paper.book().write("counter", counter);
+            }
+        } else {
+            Paper.book().write("counter", counter);
+        }
 
         dotsLayout = findViewById(R.id.intro_dots);
         introSlider = findViewById(R.id.intro_viewpager);
@@ -92,21 +115,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-    }
 
-
-    private void updateUI(FirebaseUser user) {
-        if(user != null) {
-            String username = user.getDisplayName();
-            String email = user.getEmail();
-            Uri url = user.getPhotoUrl();
-            Intent intent = new Intent(MainActivity.this, MyCourses.class);
-            intent.putExtra("username", username);
-            intent.putExtra("useremail", email);
-            intent.putExtra("pic", url.toString());
-            startActivity(intent);
+        String cache = Paper.book().read("user");
+        if(cache != null && !cache.isEmpty()) {
+            startActivity(new Intent(this, MyCourses.class));
             finish();
         }
     }

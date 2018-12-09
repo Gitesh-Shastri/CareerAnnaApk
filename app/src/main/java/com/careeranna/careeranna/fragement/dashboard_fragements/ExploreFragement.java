@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.careeranna.careeranna.CategoriesSection;
 import com.careeranna.careeranna.ExamPrepActivity;
+import com.careeranna.careeranna.MyExamPrepActivity;
 import com.careeranna.careeranna.PurchaseCourses;
 import com.careeranna.careeranna.R;
 import com.careeranna.careeranna.data.Category;
@@ -56,6 +57,13 @@ public class ExploreFragement extends Fragment implements RecyclerViewTopAdapter
         examPreps = mExam;
         if(categories.size() > 0) {
             initializeCategory();
+            initializeCourse();
+            initializeExamprep();
+        }
+        if(examPreps.size() > 0) {
+            initializeCategory();
+            initializeCourse();
+            initializeExamprep();
         }
     }
 
@@ -131,7 +139,7 @@ public class ExploreFragement extends Fragment implements RecyclerViewTopAdapter
     @Override
     public void onItemClickExamp(int position) {
 
-        Intent intent = new Intent(getApplicationContext(), ExamPrepActivity.class);
+        Intent intent = new Intent(getApplicationContext(), PurchaseCourses.class);
         intent.putExtra("Examp", examPreps.get(position));
         getContext().startActivity(intent);
     }

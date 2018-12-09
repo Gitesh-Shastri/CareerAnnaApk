@@ -32,7 +32,7 @@
             android:layout_marginRight="10dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             />
         <com.facebook.login.widget.LoginButton
             android:id="@+id/fb_login_button"
@@ -95,7 +95,7 @@
             android:layout_height="35dp"
             android:layout_margin="13dp"
             android:layout_below="@id/userpasswordL"
-            android:background="@drawable/border_curved"
+            android:background="@color/colorAccent"
             android:text="Sign In"
             android:gravity="center"
             android:layout_alignParentEnd="true"
@@ -103,36 +103,25 @@
             />
 
 
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/signInAccount"
         android:layout_marginStart="20dp"
+        android:textSize="12sp"
         android:textColor="@color/colorAccent"
-        android:textSize="15sp"
+        android:background="@null"
         android:id="@+id/forgot"
         android:text="@string/forgot_your_password"
         />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/forgot"
-        android:background="#000"
-        android:id="@+id/sep"
-        />
-
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/sep"
-        android:textColor="#000"
-        android:textSize="15sp"
-        android:clickable="true"
-        android:focusable="true"
+        android:layout_below="@id/forgot"
+        android:textColor="@color/colorAccent"
+        android:background="@null"
+        android:textSize="12sp"
         android:id="@+id/signUp"
         android:layout_marginStart="20dp"
         android:text="@string/signup"

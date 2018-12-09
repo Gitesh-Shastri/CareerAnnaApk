@@ -64,8 +64,12 @@
         <activity
             android:name=".ExamPrepActivity"
             android:label="Examp Prep" />
-        <activity android:name=".MyExamPrepActivity"
+        <activity
+            android:name=".MyExamPrepActivity"
             android:label="My Exam Prep" />
+        <activity android:name=".Payment" />
+        <activity android:name=".PasswordReset" />
+        <activity android:name=".CartPage"></activity>
     </application>
 
 </manifest>

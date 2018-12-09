@@ -20,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.careeranna.careeranna.adapter.CoursesSectionAdapter;
 import com.careeranna.careeranna.data.Category;
 import com.careeranna.careeranna.data.Course;
 import com.careeranna.careeranna.data.SubCategory;
@@ -41,6 +42,8 @@ public class CategoriesSection extends AppCompatActivity implements RecyclerView
     Spinner subCategory;
 
     RecyclerViewCoursesAdapter recyclerViewAdapter;
+
+    CoursesSectionAdapter coursesSectionAdapter;
 
     ProgressDialog progressDialog;
 
@@ -163,11 +166,11 @@ public class CategoriesSection extends AppCompatActivity implements RecyclerView
                                     e.printStackTrace();
                                 }
 
-                                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(CategoriesSection.this);
-                                recyclerViewAdapter = new RecyclerViewCoursesAdapter(names, urls, CategoriesSection.this);
-                                recyclerView.setLayoutManager(linearLayoutManager);
-                                recyclerView.setAdapter(recyclerViewAdapter);
-                                recyclerViewAdapter.setOnItemClicklistener(CategoriesSection.this);
+                                coursesSectionAdapter = new CoursesSectionAdapter(courses, CategoriesSection.this);
+
+                                recyclerView.setAdapter(coursesSectionAdapter);
+
+                                coursesSectionAdapter.setOnItemClicklistener(CategoriesSection.this);
                                 progressDialog.dismiss();
                             }
                         },
@@ -190,10 +193,10 @@ public class CategoriesSection extends AppCompatActivity implements RecyclerView
 
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerViewAdapter = new RecyclerViewCoursesAdapter(names, urls, this);
+        coursesSectionAdapter = new CoursesSectionAdapter(courses, this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(recyclerViewAdapter);
-        recyclerViewAdapter.setOnItemClicklistener(this);
+        recyclerView.setAdapter(coursesSectionAdapter);
+        coursesSectionAdapter.setOnItemClicklistener(this);
     }
 
     @Override

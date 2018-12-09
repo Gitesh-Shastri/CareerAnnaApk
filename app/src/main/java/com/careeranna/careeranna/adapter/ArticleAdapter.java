@@ -48,7 +48,11 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
     @Override
     public void onBindViewHolder(@NonNull ArticleViewHolder articleViewHolder, int i) {
 
-        articleViewHolder.articleTitle.setText(mArticles.get(i).getName());
+        if(mArticles.get(i).getName().length() > 60) {
+            articleViewHolder.articleTitle.setText(mArticles.get(i).getName().substring(0,60) + "...");
+        } else {
+            articleViewHolder.articleTitle.setText(mArticles.get(i).getName());
+        }
         articleViewHolder.articleAuthor.setText(mArticles.get(i).getAuthor());
         articleViewHolder.articleCreated.setText(mArticles.get(i).getCreated_at().substring(0, 10));
         articleViewHolder.articleAuthor.setText(mArticles.get(i).getAuthor());

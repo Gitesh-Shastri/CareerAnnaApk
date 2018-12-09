@@ -4,6 +4,7 @@ package com.careeranna.careeranna.fragement.dashboard_fragements;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -32,7 +33,7 @@ public class MyCoursesFragment extends Fragment implements RecyclerViewCoursesAd
 
 
     private ArrayList<String> names;
-    private ArrayList<String> urls;
+    private ArrayList<String> urls, ids;
 
     private String[] imageUrls = new String[] {
             "https://4.bp.blogspot.com/-qf3t5bKLvUE/WfwT-s2IHmI/AAAAAAAABJE/RTy60uoIDCoVYzaRd4GtxCeXrj1zAwVAQCLcBGAs/s1600/Machine-Learning.png",
@@ -40,10 +41,21 @@ public class MyCoursesFragment extends Fragment implements RecyclerViewCoursesAd
             "https://www.digitalvidya.com/wp-content/uploads/2016/02/Master_Digital_marketng-1170x630.jpg"
     };
 
+    RecyclerView recyclerView;
+
     public MyCoursesFragment() {
         // Required empty public constructor
     }
 
+    public void add(ArrayList<String> names, ArrayList<String> urls, ArrayList<String> ids) {
+        this.names = names;
+        this.urls = urls;
+        this.ids =ids;
+        RecyclerViewCoursesAdapter recyclerViewAdapter = new RecyclerViewCoursesAdapter(names, urls, getApplicationContext());
+        recyclerView.setAdapter(recyclerViewAdapter);
+
+        recyclerViewAdapter.setOnItemClicklistener(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,6 +65,7 @@ public class MyCoursesFragment extends Fragment implements RecyclerViewCoursesAd
 
         names = new ArrayList<>();
         urls = new ArrayList<>();
+        ids = new ArrayList<>();
 
         urls.add(imageUrls[1]);
         names.add("Python");
@@ -65,9 +78,11 @@ public class MyCoursesFragment extends Fragment implements RecyclerViewCoursesAd
         urls.add(imageUrls[2]);
         names.add("Marketing");
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        RecyclerView recyclerView = view.findViewById(R.id.my_courses);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView = view.findViewById(R.id.my_courses);
+
+        GridLayoutManager mGridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
+        recyclerView.setLayoutManager(mGridLayoutManager);
+
         RecyclerViewCoursesAdapter recyclerViewAdapter = new RecyclerViewCoursesAdapter(names, urls, getApplicationContext());
         recyclerView.setAdapter(recyclerViewAdapter);
 
@@ -79,8 +94,9 @@ public class MyCoursesFragment extends Fragment implements RecyclerViewCoursesAd
     public void onItemClick(int position) {
 
         Intent intent = new Intent(getApplicationContext(), ParticularCourse.class);
-        intent.putExtra("category_name", names.get(position));
-        intent.putExtra("category_image", urls.get(position));
+        intent.putExtra("course_name", names.get(position));
+        intent.putExtra("course_ids", ids.get(position));
+        intent.putExtra("course_image", urls.get(position));
         getContext().startActivity(intent);
     }
 }

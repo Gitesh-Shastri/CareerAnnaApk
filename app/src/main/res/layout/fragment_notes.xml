@@ -7,6 +7,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
         android:layout_height="match_parent">
     <TextView
         android:layout_width="wrap_content"
@@ -19,16 +21,13 @@
         android:layout_marginLeft="20dp"
         android:id="@+id/weekText"
         />
-        <ExpandableListView
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="20dp"
+            android:id="@+id/pdf_rv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_above="@+id/rest"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal"
-            android:layout_below="@+id/weekText"
-            android:layout_marginRight="20dp"
-            android:id="@+id/expandableunit" />
+            android:layout_height="match_parent"
+            android:layout_below="@id/weekText"
+            android:layout_marginBottom="20dp"
+            />
     </RelativeLayout>
 </FrameLayout>

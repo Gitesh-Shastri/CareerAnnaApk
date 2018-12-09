@@ -97,6 +97,13 @@
             android:textStyle="bold"
             />
     </RelativeLayout>
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"
+        android:id="@+id/progress"
+        />
     <Button
         android:padding="7dp"
         android:layout_width="wrap_content"
@@ -126,14 +133,18 @@
         android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
         style="@style/Base.TextAppearance.AppCompat.Medium"
         android:layout_marginLeft="20dp" />
-        <WebView
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/descText">
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/desc"
             android:id="@+id/descTextDetails"
-            android:layout_below="@id/descText"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"
             />
+        </ScrollView>
 </RelativeLayout>
