@@ -49,7 +49,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(getSupportActionBar() != null)
             getSupportActionBar().hide();
 
-        int cache = Paper.book().read("counter");
+        int cache;
+        try {
+            cache = Paper.book().read("counter");
+        } catch (NullPointerException e){
+            cache = 0;
+            Paper.book().write("counter", counter);
+        }
         if(cache > -1 ) {
             Log.i("counter", String.valueOf(cache));
             counter = cache;

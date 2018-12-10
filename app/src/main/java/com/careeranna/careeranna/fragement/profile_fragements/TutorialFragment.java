@@ -2,6 +2,7 @@ package com.careeranna.careeranna.fragement.profile_fragements;
 
 
 import android.app.ProgressDialog;
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,11 +22,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.careeranna.careeranna.JW_Player_Files.KeepScreenOnHandler;
 import com.careeranna.careeranna.ParticularCourse;
 import com.careeranna.careeranna.R;
 import com.careeranna.careeranna.adapter.ExpandableList_Adapter;
 import com.careeranna.careeranna.data.Topic;
 import com.careeranna.careeranna.data.Unit;
+import com.longtailvideo.jwplayer.JWPlayerView;
+import com.longtailvideo.jwplayer.events.FullscreenEvent;
+import com.longtailvideo.jwplayer.events.listeners.VideoPlayerEvents;
+import com.longtailvideo.jwplayer.media.playlists.PlaylistItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,9 +43,11 @@ import java.util.List;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
-public class TutorialFragment extends Fragment implements ExpandableList_Adapter.OnItemClickListener{
+public class TutorialFragment extends Fragment implements ExpandableList_Adapter.OnItemClickListener
+, VideoPlayerEvents.OnFullscreenListener{
 
-    VideoView videoView;
+//    VideoView videoView;
+    private JWPlayerView playerView;
 
     String videoUrl;
 
@@ -59,15 +67,17 @@ public class TutorialFragment extends Fragment implements ExpandableList_Adapter
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tutorial, container, false);
 
-        videoView = view.findViewById(R.id.videoView);
+        playerView = view.findViewById(R.id.videoView);
+        new KeepScreenOnHandler(playerView, getActivity().getWindow());
+        /*
+        Playing a sample video in the starting, this statement should be removed before
+        finalizing the app.
+        TODO: Play from the last moment where the user left.
+         */
+
         String videoPath = "android.resource://com.careeranna.careeranna/"+R.raw.video;
         Uri uri = Uri.parse(videoPath);
-
-        MediaController mediaController = new MediaController(getContext());
-        videoView.setVideoPath(uri.toString());
-        videoView.setMediaController(mediaController);
-
-        videoView.start();
+        playVideo(uri.toString());
 
         listView = view.findViewById(R.id.expandableunit);
         return view;
@@ -133,8 +143,7 @@ public class TutorialFragment extends Fragment implements ExpandableList_Adapter
                             e.printStackTrace();
                         }
                         progressDialog.dismiss();
-                        videoView.setVideoURI(Uri.parse(videoUrl));
-                        videoView.start();
+                        playVideo(videoUrl);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -147,4 +156,51 @@ public class TutorialFragment extends Fragment implements ExpandableList_Adapter
 
         return videoUrl.replace("\\", "");
     }
+
+    private void playVideo(String videoUrl){
+        PlaylistItem playlistItem = new PlaylistItem.Builder()
+                .file(videoUrl)
+                .build();
+        playerView.load(playlistItem);
+    }
+
+    @Override
+    public void onDestroy() {
+        playerView.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onPause() {
+        playerView.onPause();
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        playerView.onResume();
+        super.onResume();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        playerView.setFullscreen(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE, true);
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onFullscreen(FullscreenEvent fullscreenEvent) {
+        if(fullscreenEvent.getFullscreen()){
+            //If fullscreen, remove the action bar
+            ((ParticularCourse)getActivity()).removeActionBar();
+        } else {
+            //If not fullscreen, show the action bar
+            ((ParticularCourse)getActivity()).showActionBar();
+        }
+    }
+
+    public boolean isPlayerFullscreen(){
+        return playerView.getFullscreen();
+    }
+
 }

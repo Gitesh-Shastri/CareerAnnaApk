@@ -65,6 +65,8 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class MyCourses extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final String TAG = "MyCourses";
+
     private DrawerLayout drawerLayout;
 
     private ActionBarDrawerToggle mToggle;
@@ -139,6 +141,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_couses);
 
+        Log.d(TAG, "onCreate: ");
         //  Initialize Layout Variable
         drawerLayout = findViewById(R.id.drawelayout);
         navigationView = findViewById(R.id.nav_view);
@@ -394,6 +397,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
                 mAuth.signOut();
                 LoginManager.getInstance().logOut();
             }
+            Paper.delete("user");
             startActivity(new Intent(this, MainActivity.class));
             finish();
 

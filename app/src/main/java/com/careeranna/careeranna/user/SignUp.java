@@ -371,7 +371,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
     private void updateUI(final FirebaseUser userAccount) {
 
         if(userAccount != null) {
-            snackbar.dismiss();
+            if(snackbar != null)
+                snackbar.dismiss();
 
             if(userAccount.getPhoneNumber() != null) {
                 userphone = userAccount.getPhoneNumber();

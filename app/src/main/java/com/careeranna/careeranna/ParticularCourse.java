@@ -1,7 +1,9 @@
 package com.careeranna.careeranna;
 
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -44,6 +46,8 @@ import io.paperdb.Paper;
 
 public class ParticularCourse extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final String TAG = "ParticularCourse";
+
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle mToggle;
 
@@ -73,6 +77,8 @@ public class ParticularCourse extends AppCompatActivity implements NavigationVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_particular_course);
+
+        Log.d(TAG, "onCreate: ");
 
         navigationView = findViewById(R.id.nav_view1);
         drawerLayout = findViewById(R.id.drawelayout1);
@@ -201,12 +207,9 @@ public class ParticularCourse extends AppCompatActivity implements NavigationVie
     }
 
     private void fetchUnit() {
-
-
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading Videos .. ");
         progressDialog.show();
-
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         String url = "http://careeranna.in/course_videos.php?product_id="+id;
@@ -241,7 +244,6 @@ public class ParticularCourse extends AppCompatActivity implements NavigationVie
     }
 
     private void fetchPdf() {
-
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading Materilal .. ");
         progressDialog.show();
@@ -283,6 +285,28 @@ public class ParticularCourse extends AppCompatActivity implements NavigationVie
                     }
                 });
         requestQueue.add(stringRequest);
+    }
+
+    public void removeActionBar(){
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null && actionBar.isShowing()){
+            actionBar.hide();
+        }
+    }
+
+    public void showActionBar(){
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null && !actionBar.isShowing()){
+            actionBar.show();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(tutorialFragment.isPlayerFullscreen())
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        else
+            super.onBackPressed();
     }
 
 }

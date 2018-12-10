@@ -31,8 +31,6 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.util.Date;
 
-import static com.google.ads.interactivemedia.v3.impl.w.c.error;
-
 
 public class ParticularArticleActivity extends AppCompatActivity {
 

@@ -25,7 +25,6 @@ import com.careeranna.careeranna.data.Category;
 import com.careeranna.careeranna.data.Course;
 import com.careeranna.careeranna.data.SubCategory;
 import com.careeranna.careeranna.helper.RecyclerViewCoursesAdapter;
-import com.google.android.exoplayer.C;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +33,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class CategoriesSection extends AppCompatActivity implements RecyclerViewCoursesAdapter.OnItemClickListener {
+
+    public static final String TAG = "AppCompat";
 
     private ArrayList<String> names;
     private ArrayList<String> urls;
