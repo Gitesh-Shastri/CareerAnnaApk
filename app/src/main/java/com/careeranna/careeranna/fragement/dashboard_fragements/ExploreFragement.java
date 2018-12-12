@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.careeranna.careeranna.CategoriesSection;
 import com.careeranna.careeranna.ExamPrepActivity;
 import com.careeranna.careeranna.MyExamPrepActivity;
+import com.careeranna.careeranna.PurchaseCourseDetail;
 import com.careeranna.careeranna.PurchaseCourses;
 import com.careeranna.careeranna.R;
 import com.careeranna.careeranna.data.Category;
@@ -121,7 +122,7 @@ public class ExploreFragement extends Fragment implements RecyclerViewTopAdapter
     @Override
     public void onItemClick(int position) {
 
-        Intent intent = new Intent(getApplicationContext(), PurchaseCourses.class);
+        Intent intent = new Intent(getApplicationContext(), PurchaseCourseDetail.class);
         intent.putExtra("Course", courses.get(position));
         getContext().startActivity(intent);
 

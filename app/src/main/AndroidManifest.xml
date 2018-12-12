@@ -24,7 +24,6 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
         <meta-data
             android:name="JW_LICENSE_KEY"
             android:value="PBqloWZ7+cg1wh3h3P0dnaBB2Lgrqn/GgQUsBG6Rb+bq/TiW" />
@@ -57,10 +56,12 @@
         <activity
             android:name=".user.Register"
             android:label="Create An Account" />
-        <activity android:name=".PurchaseCourses"
-            android:configChanges="orientation"/>
+        <activity
+            android:name=".PurchaseCourses"
+            android:configChanges="orientation" />
         <activity android:name=".CategoriesSection" />
-        <activity android:name=".ParticularCourse"
+        <activity
+            android:name=".ParticularCourse"
             android:configChanges="orientation" />
         <activity android:name=".user.ExploreNotSIActivity" />
         <activity android:name=".Pdf" />
@@ -75,7 +76,8 @@
             android:label="My Exam Prep" />
         <activity android:name=".Payment" />
         <activity android:name=".PasswordReset" />
-        <activity android:name=".CartPage"></activity>
+        <activity android:name=".CartPage" />
+        <activity android:name=".PurchaseCourseDetail" />
     </application>
 
 </manifest>
