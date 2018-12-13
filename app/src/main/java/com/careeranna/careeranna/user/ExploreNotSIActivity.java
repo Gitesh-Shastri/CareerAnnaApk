@@ -1,11 +1,13 @@
 package com.careeranna.careeranna.user;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,9 +16,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.careeranna.careeranna.MyCourses;
 import com.careeranna.careeranna.R;
 import com.careeranna.careeranna.adapter.ViewPagerAdapter;
 import com.careeranna.careeranna.data.Banner;
+import com.careeranna.careeranna.data.FreeVideos;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -31,9 +46,13 @@ public class ExploreNotSIActivity extends AppCompatActivity implements View.OnCl
 
     ArrayList<Banner> mBanners;
 
+    ProgressDialog progressDialog;
+
     private int currentPage;
     private Runnable runnable;
     private Handler handler;
+
+    ArrayList<FreeVideos> freeVideos;
     private int delay = 5000;       //Change the delay of the banner scroll from here
 
 
@@ -101,17 +120,7 @@ public class ExploreNotSIActivity extends AppCompatActivity implements View.OnCl
             topCoursesLayout.addView(view);
         }
 
-        for(int i=0; i<10; i++){
-            View view = layoutInflater.inflate(R.layout.video_thumbnail, freeVidLayout, false);
-
-            TextView title = view.findViewById(R.id.tv_vid_thumbnail_title);
-            ImageView imageView = view.findViewById(R.id.iv_vid_thumbnail_img);
-
-            title.setText("Video "+i);
-            imageView.setImageResource(R.mipmap.ic_launcher);
-
-            freeVidLayout.addView(view);
-        }
+        initalizeVideos();
 
         for(int i=0; i<10; i++){
             View view = layoutInflater.inflate(R.layout.video_thumbnail,trendingVidLayout, false);
@@ -142,6 +151,70 @@ public class ExploreNotSIActivity extends AppCompatActivity implements View.OnCl
         banner.addOnPageChangeListener(bannerListener);
         currentPage = 0;
         addDots(0);
+    }
+
+    private void initalizeVideos() {
+
+        freeVideos = new ArrayList<>();
+
+        progressDialog = new ProgressDialog(this);
+
+        progressDialog.setMessage("Loading My Courses Please Wait ... ");
+        progressDialog.show();
+
+        progressDialog.setCancelable(false);
+
+        final LayoutInflater layoutInflater = LayoutInflater.from(this);
+
+        RequestQueue requestQueue1 = Volley.newRequestQueue(this);
+        String url1 = "http://careeranna.in/getFreeVideos.php";
+        Log.d("url_res", url1);
+        StringRequest stringRequest1  = new StringRequest(Request.Method.GET, url1,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("url_response", response.toString());
+                            JSONArray VideosArray = new JSONArray(response);
+                            for(int i=0;i<10;i++) {
+                                JSONObject videos = VideosArray.getJSONObject(i);
+                                freeVideos.add(new FreeVideos(
+                                        videos.getString("id"),
+                                        videos.getString("video_url").replace("\\",""),
+                                        "https://www.careeranna.com/thumbnail/" +videos.getString("thumbnail"),
+                                        videos.getString("tags"),
+                                        videos.getString("totalViews")));
+
+                                View view = layoutInflater.inflate(R.layout.video_thumbnail, freeVidLayout, false);
+
+                                TextView title = view.findViewById(R.id.tv_vid_thumbnail_title);
+                                ImageView imageView = view.findViewById(R.id.iv_vid_thumbnail_img);
+
+                                if(!videos.getString("tags").equals("")&&!videos.getString("tags").equals("null")) {
+
+                                    if(!videos.getString("thumbnail").equals("")) {
+                                        title.setText(videos.getString("tags"));
+                                        Glide.with(ExploreNotSIActivity.this).load("https://www.careeranna.com/thumbnail/" + videos.getString("thumbnail")).into(imageView);
+
+                                        freeVidLayout.addView(view);
+                                    }
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.dismiss();
+                    }
+                });
+
+        requestQueue1.add(stringRequest1);
+
     }
 
     @Override

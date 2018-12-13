@@ -76,7 +76,9 @@
             android:label="My Exam Prep" />
         <activity android:name=".Payment" />
         <activity android:name=".PasswordReset" />
-        <activity android:name=".CartPage" />
+        <activity android:name=".CartPage"
+            android:label="My Cart"
+            />
         <activity android:name=".PurchaseCourseDetail" />
     </application>
 

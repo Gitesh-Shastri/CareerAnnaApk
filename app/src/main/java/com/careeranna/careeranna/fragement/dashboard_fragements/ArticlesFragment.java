@@ -79,7 +79,6 @@ public class ArticlesFragment extends Fragment implements ArticleAdapter.OnItemC
 
         mArticles = new ArrayList<>();
 
-
         return view;
     }
 

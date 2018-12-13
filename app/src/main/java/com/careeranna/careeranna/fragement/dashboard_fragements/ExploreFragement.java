@@ -140,7 +140,7 @@ public class ExploreFragement extends Fragment implements RecyclerViewTopAdapter
     @Override
     public void onItemClickExamp(int position) {
 
-        Intent intent = new Intent(getApplicationContext(), PurchaseCourses.class);
+        Intent intent = new Intent(getApplicationContext(), PurchaseCourseDetail.class);
         intent.putExtra("Examp", examPreps.get(position));
         getContext().startActivity(intent);
     }

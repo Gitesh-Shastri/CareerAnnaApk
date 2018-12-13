@@ -435,9 +435,14 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
             navigationView.setCheckedItem(R.id.article);
             getSupportActionBar().setTitle("Articles");
 
-        }else if(id == R.id.profile) {
+        } else if(id == R.id.profile) {
 
             startActivity(new Intent(this, MyProfile.class));
+
+        } else if(id == R.id.cart) {
+
+            startActivity(new Intent(this, CartPage.class));
+
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -602,36 +607,6 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
 
     }
 
-    public void initCourse() {
-
-        String desc = "Organizations of all sizes and Industries, be it a financial institution or a small big data start up, everyone is using Python for their business.\n" +
-                "Python is among the popular data science programming languages not only in Big data companies but also in the tech start up crowd. Around 46% of data scientists use Python.\n" +
-                "Python has overtaken Java as the preferred programming language and is only second to SQL in usage today. \n" +
-                "Python is finding Increased adoption in numerical computations, machine learning and several data science applications.\n" +
-                "Python for data science requires data scientists to learn the usage of regular expressions, work with the scientific libraries and master the data visualization concepts.";
-
-        courses = new ArrayList<>();
-        courses.add(new Course("1",  "Machine Learning", imageUrls[0], "1", "6999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        courses.add(new Course("2",  "Python", imageUrls[1], "2", "4999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        courses.add(new Course("3",  "Marketing", imageUrls[2], "3", "5999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        courses.add(new Course("4",  "Machine Learning", imageUrls[0], "4", "6999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        courses.add(new Course("5",  "Python", imageUrls[1], "5", "3999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        courses.add(new Course("6",  "Marketing", imageUrls[2], "1", "7999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        courses.add(new Course("7",  "Machine Learning", imageUrls[0], "2", "8999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        courses.add(new Course("8",  "Python", imageUrls[1], "2", "3999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-        courses.add(new Course("8",  "Marketing", imageUrls[2], "1", "4999",
-                desc, "android.resource://com.careeranna.careeranna/"+R.raw.video));
-
-    }
-
     public void initCategory() {
 
         categories = new ArrayList<>();
@@ -677,7 +652,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
                                                         Category.getString("course_name"),
                                                         "https://www.careeranna.com/"+Category.getString("product_image").replace("\\",""),
                                                         "15",
-                                                        Category.getString("price")
+                                                        Category.getString("discount")
                                                         , Category.getString("description"),
                                                         Category.getString("video_url").replace("\\","")));
                                                 }
@@ -713,6 +688,12 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
 
     private  void addExam() {
 
+        final String desc = "Organizations of all sizes and Industries, be it a financial institution or a small big data start up, everyone is using Python for their business.\n" +
+                "Python is among the popular data science programming languages not only in Big data companies but also in the tech start up crowd. Around 46% of data scientists use Python.\n" +
+                "Python has overtaken Java as the preferred programming language and is only second to SQL in usage today. \n" +
+                "Python is finding Increased adoption in numerical computations, machine learning and several data science applications.\n" +
+                "Python for data science requires data scientists to learn the usage of regular expressions, work with the scientific libraries and master the data visualization concepts.";
+
         RequestQueue requestQueue1 = Volley.newRequestQueue(MyCourses.this);
         String url1 = "http://careeranna.in/explore.php";
         Log.d("url_res", url1);
@@ -729,8 +710,8 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
                                         Category.getString("course_name"),
                                         "https://www.careeranna.com/"+Category.getString("product_image").replace("\\",""),
                                         Category.getString("category_id"),
-                                        Category.getString("price")
-                                        , Category.getString("description"),
+                                        Category.getString("discount"),
+                                        desc,
                                         Category.getString("video_url").replace("\\","")));
                             }
                         } catch (JSONException e) {
