@@ -3,11 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_gradient"
     tools:context=".fragement.ui_fragments.signIn_buttons">
 
     <RelativeLayout
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="35dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -19,8 +18,8 @@
             android:text="Create an account"
             android:layout_centerHorizontal="true"
             android:layout_width="match_parent"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
             android:layout_height="35dp"
             style="?android:attr/borderlessButtonStyle"
             android:background="@drawable/button_create_account"
@@ -36,8 +35,8 @@
             android:layout_marginBottom="15dp"
             android:layout_centerHorizontal="true"
             android:layout_width="match_parent"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
             android:layout_height="35dp"
             style="?android:attr/borderlessButtonStyle"
             android:background="@drawable/button_create_account"
@@ -48,8 +47,9 @@
             android:id="@+id/forgot"
             android:text="Forgot password?"
             android:layout_centerHorizontal="true"
+            android:textStyle="bold"
             android:textColor="#FFF"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="15dp"
             android:textAllCaps="true"
             android:textSize="12sp"
             android:layout_above="@id/signin_with_email"
