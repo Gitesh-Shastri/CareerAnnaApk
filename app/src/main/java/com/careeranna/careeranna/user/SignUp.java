@@ -113,6 +113,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
 
         mGoogleBtn = findViewById(R.id.google_sign_in_button);
 
+        g
+
 //        signUp = findViewById(R.id.signUp);
 
         signIn = findViewById(R.id.signInAccount);
