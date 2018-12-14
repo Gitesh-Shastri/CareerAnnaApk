@@ -35,7 +35,7 @@ public class signInFields extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_sign_in_fields, container, false);
         et_usermail = view.findViewById(R.id.useremailL);
         et_userpw = view.findViewById(R.id.userpasswordL);
-        bt_signIn = view.findViewById(R.id.signInAccount);
+        bt_signIn = view.findViewById(R.id.signInAccount_2);
 
         bt_signIn.setOnClickListener(this);
 
@@ -45,7 +45,7 @@ public class signInFields extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.signInAccount:
+            case R.id.signInAccount_2:
                 String emailInput = et_usermail.getEditText().getText().toString().trim();
                 String pwInput = et_userpw.getEditText().getText().toString().trim();
                 if(validateUsernameAndPW(emailInput, pwInput)){
@@ -58,13 +58,13 @@ public class signInFields extends Fragment implements View.OnClickListener {
     public boolean validateUsernameAndPW(String emailInput, String pwInput){
         //For username/email
         if(emailInput.isEmpty()) {
-            et_usermail.setError("Username/Email cannot be empty");
+            et_usermail.setError("Required Field");
             return false;
         }
 
         //For password
         if(pwInput.isEmpty()) {
-            et_usermail.setError("Password cannot be empty");
+            et_userpw.setError("Required Field");
             return false;
         }
 

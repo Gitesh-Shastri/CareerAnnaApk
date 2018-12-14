@@ -15,10 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -54,13 +52,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.gson.Gson;
+import com.shobhitpuri.custombuttons.GoogleSignInButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import io.paperdb.Paper;
 
@@ -81,11 +79,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
 
     private GoogleSignInClient mGoogleSignInClient;
 
-    SignInButton mGoogleBtn;
+    GoogleSignInButton googleLoginButton;
 
     private CallbackManager mCallbackManager;
 
-    LoginButton loginButton;
+    LoginButton fbLoginButton;
 
     ProgressBar progressBar;
 
@@ -95,42 +93,47 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
 
     AlertDialog alert;
 
-    Button signIn;
+//    Button signIn;
 
     String userphone = "";
 
     String verificationCode, email;
 
+    boolean isFieldsFragmentShowing;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_sign_up);
+
+        if(getSupportActionBar().isShowing()){
+            getSupportActionBar().hide();
+        }
+
         setContentView(R.layout.activity_sign_up_2);
 
         Paper.init(this);
 
-        relativeLayout = findViewById(R.id.snackbar);
+        relativeLayout = findViewById(R.id.snackbar_2);
 
-        mGoogleBtn = findViewById(R.id.google_sign_in_button);
-
-        g
+        googleLoginButton = findViewById(R.id.bt_google_sign_in_button);
 
 //        signUp = findViewById(R.id.signUp);
 
-        signIn = findViewById(R.id.signInAccount);
+//        signIn = findViewById(R.id.signInAccount_2);
 
 //        forgetPassword = findViewById(R.id.forgot);
 
-        textInputEmail = findViewById(R.id.useremailL);
-        textInputPassword = findViewById(R.id.userpasswordL);
+//        textInputEmail = findViewById(R.id.useremailL);
+//        textInputPassword = findViewById(R.id.userpasswordL);
 
-        progressBar = findViewById(R.id.signUp_progressCircle);
+        progressBar = findViewById(R.id.signUp_progressCircle_2);
 
-        loginButton =  findViewById(R.id.fb_login_button);
+        fbLoginButton =  findViewById(R.id.fb_login_button_2);
 
         fragmentManager = getSupportFragmentManager();
 
-        mGoogleBtn.setOnClickListener(this);
+        googleLoginButton.setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -138,7 +141,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
         progressBar.bringToFront();
         progressBar.setVisibility(View.GONE);
 
-        //Show the sign in option buttons at the starting
+        //Show the signIn_Buttons fragment at the starting, not the signIn_Fields fragment
+        isFieldsFragmentShowing = false;
         FragmentTransaction signInBtTrans = fragmentManager.beginTransaction();
             signInBtTrans.replace(R.id.fragment_btAndFields, new signIn_buttons());
             signInBtTrans.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
@@ -146,7 +150,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
 
 //        signUp.setOnClickListener(this);
 
-        signIn.setOnClickListener(this);
+//        signIn.setOnClickListener(this);
 
 //        forgetPassword.setOnClickListener(this);
 
@@ -160,9 +164,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
 
-        loginButton.setReadPermissions("email");
+        fbLoginButton.setReadPermissions("email");
 
-        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+        fbLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
 
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -209,7 +213,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
 
         switch (view.getId()) {
 
-                case R.id.google_sign_in_button:
+                case R.id.bt_google_sign_in_button:
 
                     Log.d(TAG, "Google signin clicked ");
 
@@ -290,21 +294,26 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
 //                requestQueue.add(stringRequest);
 //                break;
 
-            case R.id.signUp:
-                /*
-                TODO: Open register activity
-                 */
-                Intent intent = new Intent(SignUp.this, Register.class);
-                startActivity(intent);
-                break;
+//            case R.id.signUp:
+//                /*
+//                TODO: Open register activity
+//                 */
+//                Intent intent = new Intent(SignUp.this, Register.class);
+//                startActivity(intent);
+//                break;
 
-            case R.id.forgot:
-                /*
-                TODO: Open forogt pw dialog
-                 */
-                ForgetDialog forgetDialog = new ForgetDialog();
-                forgetDialog.show(getSupportFragmentManager(), "Forget Password");
+//            case R.id.forgot:
+//                /*
+//                TODO: Open forogt pw dialog
+//                 */
+//                ForgetDialog forgetDialog = new ForgetDialog();
+//                forgetDialog.show(getSupportFragmentManager(), "Forget Password");
         }
+    }
+
+    public void forgotPw(){
+        ForgetDialog forgetDialog = new ForgetDialog();
+        forgetDialog.show(getSupportFragmentManager(), "Forget Password");
     }
 
     private void signIn() {
@@ -459,41 +468,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
         }
     }
 
-
-    private boolean validateEmailTv() {
-
-        String emailInput = textInputEmail.getEditText().getText().toString().trim();
-
-        if(emailInput.isEmpty()) {
-
-            textInputEmail.setError("UserEmail can't be empty ");
-            return false;
-
-        } else {
-
-            textInputEmail.setError(null);
-            return true;
-
-        }
-    }
-
-    private boolean validatePassTv() {
-
-        String emailInput = textInputPassword.getEditText().getText().toString().trim();
-
-        if(emailInput.isEmpty()) {
-
-            textInputPassword.setError("UserPassword can't be empty ");
-            return false;
-
-        } else {
-
-            textInputPassword.setError(null);
-            return true;
-
-        }
-    }
-
     private boolean amIConnect() {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -590,4 +564,24 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
         requestQueue.add(stringRequest);
     }
 
+    @Override
+    public void onBackPressed() {
+        /*
+        If the SignIn_Fields fragment is showing, show the SignIn_Buttons fragment
+         */
+        if(isFieldsFragmentShowing){
+            Log.d(TAG, "onBackPressed: ");
+            setFieldsFragmentShowing(false);
+            FragmentTransaction signInFieldsFragTrans = fragmentManager.beginTransaction();
+                signInFieldsFragTrans.replace(R.id.fragment_btAndFields, new signIn_buttons());
+                signInFieldsFragTrans.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                signInFieldsFragTrans.commit();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    public void setFieldsFragmentShowing(boolean isFieldsFragmentShowing){
+        this.isFieldsFragmentShowing = isFieldsFragmentShowing;
+    }
 }

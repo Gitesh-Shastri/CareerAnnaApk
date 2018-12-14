@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
     tools:context=".user.Register">
 
     <RelativeLayout
@@ -12,6 +13,10 @@
         android:layout_height="wrap_content">
 
         <android.support.design.widget.TextInputLayout
+            app:backgroundTint="#FFF"
+            android:textColorHint="#FFF"
+            android:textColor="#FFF"
+            android:textColorHighlight="#FFF"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:layout_marginTop="10dp"
@@ -32,6 +37,10 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
+            app:backgroundTint="#FFF"
+            android:textColorHint="#FFF"
+            android:textColor="#FFF"
+            android:textColorHighlight="#FFF"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:layout_below="@id/usernameTv1"
@@ -50,6 +59,10 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
+            app:backgroundTint="#FFF"
+            android:textColorHint="#FFF"
+            android:textColor="#FFF"
+            android:textColorHighlight="#FFF"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:layout_below="@id/useremailTv1"
@@ -68,6 +81,10 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
+            app:backgroundTint="#FFF"
+            android:textColorHint="#FFF"
+            android:textColor="#FFF"
+            android:textColorHighlight="#FFF"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:layout_below="@id/userpasswordTv1"
@@ -87,6 +104,10 @@
 
 
         <android.support.design.widget.TextInputLayout
+            app:backgroundTint="#FFF"
+            android:textColorHint="#FFF"
+            android:textColor="#FFF"
+            android:textColorHighlight="#FFF"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:layout_below="@id/userphoneTv1"
@@ -117,22 +138,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Sign Up As A Student"
-            android:background="@drawable/border_curved"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_below="@id/how_spinner"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/button_create_account"
+            android:layout_marginRight="20dp"
             android:id="@+id/signUpBtn"
             android:layout_marginTop="20dp"
+            style="?android:attr/borderlessButtonStyle"
+            android:textColor="#FFF"
             />
         <TextView
+            android:layout_below="@+id/signUpBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
             android:text="@string/terms"
-            android:layout_below="@+id/signUpBtn"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
+            android:textColor="#FFF"
             />
     </RelativeLayout>
 
