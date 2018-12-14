@@ -41,10 +41,14 @@ public class Payment extends AppCompatActivity {
 
     private PayUChecksum checksum;
 
+    private float price;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
+
+        price = getIntent().getFloatExtra("price", 0);
 
         Payu.setInstance(this);
 
@@ -55,7 +59,7 @@ public class Payment extends AppCompatActivity {
 
         merchantKey = "gtKFFx";
         int environment = PayuConstants.STAGING_ENV;
-        String amount = "10";
+        String amount = String.valueOf(price);
         String email = "giteshshastri96@gmail.com";
         userCredentials = merchantKey + ":" + email;
 

@@ -206,46 +206,7 @@ public class PurchaseCourseDetail extends AppCompatActivity implements VideoPlay
         mBuilder.setPositiveButton("Check Out", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-                progressBar.setVisibility(View.VISIBLE);
-                RequestQueue requestQueue =Volley.newRequestQueue(PurchaseCourseDetail.this);
-                String url = "http://careeranna.in/addProduct.php";
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                Toast.makeText(PurchaseCourseDetail.this, response, Toast.LENGTH_SHORT).show();
-                                progressBar.setVisibility(View.INVISIBLE);
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                progressBar.setVisibility(View.INVISIBLE);
-                            }
-                        }) {
-                    @Override
-                    protected Map<String, String> getParams() {
-                        // Posting params to login url
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("user", user.getUser_id());
-                        if(course != null ) {
-                            params.put("product", course.getId());
-                            params.put("category", course.getCategory_id());
-                            params.put("name", course.getName());
-                            params.put("image", course.getImageUrl());
-                        } else {
-                            params.put("product", examPrep.getId());
-                            params.put("category", examPrep.getCategory_id());
-                            params.put("name", examPrep.getName());
-                            params.put("image", examPrep.getImageUrl());
-                        }
-                        return params;
-                    }
-
-                };
-                requestQueue.add(stringRequest);
-
+                startActivity(new Intent(PurchaseCourseDetail.this,  Payment.class));
             }
         });
         mBuilder.setPositiveButton("Add To Cart", new DialogInterface.OnClickListener() {

@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Html;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -227,6 +228,12 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
         handler = new Handler();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.add_cart, menu);
+        return true;
+    }
+
     public void getBanner() {
 
         mBanners = new ArrayList<>();
@@ -345,6 +352,13 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        int id = item.getItemId();
+
+        if(id == R.id.add_to_cart) {
+
+            startActivity(new Intent(this, CartPage.class));
+        }
+
         if(mToggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -438,10 +452,6 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
         } else if(id == R.id.profile) {
 
             startActivity(new Intent(this, MyProfile.class));
-
-        } else if(id == R.id.cart) {
-
-            startActivity(new Intent(this, CartPage.class));
 
         }
 

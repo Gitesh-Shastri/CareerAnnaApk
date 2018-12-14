@@ -1,7 +1,11 @@
 package com.careeranna.careeranna;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,6 +52,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(getSupportActionBar() != null)
             getSupportActionBar().hide();
+
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS}, 101);
+        }
 
         int cache;
         try {

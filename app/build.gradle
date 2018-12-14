@@ -57,5 +57,9 @@ dependencies {
     implementation project(':sdkui')
     implementation project(':jwplayer-core-3.3.0')
     implementation project(':jwplayer-common-3.3.0')
+    implementation('com.paytm:pgplussdk:1.2.3') {
+        transitive = true;
+    }
+    implementation 'com.squareup.retrofit2:retrofit:2.2.0'
 }
 apply plugin: 'com.google.gms.google-services'
