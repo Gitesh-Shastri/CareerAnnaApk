@@ -5,8 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_SMS" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
     <application
         android:allowBackup="true"
@@ -60,38 +58,29 @@
             android:label="Create An Account" />
         <activity
             android:name=".PurchaseCourses"
-            android:configChanges="orientation" />
+            android:configChanges="orientation|screenSize|screenLayout" />
         <activity android:name=".CategoriesSection" />
         <activity
             android:name=".ParticularCourse"
-            android:configChanges="orientation" />
+            android:configChanges="orientation|screenSize|screenLayout" />
         <activity android:name=".user.ExploreNotSIActivity" />
-        <activity
-            android:name=".Pdf"
-            android:parentActivityName=".ParticularCourse" />
+        <activity android:name=".Pdf" />
         <activity
             android:name=".ParticularArticleActivity"
-            android:label="Article"
-            android:parentActivityName=".MyCourses" />
+            android:label="Article" />
         <activity
             android:name=".ExamPrepActivity"
             android:label="Examp Prep" />
         <activity
             android:name=".MyExamPrepActivity"
             android:label="My Exam Prep" />
-        <activity
-            android:name=".Payment"
-            android:label="Checkout" />
-        <activity
-            android:name=".PasswordReset"
-            android:label="password Reset"
-            android:parentActivityName=".user.SignUp" />
+        <activity android:name=".Payment" />
+        <activity android:name=".PasswordReset" />
         <activity
             android:name=".CartPage"
-            android:label="My Cart"
-            android:parentActivityName=".MyCourses" />
+            android:label="My Cart" />
         <activity android:name=".PurchaseCourseDetail" />
-        <activity android:name=".PaytmPayment"></activity>
+        <activity android:name=".DummyActivity"></activity>
     </application>
 
 </manifest>
