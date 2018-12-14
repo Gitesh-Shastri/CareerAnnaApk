@@ -80,7 +80,8 @@
             android:name=".CartPage"
             android:label="My Cart" />
         <activity android:name=".PurchaseCourseDetail" />
-        <activity android:name=".DummyActivity"></activity>
+        <activity android:name=".DummyActivity" />
+        <activity android:name=".ExampPrepParticular"></activity>
     </application>
 
 </manifest>
