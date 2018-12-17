@@ -17,4 +17,5 @@
 
     <color name="register_screen_fields_color">#FFF</color>
     <color name="my_spinner_text_color">#FFF</color>
+    <color name="red">#da3c21</color>
 </resources>
