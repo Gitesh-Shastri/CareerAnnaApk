@@ -16,6 +16,7 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.careeranna.careeranna.adapter.OrderCourseAdapter;
@@ -36,7 +37,7 @@ public class CartPage extends AppCompatActivity {
 
     User user;
 
-    LinearLayout linearLayout;
+    RelativeLayout linearLayout;
 
     OrderCourseAdapter orderCourseAdapter;
 
@@ -53,6 +54,8 @@ public class CartPage extends AppCompatActivity {
     Button checkout;
 
     Dialog dialog;
+
+    TextView price;
 
     Intent intent;
 
@@ -71,24 +74,29 @@ public class CartPage extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.ordered_rv);
 
+        price = findViewById(R.id.grand_total);
+
         String cache = Paper.book().read("user");
         if(cache != null && !cache.isEmpty()) {
             user =  new Gson().fromJson(cache, User.class);
 
         }
-
+        
         orderedCourses = new ArrayList<>();
         orderedCourses.add(new OrderedCourse("1", "Python", "999", "https://cdn-images-1.medium.com/max/2000/1*SSutxOFoBUaUmgeNWAPeBA.jpeg"));
         orderedCourses.add(new OrderedCourse("3", "Java", "1200", "https://cdn-images-1.medium.com/max/2000/1*SSutxOFoBUaUmgeNWAPeBA.jpeg"));
         orderedCourses.add(new OrderedCourse("2", "Android Development", "1999", "https://cdn-images-1.medium.com/max/2000/1*SSutxOFoBUaUmgeNWAPeBA.jpeg"));
         orderedCourses.add(new OrderedCourse("4", "CAT", "2500", "https://cdn-images-1.medium.com/max/2000/1*SSutxOFoBUaUmgeNWAPeBA.jpeg"));
 
+        for(OrderedCourse orderedCourse: orderedCourses) {
+            grand_total += Float.valueOf(orderedCourse.getPrice());
+        }
+
+        price.setText(String.valueOf(grand_total));
+
         checkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(OrderedCourse orderedCourse: orderedCourses) {
-                    grand_total += Float.valueOf(orderedCourse.getPrice());
-                }
 
                 dialog = new Dialog(CartPage.this);
                 dialog.setContentView(R.layout.custom_payment_layout);

@@ -118,6 +118,17 @@ public class ParticularArticleActivity extends AppCompatActivity {
                                 "h1,h2,h3,h4,h5,h6{" +
                                 "font-size: 1em;" +
                                 "}" +
+                                "table {" +
+                                "  border-collapse: collapse;" +
+                                "  border-spacing: 0;" +
+                                "  width:  300px" +
+                                "  border: 1px solid #ddd;" +
+                                "}" +
+                                "" +
+                                "th, td {" +
+                                "  text-align: left;" +
+                                "  padding: 8px;" +
+                                "}" +
                                 "</style>" +
                                 "</head>" +
                                 "<body>" +
@@ -125,7 +136,7 @@ public class ParticularArticleActivity extends AppCompatActivity {
                                 "<h2><strong>"+article.getName()+"</strong></h2><hr/>" +
                                 "<img class=\"img-thumbnail\" src=" + article.getImage_url() + " width=300 height=300>"+
                                 "<h5>"+article.getAuthor()+"  <br />" +
-                                ""+article.getCreated_at()+"</h5>"+response.toString().replace("<table ", "<table class=\"table table-striped\"")+
+                                ""+article.getCreated_at()+"</h5>"+response+
                                 "</div>" +
                                 "</html>";
                         webview.loadData(html, "text/html", null);

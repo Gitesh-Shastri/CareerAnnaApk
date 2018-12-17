@@ -9,15 +9,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:weightSum="10"
+        android:weightSum="12"
         android:padding="10dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:textStyle="bold"
+            android:id="@+id/article_name"
             android:textColor="@color/colorPrimaryDark"
             android:text="Article Heading"
             />
@@ -25,13 +26,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="6"
+            android:layout_weight="7"
             android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:scaleType="fitXY"
+                android:id="@+id/article_image"
                 android:layout_weight="5"
                 android:src="@drawable/intro_pic_1"
                 />
@@ -49,15 +51,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Gitesh Shastri "
+                    android:id="@+id/article_author"
                     android:drawableLeft="@drawable/ic_person_black_24dp"
                     />
 
-                <TextView
+                <com.github.curioustechizen.ago.RelativeTimeTextView
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="13 Dec 2018"
+                    android:id="@+id/article_created"
                     android:drawableLeft="@drawable/ic_event_black_24dp"
                     />
 
@@ -71,6 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
+            android:id="@+id/article_content"
             android:text="Artciles details"
             />
 

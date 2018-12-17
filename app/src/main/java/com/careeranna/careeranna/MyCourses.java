@@ -1,8 +1,11 @@
 package com.careeranna.careeranna;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -41,6 +44,7 @@ import com.careeranna.careeranna.data.Course;
 import com.careeranna.careeranna.data.ExamPrep;
 import com.careeranna.careeranna.data.User;
 import com.careeranna.careeranna.fragement.dashboard_fragements.ExamPrepFragment;
+import com.careeranna.careeranna.helper.CountDrawable;
 import com.careeranna.careeranna.helper.RecyclerViewCoursesAdapter;
 import com.careeranna.careeranna.user.MyProfile;
 import com.careeranna.careeranna.fragement.dashboard_fragements.ArticlesFragment;
@@ -71,6 +75,8 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
     private DrawerLayout drawerLayout;
 
     private ActionBarDrawerToggle mToggle;
+
+    Menu menu;
 
     LinearLayout linearLayout;
 
@@ -135,6 +141,35 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
         }
 
         backPressed = System.currentTimeMillis();
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        this.menu = menu;
+
+        setCount(this, "9");
+        return true;
+    }
+
+
+    public void setCount(Context context, String count) {
+        MenuItem menuItem = menu.findItem(R.id.add_to_cart);
+        LayerDrawable icon = (LayerDrawable) menuItem.getIcon();
+
+        CountDrawable badge;
+
+        // Reuse drawable if possible
+        Drawable reuse = icon.findDrawableByLayerId(R.id.ic_group_count);
+        if (reuse != null && reuse instanceof CountDrawable) {
+            badge = (CountDrawable) reuse;
+        } else {
+            badge = new CountDrawable(context);
+        }
+
+        badge.setCount(count);
+        icon.mutate();
+        icon.setDrawableByLayerId(R.id.ic_group_count, badge);
     }
 
     @Override
@@ -432,6 +467,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
         }else if(id == R.id.explore) {
 
             initCategory();
+            setCount(this, "4");
 
             courses = new ArrayList<>();
             examPreps = new ArrayList<>();

@@ -60,6 +60,7 @@ dependencies {
     implementation('com.paytm:pgplussdk:1.2.3') {
         transitive = true;
     }
+    implementation 'com.github.lsjwzh.RecyclerViewPager:lib:v1.1.2@aar'
     implementation 'com.squareup.retrofit2:retrofit:2.2.0'
     implementation 'com.shobhitpuri.custombuttons:google-signin:1.0.0'
 }
