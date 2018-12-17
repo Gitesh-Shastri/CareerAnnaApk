@@ -14,5 +14,8 @@
     <color name="intro_desc">#c3c3c3</color>
     <color name="intro_title">#26418f</color>
     <color name="text_color_primary">#dd000000</color>
+
+    <color name="register_screen_fields_color">#FFF</color>
+    <color name="my_spinner_text_color">#FFF</color>
     <color name="red">#da3c21</color>
 </resources>

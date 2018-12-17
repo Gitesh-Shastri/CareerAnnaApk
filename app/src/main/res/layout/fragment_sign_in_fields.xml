@@ -3,18 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragement.ui_fragments.signInFields">
 
     <RelativeLayout
-        android:layout_marginBottom="35dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <android.support.design.widget.TextInputLayout
+            android:layout_marginTop="25dp"
             android:id="@+id/useremailL"
-            android:layout_above="@id/userpasswordL"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_width="match_parent"
@@ -26,6 +24,7 @@
                 android:textColorHint="#FFF"
                 android:textColor="#FFF"
                 android:textColorHighlight="#FFF"
+                android:textSize="16sp"
                 android:inputType="text"
                 android:hint="Username/Email"
                 android:layout_width="match_parent"
@@ -35,7 +34,7 @@
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/userpasswordL"
-            android:layout_above="@id/signInAccount_2"
+            android:layout_below="@id/useremailL"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_width="match_parent"
@@ -46,6 +45,7 @@
                 app:backgroundTint="#FFF"
                 android:textColorHint="#FFF"
                 android:textColor="#FFF"
+                android:textSize="16sp"
                 android:textColorHighlight="#FFF"
                 android:inputType="textPassword"
                 android:hint="Password"
@@ -55,7 +55,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <Button
-            android:layout_alignParentBottom="true"
+            android:layout_below="@id/userpasswordL"
             android:id="@+id/signInAccount_2"
             android:textSize="12sp"
             android:textColor="#FFF"
@@ -64,9 +64,10 @@
             android:layout_marginBottom="15dp"
             android:layout_centerHorizontal="true"
             android:layout_width="match_parent"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginRight="@dimen/login_screen_buttons_margin"
+            android:layout_marginLeft="@dimen/login_screen_buttons_margin"
             android:layout_height="35dp"
+            android:layout_marginTop="10dp"
             style="?android:attr/borderlessButtonStyle"
             android:background="@drawable/button_create_account"
             android:layout_above="@id/signUp"

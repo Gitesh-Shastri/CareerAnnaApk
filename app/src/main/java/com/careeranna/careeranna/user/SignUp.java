@@ -13,8 +13,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -93,8 +95,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
 
     AlertDialog alert;
 
-//    Button signIn;
-
     String userphone = "";
 
     String verificationCode, email;
@@ -112,20 +112,23 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
 
         setContentView(R.layout.activity_sign_up_2);
 
+        //************Drawing the center line and circle ************
+        /*
+        Get the screen width, set the circle's width and height = width/9
+         */
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width = displayMetrics.widthPixels;
+
+        View centerCircle = findViewById(R.id.view_centerCircle);
+        centerCircle.setLayoutParams(new LinearLayout.LayoutParams(width/9, width/9));
+        //***********************************************************
+
         Paper.init(this);
 
         relativeLayout = findViewById(R.id.snackbar_2);
 
         googleLoginButton = findViewById(R.id.bt_google_sign_in_button);
-
-//        signUp = findViewById(R.id.signUp);
-
-//        signIn = findViewById(R.id.signInAccount_2);
-
-//        forgetPassword = findViewById(R.id.forgot);
-
-//        textInputEmail = findViewById(R.id.useremailL);
-//        textInputPassword = findViewById(R.id.userpasswordL);
 
         progressBar = findViewById(R.id.signUp_progressCircle_2);
 
@@ -146,13 +149,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
         FragmentTransaction signInBtTrans = fragmentManager.beginTransaction();
             signInBtTrans.replace(R.id.fragment_btAndFields, new signIn_buttons());
             signInBtTrans.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            signInBtTrans.addToBackStack(null);
             signInBtTrans.commit();
-
-//        signUp.setOnClickListener(this);
-
-//        signIn.setOnClickListener(this);
-
-//        forgetPassword.setOnClickListener(this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -182,16 +180,12 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
 
             @Override
             public void onCancel() {
-
                 Log.d("facebook", "facebook:onCancel");
-
             }
 
             @Override
             public void onError(FacebookException error) {
-
                 Log.d("facebook", "facebook:onError", error);
-
             }
 
         });
@@ -458,7 +452,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("email", useremail);
                     params.put("username", username);
-                    params.put("phone", userphone);
+                    params.put("phoneNumber", userphone);
                     params.put("photo", userPhoto);
                     return params;
                 }
@@ -571,11 +565,12 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
          */
         if(isFieldsFragmentShowing){
             Log.d(TAG, "onBackPressed: ");
-            setFieldsFragmentShowing(false);
+            fragmentManager.popBackStack();
             FragmentTransaction signInFieldsFragTrans = fragmentManager.beginTransaction();
                 signInFieldsFragTrans.replace(R.id.fragment_btAndFields, new signIn_buttons());
                 signInFieldsFragTrans.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 signInFieldsFragTrans.commit();
+            setFieldsFragmentShowing(false);
         } else {
             super.onBackPressed();
         }

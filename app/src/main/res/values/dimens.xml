@@ -7,5 +7,6 @@
     <dimen name="standard_55">55dp</dimen>
     <dimen name="standard_100">100dp</dimen>
     <dimen name="standard_145">145dp</dimen>
+    <dimen name="login_screen_buttons_margin">30dp</dimen>
     <dimen name="badge_count_textsize">12sp</dimen>
 </resources>
