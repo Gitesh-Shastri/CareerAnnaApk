@@ -5,6 +5,6 @@
     <item android:title="Add To Cart"
         app:showAsAction="always"
         android:id="@+id/add_to_cart"
-        android:icon="@drawable/ic_add_shopping_cart_black_24dp"
+        android:icon="@drawable/counter"
         />
 </menu>
