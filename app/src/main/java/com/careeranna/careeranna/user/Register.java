@@ -1,19 +1,18 @@
 package com.careeranna.careeranna.user;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,58 +21,50 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.careeranna.careeranna.R;
+import com.hbb20.CountryCodePicker;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Register extends AppCompatActivity implements View.OnClickListener{
+public class Register extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+
+    public static final String TAG = "RegisterActivity";
 
     TextInputLayout emailLayout,
             passwordLayout,
-            phoneLayout,
             ciytLayout,
+            phoneLayout,
             userNameLayout;
 
     Spinner spinner;
-
-    String email, username, phone, city, password, howtoKnow;
-
+    String email, username, countryCode, phoneNumber, city, password, howtoKnow;
     ProgressDialog progressDialog;
-
     Button signUp;
-
     RelativeLayout relativeLayout;
-
     Snackbar snackbar;
+    CountryCodePicker countryCodePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        relativeLayout = findViewById(R.id.snackbar_rv);
+        if(getSupportActionBar().isShowing()){
+            getSupportActionBar().hide();
+        }
 
+        phoneLayout = findViewById(R.id.userphoneTv1);
+        countryCodePicker = findViewById(R.id.countryCodePicker);
+        relativeLayout = findViewById(R.id.snackbar_rv);
         emailLayout = findViewById(R.id.useremailTv1);
         passwordLayout = findViewById(R.id.userpasswordTv1);
-        phoneLayout = findViewById(R.id.userphoneTv1);
         ciytLayout= findViewById(R.id.usercityTv1);
         userNameLayout = findViewById(R.id.usernameTv1);
-
         spinner = findViewById(R.id.how_spinner);
-
         signUp = findViewById(R.id.signUpBtn);
 
+        spinner.setOnItemSelectedListener(this);
         signUp.setOnClickListener(this);
-
     }
 
     @Override
@@ -93,13 +84,15 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
                     progressDialog.setMessage("Creating USer Please Wait!!");
                     progressDialog.show();
 
+                    Log.d(TAG, "Country code selected is "+countryCode);
 
+                    countryCode = countryCodePicker.getFullNumber();
                     email = emailLayout.getEditText().getText().toString();
                     username = userNameLayout.getEditText().getText().toString();
-                    phone = phoneLayout .getEditText().getText().toString();
                     city = ciytLayout.getEditText().getText().toString();
                     password = passwordLayout.getEditText().getText().toString();
                     howtoKnow = spinner.getSelectedItem().toString();
+                    phoneNumber = countryCode+phoneLayout.getEditText().getText().toString();
 
                     StringRequest stringRequest = new StringRequest(Request.Method.POST,
                             "http://careeranna.in/signUp.php", new Response.Listener<String>() {
@@ -125,7 +118,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
                             params.put("email", email);
                             params.put("password", password);
                             params.put("username", username);
-                            params.put("phone", phone);
+                            params.put("phoneNumber", countryCode+phoneNumber);
                             params.put("city", city);
                             params.put("howtoknow", howtoKnow);
                             return params;
@@ -162,7 +155,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         }
     }
 
-
     private boolean validateUserNameTv() {
 
         String emailInput = userNameLayout.getEditText().getText().toString().trim();
@@ -184,7 +176,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
 
         }
     }
-
 
     private boolean validateUserPasswordTv() {
 
@@ -221,7 +212,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
     }
 
     private boolean validateUserNmberTv() {
-
         String MobilePattern = "[0-9]{10}";
         String emailInput = phoneLayout.getEditText().getText().toString().trim();
 
@@ -239,7 +229,20 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
 
             phoneLayout.setError(null);
             return true;
-
         }
+    }
+
+    /*
+    This function is necessary to set the color of the options in the spinner of
+    "How did you come to know about us?"
+     */
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        ((TextView)adapterView.getChildAt(0)).setTextColor(getResources().getColor(R.color.register_screen_fields_color));
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        //Leave this empty for now
     }
 }
