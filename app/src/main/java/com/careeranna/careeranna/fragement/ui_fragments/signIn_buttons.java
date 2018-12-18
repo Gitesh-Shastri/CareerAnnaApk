@@ -47,8 +47,6 @@ public class signIn_buttons extends Fragment implements View.OnClickListener {
         tv_forgotPw.setOnClickListener(this);
 
         fragmentManager = getFragmentManager();
-
-
         return view;
     }
 
@@ -57,7 +55,7 @@ public class signIn_buttons extends Fragment implements View.OnClickListener {
         switch (view.getId()){
             case R.id.signin_with_email:
 
-                ((SignUp)getActivity()).setFieldsFragmentShowing(true);
+//                ((SignUp)getActivity()).setFieldsFragmentShowing(true);
 
                 signInFields fragment = new signInFields();
 

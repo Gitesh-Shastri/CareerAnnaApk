@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:id="@+id/snackbar_2"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/background_gradient"
+    android:background="@drawable/background_gradient_white"
     android:orientation="vertical">
 
     <ProgressBar
@@ -18,7 +18,7 @@
     <ImageView
         android:id="@+id/iv_ca_logo"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/careeranna_logo"
+        android:src="@drawable/careeranna_logo_black"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
         android:layout_width="250dp"
@@ -65,7 +65,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:textColor="@color/register_screen_fields_color"
         android:textStyle="bold"
         android:text="OR"
         android:layout_centerInParent="true"

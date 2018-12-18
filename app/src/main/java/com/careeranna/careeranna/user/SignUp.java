@@ -16,9 +16,13 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -27,6 +31,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.careeranna.careeranna.MainActivity;
 import com.careeranna.careeranna.MyCourses;
 import com.careeranna.careeranna.PasswordReset;
 import com.careeranna.careeranna.R;
@@ -70,10 +75,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
     public static final String TAG = "SignUp Activity";
     private final static int RC_SIGN_IN = 2;
 
-    FragmentManager fragmentManager;
 
-    TextInputLayout textInputEmail,
-            textInputPassword;
+//    TextInputLayout et_usermail,
+//            et_userpassword;
+
+    EditText et_usermail, et_userpassword;
 
     RelativeLayout relativeLayout;
 
@@ -81,9 +87,14 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
 
     private GoogleSignInClient mGoogleSignInClient;
 
-    GoogleSignInButton googleLoginButton;
+//    GoogleSignInButton googleLoginButton;
+    SignInButton googleSigninButton;
 
     private CallbackManager mCallbackManager;
+
+    Button bt_google_login, bt_fb_login, bt_create_account, bt_manual_login;
+
+    TextView tv_forgotPw;
 
     LoginButton fbLoginButton;
 
@@ -99,18 +110,18 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
 
     String verificationCode, email;
 
-    boolean isFieldsFragmentShowing;
+    private boolean isFieldsFragmentShowing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_sign_up);
+//        setContentView(R.layout.activity_sign_up) ;
 
         if(getSupportActionBar().isShowing()){
             getSupportActionBar().hide();
         }
 
-        setContentView(R.layout.activity_sign_up_2);
+        setContentView(R.layout.activity_sign_up_3);
 
         //************Drawing the center line and circle ************
         /*
@@ -124,33 +135,56 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
         centerCircle.setLayoutParams(new LinearLayout.LayoutParams(width/9, width/9));
         //***********************************************************
 
+
         Paper.init(this);
 
-        relativeLayout = findViewById(R.id.snackbar_2);
+        relativeLayout = findViewById(R.id.snackbar_3);
 
-        googleLoginButton = findViewById(R.id.bt_google_sign_in_button);
+        bt_fb_login = findViewById(R.id.bt_facebook_login);
 
-        progressBar = findViewById(R.id.signUp_progressCircle_2);
+        bt_google_login = findViewById(R.id.bt_google_login);
 
-        fbLoginButton =  findViewById(R.id.fb_login_button_2);
+        googleSigninButton = findViewById(R.id.bt_google_sign_in_button_3);
 
-        fragmentManager = getSupportFragmentManager();
+        progressBar = findViewById(R.id.signUp_progressCircle_3);
 
-        googleLoginButton.setOnClickListener(this);
+        tv_forgotPw = findViewById(R.id.tv_forgot_password_3);
+
+        fbLoginButton =  findViewById(R.id.fb_login_button_3);
+
+        bt_manual_login = findViewById(R.id.signInAccount_3);
+
+//        fragmentManager = getSupportFragmentManager();
+
+        bt_google_login.setOnClickListener(this);
+
+        bt_fb_login.setOnClickListener(this);
+//        googleSigninButton.setOnClickListener(this);
+
+        et_usermail = findViewById(R.id.et_email);
+
+        et_userpassword = findViewById(R.id.et_pw);
 
         mAuth = FirebaseAuth.getInstance();
+
+        bt_create_account = findViewById(R.id.bt_create_account_3);
+
+        bt_create_account.setOnClickListener(this);
+
+        bt_manual_login.setOnClickListener(this);
+
+        tv_forgotPw.setOnClickListener(this);
 
         //Hide the circuler progress bar and only show when needed
         progressBar.bringToFront();
         progressBar.setVisibility(View.GONE);
 
         //Show the signIn_Buttons fragment at the starting, not the signIn_Fields fragment
-        isFieldsFragmentShowing = false;
-        FragmentTransaction signInBtTrans = fragmentManager.beginTransaction();
-            signInBtTrans.replace(R.id.fragment_btAndFields, new signIn_buttons());
-            signInBtTrans.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            signInBtTrans.addToBackStack(null);
-            signInBtTrans.commit();
+//        isFieldsFragmentShowing = false;
+//        FragmentTransaction signInBtTrans = fragmentManager.beginTransaction();
+//            signInBtTrans.replace(R.id.fragment_btAndFields, new signIn_buttons());
+//            signInBtTrans.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+//            signInBtTrans.commit();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -207,12 +241,10 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
 
         switch (view.getId()) {
 
-                case R.id.bt_google_sign_in_button:
-
+                case R.id.bt_google_login:
                     Log.d(TAG, "Google signin clicked ");
 
                     if(!amIConnect()) {
-
                         builder = new AlertDialog.Builder(SignUp.this);
                         builder.setTitle("No Internet Connection");
                         builder.setIcon(R.mipmap.ic_launcher);
@@ -232,76 +264,27 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
                     }
                     break;
 
-//            case R.id.signInAccount:
-//                /*
-//                TODO: This will come from the fragment
-//                 */
-//
-//                if(!validateEmailTv() | !validatePassTv()) {
-//                    return;
-//                }
-//                progressBar.setVisibility(View.VISIBLE);
-//
-//                StringRequest stringRequest = new StringRequest(Request.Method.POST,
-//                        "http://careeranna.in/login.php", new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        Log.i("url_respon", response.toString());
-//                            User user = new User();
-//                            try {
-//                                JSONObject userObject = new JSONObject(response.toString());
-//                                user.setUser_username(userObject.getString("USER_USERNAME"));
-//                                user.setUser_id(userObject.getString("USER_ID"));
-//                                user.setGoogle_id(userObject.getString("google_id"));
-//                                user.setFacebook_id(userObject.getString("facebook_id"));
-//                                user.setUser_photo(userObject.getString("img_url_app"));
-//                                user.setUser_email(userObject.getString("USER_EMAIL"));
-//                                Paper.book().write("user", new Gson().toJson(user));
-//                                snackbar = Snackbar.make(relativeLayout, "Sign In As " + user.getUser_username(), Snackbar.LENGTH_SHORT);
-//                                snackbar.show();
-//                                startActivity(new Intent(SignUp.this, MyCourses.class));
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                                snackbar = Snackbar.make(relativeLayout,response.toString(), Snackbar.LENGTH_SHORT);
-//                                snackbar.show();
-//                            }
-//                        progressBar.setVisibility(View.INVISIBLE);
-//                    }
-//                }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        snackbar = Snackbar.make(relativeLayout, "Something ", Snackbar.LENGTH_SHORT);
-//                        snackbar.show();
-//                        progressBar.setVisibility(View.INVISIBLE);
-//                    }
-//                }) {
-//                    @Override
-//                    protected Map<String, String> getParams() {
-//                        // Posting params to login url
-//                        Map<String, String> params = new HashMap<String, String>();
-//                        params.put("email", textInputEmail.getEditText().getText().toString());
-//                        params.put("password", textInputPassword.getEditText().getText().toString());
-//                        return params;
-//                    }
-//                };
-//                RequestQueue requestQueue = Volley.newRequestQueue(SignUp.this);
-//                requestQueue.add(stringRequest);
-//                break;
+            case R.id.bt_facebook_login:
+                Log.d(TAG, "Facebook signin clicked ");
+                progressBar.setVisibility(View.VISIBLE);
+                fbLoginButton.performClick();
+                break;
 
-//            case R.id.signUp:
-//                /*
-//                TODO: Open register activity
-//                 */
-//                Intent intent = new Intent(SignUp.this, Register.class);
-//                startActivity(intent);
-//                break;
+            case R.id.signInAccount_3:
+                String emailInput = et_usermail.getText().toString().trim();
+                String pwInput = et_userpassword.getText().toString().trim();
+                if(validateUsernameAndPW(emailInput, pwInput)){
+                    loginWithEmailPw(emailInput, pwInput);
+                }
+                break;
 
-//            case R.id.forgot:
-//                /*
-//                TODO: Open forogt pw dialog
-//                 */
-//                ForgetDialog forgetDialog = new ForgetDialog();
-//                forgetDialog.show(getSupportFragmentManager(), "Forget Password");
+            case R.id.tv_forgot_password_3:
+                forgotPw();
+                break;
+
+            case R.id.bt_create_account_3:
+                startActivity(new Intent(this, Register.class));
+                break;
         }
     }
 
@@ -378,6 +361,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressBar.setVisibility(View.INVISIBLE);
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("facebook", "signInWithCredential:success");
@@ -559,24 +543,24 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
     }
 
     @Override
-    public void onBackPressed() {
-        /*
-        If the SignIn_Fields fragment is showing, show the SignIn_Buttons fragment
-         */
-        if(isFieldsFragmentShowing){
-            Log.d(TAG, "onBackPressed: ");
-            fragmentManager.popBackStack();
-            FragmentTransaction signInFieldsFragTrans = fragmentManager.beginTransaction();
-                signInFieldsFragTrans.replace(R.id.fragment_btAndFields, new signIn_buttons());
-                signInFieldsFragTrans.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                signInFieldsFragTrans.commit();
-            setFieldsFragmentShowing(false);
-        } else {
-            super.onBackPressed();
-        }
+    protected void onResume() {
+        progressBar.setVisibility(View.INVISIBLE);
+        super.onResume();
     }
 
-    public void setFieldsFragmentShowing(boolean isFieldsFragmentShowing){
-        this.isFieldsFragmentShowing = isFieldsFragmentShowing;
+    public boolean validateUsernameAndPW(String emailInput, String pwInput){
+        //For username/email
+        if(emailInput.isEmpty()) {
+            et_usermail.setError("Required Field");
+            return false;
+        }
+
+        //For password
+        if(pwInput.isEmpty()) {
+            et_userpassword.setError("Required Field");
+            return false;
+        }
+
+        return true;
     }
 }
