@@ -81,7 +81,8 @@
             android:label="My Cart" />
         <activity android:name=".PurchaseCourseDetail" />
         <activity android:name=".PaytmPayment" />
-        <activity android:name=".ExampPrepParticular"></activity>
+        <activity android:name=".ExampPrepParticular" />
+        <activity android:name=".DashBoard"></activity>
     </application>
 
 </manifest>

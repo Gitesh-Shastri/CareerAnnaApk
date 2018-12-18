@@ -4,14 +4,26 @@ import java.io.Serializable;
 
 public class FreeVideos implements Serializable {
 
-    String id, video_url, thumbnail, total_view, tags;
+    String id, video_url, thumbnail, total_view, tags, title;
 
-    public FreeVideos(String id, String video_url, String thumbnail, String total_view, String tags) {
+    public FreeVideos(String id, String video_url, String thumbnail, String total_view, String tags, String title) {
         this.id = id;
         this.video_url = video_url;
         this.thumbnail = thumbnail;
         this.total_view = total_view;
         this.tags = tags;
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public FreeVideos() {
     }
 
     public String getId() {

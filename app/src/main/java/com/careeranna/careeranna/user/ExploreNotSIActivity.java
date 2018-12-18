@@ -183,7 +183,7 @@ public class ExploreNotSIActivity extends AppCompatActivity implements View.OnCl
                                         videos.getString("video_url").replace("\\",""),
                                         "https://www.careeranna.com/thumbnail/" +videos.getString("thumbnail"),
                                         videos.getString("tags"),
-                                        videos.getString("totalViews")));
+                                        videos.getString("totalViews"),""));
 
                                 View view = layoutInflater.inflate(R.layout.video_thumbnail, freeVidLayout, false);
 

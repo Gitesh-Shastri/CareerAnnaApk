@@ -3,6 +3,7 @@ package com.careeranna.careeranna.adapter;
 import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.careeranna.careeranna.R;
 import com.careeranna.careeranna.helper.RecyclerViewCoursesAdapter;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MyCoursesAdapterNew extends RecyclerView.Adapter<MyCoursesAdapterNew.ViewHolder>{
 
@@ -53,12 +55,24 @@ public class MyCoursesAdapterNew extends RecyclerView.Adapter<MyCoursesAdapterNe
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         //set view to INVISIBLE before animate
-
+        Random rand = new Random();
+        int random  = rand.nextInt(100);
         Glide.with(mContext)
                 .load(urls.get(position))
                 .into(viewHolder.imageView);
         viewHolder.textView.setText(names.get(position));
-        viewHolder.progressBar.setProgress(65);
+        viewHolder.progressBar.setProgress(random);
+        viewHolder.tv.setText(random+"%");
+        if(random <= 20) {
+            viewHolder.progressBar.setProgressDrawable(ContextCompat.getDrawable(mContext, R.drawable.circular_red));
+        } else if(random <= 50){
+            viewHolder.progressBar.setProgressDrawable(ContextCompat.getDrawable(mContext, R.drawable.circular_yellow));
+        } else if(random <=70) {
+            viewHolder.progressBar.setProgressDrawable(ContextCompat.getDrawable(mContext, R.drawable.circular_dark_green));
+        } else {
+            viewHolder.progressBar.setProgressDrawable(ContextCompat.getDrawable(mContext, R.drawable.circular));
+        }
+
     }
 
     private void setAnimation(final View view) {
@@ -83,7 +97,7 @@ public class MyCoursesAdapterNew extends RecyclerView.Adapter<MyCoursesAdapterNe
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imageView;
-        TextView textView;
+        TextView textView, tv;
 
         ProgressBar progressBar;
 
@@ -93,6 +107,7 @@ public class MyCoursesAdapterNew extends RecyclerView.Adapter<MyCoursesAdapterNe
             imageView = itemView.findViewById(R.id.image);
             textView = itemView.findViewById(R.id.name);
             progressBar = itemView.findViewById(R.id.progress);
+            tv = itemView.findViewById(R.id.tv);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
