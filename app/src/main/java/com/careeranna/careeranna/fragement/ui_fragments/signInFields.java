@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import com.careeranna.careeranna.R;
 import com.careeranna.careeranna.user.SignUp;
@@ -20,8 +21,10 @@ import com.careeranna.careeranna.user.SignUp;
  */
 public class signInFields extends Fragment implements View.OnClickListener {
 
+//    RelativeLayout bt_backButton;
     TextInputLayout et_usermail, et_userpw;
     Button bt_signIn;
+    FragmentManager fragmentManager;
 
     public signInFields() {
         // Required empty public constructor
@@ -36,6 +39,8 @@ public class signInFields extends Fragment implements View.OnClickListener {
         et_usermail = view.findViewById(R.id.useremailL);
         et_userpw = view.findViewById(R.id.userpasswordL);
         bt_signIn = view.findViewById(R.id.signInAccount_2);
+//        bt_backButton = view.findViewById(R.id.signIn_bt_back_fragment);
+//        bt_backButton.setOnClickListener(this);
 
         bt_signIn.setOnClickListener(this);
 
@@ -52,6 +57,10 @@ public class signInFields extends Fragment implements View.OnClickListener {
                     ((SignUp)getActivity()).loginWithEmailPw(emailInput, pwInput);
                 }
                 break;
+
+//            case R.id.signIn_bt_back_fragment:
+//                fragmentManager.popBackStack();
+//                break;
         }
     }
 
