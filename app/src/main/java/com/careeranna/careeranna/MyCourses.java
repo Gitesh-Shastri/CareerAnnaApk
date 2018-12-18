@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,14 +37,17 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 
 import com.careeranna.careeranna.adapter.CoursesSectionAdapter;
+import com.careeranna.careeranna.adapter.ExpandableListAdapter;
 import com.careeranna.careeranna.adapter.ViewPagerAdapter;
 import com.careeranna.careeranna.data.Article;
 import com.careeranna.careeranna.data.Banner;
 import com.careeranna.careeranna.data.Category;
 import com.careeranna.careeranna.data.Course;
 import com.careeranna.careeranna.data.ExamPrep;
+import com.careeranna.careeranna.data.ExpandedMenuModel;
 import com.careeranna.careeranna.data.User;
 import com.careeranna.careeranna.fragement.dashboard_fragements.ExamPrepFragment;
+import com.careeranna.careeranna.fragement.dashboard_fragements.ExploreNew;
 import com.careeranna.careeranna.helper.CountDrawable;
 import com.careeranna.careeranna.helper.RecyclerViewCoursesAdapter;
 import com.careeranna.careeranna.user.MyProfile;
@@ -61,6 +65,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -87,6 +92,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
 
     String mUsername, profile_pic_url, mEmail;
 
+    ExploreNew exploreNew;
     ExploreFragement myExplorerFragement;
     MyCoursesFragment myCoursesFragement;
     ArticlesFragment myArticleFragment;
@@ -117,6 +123,13 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
     ArrayList<Course> courses;
     ArrayList<ExamPrep> examPreps;
     ArrayList<Article> mArticles;
+
+
+    ExpandableListAdapter mMenuAdapter;
+    ExpandableListView expandableList;
+    List<ExpandedMenuModel> listDataHeader;
+    HashMap<ExpandedMenuModel, List<String>> listDataChild;
+
 
     private String[] imageUrls = new String[] {
             "https://4.bp.blogspot.com/-qf3t5bKLvUE/WfwT-s2IHmI/AAAAAAAABJE/RTy60uoIDCoVYzaRd4GtxCeXrj1zAwVAQCLcBGAs/s1600/Machine-Learning.png",
@@ -206,18 +219,13 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
         myExplorerFragement = new ExploreFragement();
         myArticleFragment = new ArticlesFragment();
         myExamPrepFragment = new ExamPrepFragment();
+        exploreNew = new ExploreNew();
 
         names = new ArrayList<>();
         urls = new ArrayList<>();
         ids = new ArrayList<>();
 
-        progressDialog = new ProgressDialog(this);
-
-        progressDialog.setMessage("Loading My Courses Please Wait ... ");
-        progressDialog.show();
-
-        progressDialog.setCancelable(false);
-
+       /*
         RequestQueue requestQueue1 = Volley.newRequestQueue(MyCourses.this);
         final String url1 = "http://careeranna.in/getMyCourse.php?user="+user.getUser_id()+"&category=15";
         Log.d("url_res", url1);
@@ -249,15 +257,19 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
                 });
 
         requestQueue1.add(stringRequest1);
+*/
+
+        getSupportActionBar().setTitle("Explore");
 
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.main_content, myCoursesFragement).commit();
+        fragmentManager.beginTransaction().replace(R.id.main_content, exploreNew).commit();
 
         // Set Navigation View Information
         setNavigationView();
 
         // Setting Banner Information
         getBanner();
+
 
         // Runnable For banner for changing in banner
         handler = new Handler();
@@ -307,7 +319,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        progressDialog.dismiss();
+         //               progressDialog.dismiss();
                     }
                 }
         );
@@ -381,7 +393,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
         username.setText(mUsername);
         useremail.setText(mEmail);
 
-        navigationView.setCheckedItem(R.id.myCourses);
+        navigationView.setCheckedItem(R.id.explore);
     }
 
     @Override
@@ -400,6 +412,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
 
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     protected void onResume() {
@@ -464,8 +477,8 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
             navigationView.setCheckedItem(R.id.examprep);
             getSupportActionBar().setTitle("Examp Prep");
 
-        }else if(id == R.id.explore) {
-
+        } else if(id == R.id.explore) {
+/*
             initCategory();
             setCount(this, "4");
 
@@ -473,8 +486,8 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
             examPreps = new ArrayList<>();
 
             myExplorerFragement.setCategories(categories, courses, examPreps);
-
-            fragmentManager.beginTransaction().replace(R.id.main_content, myExplorerFragement).commit();
+*/
+            fragmentManager.beginTransaction().replace(R.id.main_content, exploreNew).commit();
             navigationView.setCheckedItem(R.id.explore);
             getSupportActionBar().setTitle("Explorer");
 
@@ -489,6 +502,9 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
 
             startActivity(new Intent(this, MyProfile.class));
 
+        } else if(id == R.id.category) {
+
+            startActivity(new Intent(this, DashBoard.class));
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
