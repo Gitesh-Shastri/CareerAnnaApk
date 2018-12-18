@@ -12,9 +12,9 @@
 
         <Button
             android:id="@+id/signin_with_email"
+            android:textColor="@color/register_screen_fields_color"
             android:text="Sign in with username/email"
             android:textSize="12sp"
-            android:textColor="#FFF"
             android:layout_marginTop="30dp"
             android:layout_gravity="center"
             android:layout_centerHorizontal="true"
@@ -28,8 +28,8 @@
 
         <Button
             android:id="@+id/signUp"
+            android:textColor="@color/register_screen_fields_color"
             android:textSize="12sp"
-            android:textColor="#FFF"
             android:layout_below="@id/signin_with_email"
             android:layout_marginTop="12dp"
             android:layout_gravity="center"
@@ -45,11 +45,11 @@
 
         <TextView
             android:id="@+id/forgot"
+            android:textColor="@color/register_screen_fields_color"
             android:text="Forgot password?"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:textStyle="bold"
-            android:textColor="#FFF"
             android:textAllCaps="true"
             android:textSize="12sp"
             android:layout_width="wrap_content"
