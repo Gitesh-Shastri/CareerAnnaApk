@@ -29,6 +29,5 @@
             android:layout_marginTop="10dp"
             android:layout_below="@+id/categorySpinner"
             android:background="@drawable/custom_ripple"
-            android:id="@+id/categoriesCourses">
-        </android.support.v7.widget.RecyclerView>
+            android:id="@+id/categoriesCourses" />
     </RelativeLayout>

@@ -46,6 +46,7 @@ import com.careeranna.careeranna.data.Course;
 import com.careeranna.careeranna.data.ExamPrep;
 import com.careeranna.careeranna.data.ExpandedMenuModel;
 import com.careeranna.careeranna.data.User;
+import com.careeranna.careeranna.fragement.dashboard_fragements.CategoryFragment;
 import com.careeranna.careeranna.fragement.dashboard_fragements.ExamPrepFragment;
 import com.careeranna.careeranna.fragement.dashboard_fragements.ExploreNew;
 import com.careeranna.careeranna.helper.CountDrawable;
@@ -97,6 +98,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
     MyCoursesFragment myCoursesFragement;
     ArticlesFragment myArticleFragment;
     ExamPrepFragment myExamPrepFragment;
+    CategoryFragment categoryFragment;
 
     FragmentManager fragmentManager;
 
@@ -123,19 +125,6 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
     ArrayList<Course> courses;
     ArrayList<ExamPrep> examPreps;
     ArrayList<Article> mArticles;
-
-
-    ExpandableListAdapter mMenuAdapter;
-    ExpandableListView expandableList;
-    List<ExpandedMenuModel> listDataHeader;
-    HashMap<ExpandedMenuModel, List<String>> listDataChild;
-
-
-    private String[] imageUrls = new String[] {
-            "https://4.bp.blogspot.com/-qf3t5bKLvUE/WfwT-s2IHmI/AAAAAAAABJE/RTy60uoIDCoVYzaRd4GtxCeXrj1zAwVAQCLcBGAs/s1600/Machine-Learning.png",
-            "https://cdn-images-1.medium.com/max/2000/1*SSutxOFoBUaUmgeNWAPeBA.jpeg",
-            "https://www.digitalvidya.com/wp-content/uploads/2016/02/Master_Digital_marketng-1170x630.jpg"
-    };
 
     private long backPressed;
 
@@ -214,18 +203,18 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
             mEmail = user.getUser_email();
         }
 
-        // Initalize Fragements For main container
         myCoursesFragement = new MyCoursesFragment();
         myExplorerFragement = new ExploreFragement();
         myArticleFragment = new ArticlesFragment();
         myExamPrepFragment = new ExamPrepFragment();
         exploreNew = new ExploreNew();
+        categoryFragment = new CategoryFragment();
 
         names = new ArrayList<>();
         urls = new ArrayList<>();
         ids = new ArrayList<>();
+/*
 
-       /*
         RequestQueue requestQueue1 = Volley.newRequestQueue(MyCourses.this);
         final String url1 = "http://careeranna.in/getMyCourse.php?user="+user.getUser_id()+"&category=15";
         Log.d("url_res", url1);
@@ -310,7 +299,6 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
                         // Initializing dots for swipping banner layout
                         viewPager.addOnPageChangeListener(bannerListener);
                         currentPage = 0;
-                        addDots(0);
 
                         makeRunnable();
 
@@ -341,23 +329,6 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
         };
     }
 
-    private void addDots(int i){
-
-        linearLayout.removeAllViews();
-        TextView[] dots = new TextView[viewPagerAdapter.getCount()];
-
-        for(int x=0; x<dots.length; x++){
-            dots[x] = new TextView(this);
-            dots[x].setText(String.valueOf(Html.fromHtml("&#8226")));
-            dots[x].setTextSize(40);
-            dots[x].setTextColor(getResources().getColor(R.color.intro_dot_dark));
-
-            linearLayout.addView(dots[x]);
-        }
-
-        dots[i].setTextColor(getResources().getColor(R.color.intro_dot_light));
-    }
-
     ViewPager.OnPageChangeListener bannerListener = new ViewPager.OnPageChangeListener() {
 
         @Override
@@ -366,7 +337,6 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
 
         @Override
         public void onPageSelected(int i) {
-            addDots(i);
             currentPage = i;
         }
 
@@ -478,15 +448,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
             getSupportActionBar().setTitle("Examp Prep");
 
         } else if(id == R.id.explore) {
-/*
-            initCategory();
-            setCount(this, "4");
 
-            courses = new ArrayList<>();
-            examPreps = new ArrayList<>();
-
-            myExplorerFragement.setCategories(categories, courses, examPreps);
-*/
             fragmentManager.beginTransaction().replace(R.id.main_content, exploreNew).commit();
             navigationView.setCheckedItem(R.id.explore);
             getSupportActionBar().setTitle("Explorer");
@@ -505,6 +467,117 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
         } else if(id == R.id.category) {
 
             startActivity(new Intent(this, DashBoard.class));
+
+        } else if(id == R.id.MBA) {
+
+            categoryFragment = new CategoryFragment();
+
+            categoryFragment.addSubCategory("1");
+
+            fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
+            navigationView.setCheckedItem(R.id.MBA);
+            getSupportActionBar().setTitle("MBA in India");
+
+        } else if(id == R.id.Professional) {
+
+            categoryFragment = new CategoryFragment();
+
+            categoryFragment.addSubCategory("5");
+
+            fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
+            navigationView.setCheckedItem(R.id.govt);
+            getSupportActionBar().setTitle("Professional Development");
+
+        } else if(id == R.id.Gk) {
+
+            categoryFragment = new CategoryFragment();
+
+            categoryFragment.addSubCategory("6");
+
+            fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
+            navigationView.setCheckedItem(R.id.Banking);
+            getSupportActionBar().setTitle("General Knowledge");
+
+        } else if(id == R.id.cover) {
+
+            categoryFragment = new CategoryFragment();
+
+            categoryFragment.addSubCategory("7");
+
+            fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
+            navigationView.setCheckedItem(R.id.govt);
+            getSupportActionBar().setTitle("Cover Story");
+
+        } else if(id == R.id.gates) {
+
+            categoryFragment = new CategoryFragment();
+
+            categoryFragment.addSubCategory("8");
+
+            fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
+            navigationView.setCheckedItem(R.id.govt);
+            getSupportActionBar().setTitle("GATES AND IES");
+
+        }  else if(id == R.id.govt) {
+
+            categoryFragment = new CategoryFragment();
+
+            categoryFragment.addSubCategory("9");
+
+            fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
+            navigationView.setCheckedItem(R.id.govt);
+            getSupportActionBar().setTitle("Govt. Jobs");
+
+        } else if(id == R.id.study) {
+
+            categoryFragment = new CategoryFragment();
+
+            categoryFragment.addSubCategory("10");
+
+            fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
+            navigationView.setCheckedItem(R.id.study);
+            getSupportActionBar().setTitle("Study Abroad");
+
+        } else if(id == R.id.eight) {
+            categoryFragment = new CategoryFragment();
+            categoryFragment.addSubCategory("11");
+
+            fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
+            navigationView.setCheckedItem(R.id.eight);
+            getSupportActionBar().setTitle("8-12");
+
+        } else if(id == R.id.law) {
+            categoryFragment = new CategoryFragment();
+            categoryFragment.addSubCategory("12");
+
+            fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
+            navigationView.setCheckedItem(R.id.law);
+            getSupportActionBar().setTitle("Law");
+
+        } else if(id == R.id.finance) {
+            categoryFragment = new CategoryFragment();
+            categoryFragment.addSubCategory("13");
+
+            fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
+            navigationView.setCheckedItem(R.id.finance);
+            getSupportActionBar().setTitle("Finance");
+
+        } else if(id == R.id.marketing) {
+            categoryFragment = new CategoryFragment();
+            categoryFragment.addSubCategory("14");
+
+            fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
+            navigationView.setCheckedItem(R.id.marketing);
+            getSupportActionBar().setTitle("Marketing");
+
+        } else if(id == R.id.certificate) {
+            categoryFragment = new CategoryFragment();
+            categoryFragment.addSubCategory("15");
+
+            fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
+            navigationView.setCheckedItem(R.id.certificate);
+            getSupportActionBar().setTitle("Certificate Courses");
+
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);

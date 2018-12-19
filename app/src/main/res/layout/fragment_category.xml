@@ -3,12 +3,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CategoryFragment">
+    tools:context=".fragement.dashboard_fragements.CategoryFragment">
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:id="@+id/relative"
+        android:layout_height="wrap_content">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"
+        android:id="@+id/progress"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="10"
+        android:id="@+id/linear"
+        android:layout_below="@+id/categorySpinner">
+
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_height="40dp"
+            android:text="Sort By"
+            android:id="@+id/sort"
+            android:textSize="12sp"
+            android:paddingLeft="40dp"
+            android:drawableLeft="@drawable/ic_sort_by_attributes"
+            android:background="@drawable/border"
+            />
+
+        <Button
+            android:id="@+id/filterSub"
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_height="40dp"
+            android:text="Filter"
+            android:paddingLeft="50dp"
+            android:textSize="12sp"
+            android:background="@drawable/border"
+            android:drawableLeft="@drawable/ic_filter_list_black_24dp"
+            />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/linear"
+        android:background="@drawable/custom_ripple"
+        android:id="@+id/categoriesCourses" />
+    </RelativeLayout>
 </FrameLayout>

@@ -82,7 +82,13 @@
         <activity android:name=".PurchaseCourseDetail" />
         <activity android:name=".PaytmPayment" />
         <activity android:name=".ExampPrepParticular" />
-        <activity android:name=".DashBoard"></activity>
+        <activity android:name=".DashBoard" />
+        <activity android:name=".FilterOfCategory"
+            android:label="Filter Course"
+            />
+        <activity android:name=".SortByCourse"
+            android:label="Sort Course"
+            />
     </application>
 
 </manifest>
