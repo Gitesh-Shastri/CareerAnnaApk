@@ -39,6 +39,8 @@
     <string name="trending_vid">Trending Videos</string>
     <string name="top_vid">Top Courses</string>
 
+    <string name="sample_article_content">The little brown fox jumped over the lazy dog.
+            The little brown fox jumped over the lazy dog. The little brown fox jumped over the lazy dog.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="courses1"><u>Courses</u></string>

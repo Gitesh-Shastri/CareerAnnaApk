@@ -151,7 +151,7 @@
             android:id="@+id/view_centerCircle"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:background="@drawable/circle"
+            android:background="@drawable/circle_signin_middle"
             android:layout_height="35dp" />
 
         <View
