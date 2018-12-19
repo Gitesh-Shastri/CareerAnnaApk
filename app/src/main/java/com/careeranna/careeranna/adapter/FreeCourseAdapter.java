@@ -6,15 +6,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.careeranna.careeranna.R;
+import com.careeranna.careeranna.data.Course;
 import com.careeranna.careeranna.data.FreeVideos;
 
 import java.util.ArrayList;
 
 public class FreeCourseAdapter extends RecyclerView.Adapter<FreeCourseAdapter.ViewHolder> {
 
-    private ArrayList<FreeVideos> freeVideos;
+    private ArrayList<Course> freeVideos;
     private Context mContext;
 
     private ArticleAdapter.OnItemClickListener mListener;
@@ -29,7 +33,7 @@ public class FreeCourseAdapter extends RecyclerView.Adapter<FreeCourseAdapter.Vi
     }
 
 
-    public FreeCourseAdapter(ArrayList<FreeVideos> freeVideos, Context mContext) {
+    public FreeCourseAdapter(ArrayList<Course> freeVideos, Context mContext) {
         this.freeVideos = freeVideos;
         this.mContext = mContext;
     }
@@ -44,6 +48,8 @@ public class FreeCourseAdapter extends RecyclerView.Adapter<FreeCourseAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
 
+        Glide.with(mContext).load(freeVideos.get(i).getImageUrl()).into(viewHolder.imageView);
+        viewHolder.name.setText(freeVideos.get(i).getName());
     }
 
     @Override
@@ -54,8 +60,16 @@ public class FreeCourseAdapter extends RecyclerView.Adapter<FreeCourseAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        ImageView imageView;
+
+        TextView name;
+
         public ViewHolder(@NonNull View itemView) {
+
             super(itemView);
+
+            imageView = itemView.findViewById(R.id.image);
+            name = itemView.findViewById(R.id.name);
         }
     }
 }

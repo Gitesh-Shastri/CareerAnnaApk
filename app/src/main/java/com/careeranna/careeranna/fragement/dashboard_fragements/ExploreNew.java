@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.careeranna.careeranna.R;
 import com.careeranna.careeranna.adapter.FreeCourseAdapter;
 import com.careeranna.careeranna.adapter.TrendingVideosAdapter;
+import com.careeranna.careeranna.data.Course;
 import com.careeranna.careeranna.data.FreeVideos;
 import com.careeranna.careeranna.user.ExploreNotSIActivity;
 
@@ -38,6 +39,8 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class ExploreNew extends Fragment {
 
     ArrayList<FreeVideos> freeVideos;
+
+    ArrayList<Course> courses;
 
     RecyclerView recyclerView, recyclerView1, freeCorse, paidCourse;
 
@@ -75,6 +78,8 @@ public class ExploreNew extends Fragment {
         freeVideos.add(new FreeVideos());
 
 
+        courses = new ArrayList<>();
+
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(linearLayoutManager1);
 
@@ -89,7 +94,7 @@ public class ExploreNew extends Fragment {
         recyclerView.setAdapter(trendingVideosAdapter);
         recyclerView1.setAdapter(trendingVideosAdapter);
 
-        FreeCourseAdapter freeCourseAdapter = new FreeCourseAdapter(freeVideos, getApplicationContext());
+        FreeCourseAdapter freeCourseAdapter = new FreeCourseAdapter(courses, getApplicationContext());
 
         freeCorse.setAdapter(freeCourseAdapter);
         paidCourse.setAdapter(freeCourseAdapter);
@@ -124,8 +129,8 @@ public class ExploreNew extends Fragment {
                                         videos.getString("id"),
                                         videos.getString("video_url").replace("\\",""),
                                         "https://www.careeranna.com/thumbnail/" +videos.getString("thumbnail"),
-                                        videos.getString("tags"),
-                                        videos.getString("totalViews"),""));
+                                        videos.getString("totalViews"),"",
+                                        videos.getString("tags")));
                             }
 
                         } catch (JSONException e) {

@@ -1,6 +1,8 @@
 package com.careeranna.careeranna.data;
 
-public class SubCategory {
+import java.io.Serializable;
+
+public class SubCategory implements Serializable {
 
     private String EXAM_NAME_ID, EXAM_NAME, CATEGORY_ID, ACTIVE_STATUS;
 
