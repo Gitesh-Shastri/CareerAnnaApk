@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+   <group
+        android:checkableBehavior="single">
+
+       <item
+           android:checked="false"
+           android:id="@+id/category"
+           android:title="Category"
+           android:icon="@drawable/ic_chrome_reader_mode_black_24dp">
+           <menu>
+               <item
+                   android:id="@+id/MBA"
+                   android:title="MBA in india"
+                   android:checked="false"/>
+               <item
+                   android:id="@+id/Banking"
+                   android:title="Banking"
+                   android:checked="false"/>
+               <item
+                   android:id="@+id/Professional"
+                   android:title="Professional Development"
+                   android:checked="false"/>
+               <item
+                   android:id="@+id/Gk"
+                   android:title="General Knowledge"
+                   android:checked="false"/>
+               <item
+                   android:id="@+id/cover"
+                   android:title="Cover Story"
+                   android:checked="false"/>
+               <item
+                   android:id="@+id/gates"
+                   android:title="GATE and IES"
+                   android:checked="false"/>
+               <item
+                   android:id="@+id/govt"
+                   android:title="Govt. Jobs"
+                   android:checked="false"/>
+
+               <item
+                   android:id="@+id/study"
+                   android:title="Study Abroad"
+                   android:checked="false"/>
+
+               <item
+                   android:id="@+id/eight"
+                   android:title="8-12"
+                   android:checked="false"/>
+
+               <item
+                   android:id="@+id/law"
+                   android:title="Law"
+                   android:checked="false"/>
+
+               <item
+                   android:id="@+id/finance"
+                   android:title="Finance"
+                   android:checked="false"/>
+
+               <item
+                   android:id="@+id/marketing"
+                   android:title="Marketing"
+                   android:checked="false"/>
+
+               <item
+                   android:id="@+id/certificate"
+                   android:title="Certificate Courses"
+                   android:checked="false"/>
+
+           </menu>
+       </item>
+       <item
+             android:id="@+id/myCourse"
+            android:title="My Courses"
+             android:checked="false"
+             android:icon="@drawable/ic_event_note_black_24dp" />
+        <item
+            android:id="@+id/explore"
+            android:title="Explore"
+            android:checked="true"
+            android:icon="@drawable/ic_youtube_searched_for_black_24dp"/>
+        <item
+            android:id="@+id/article"
+            android:title="Articles"
+            android:checked="false"
+            android:icon="@drawable/ic_art_track_black_24dp"/>
+        <item
+            android:id="@+id/profile"
+            android:title="My Profile"
+            android:checked="false"
+            android:icon="@drawable/ic_person_black_24dp"/>
+    <item
+        android:id="@+id/signOut"
+        android:title="SignOut"
+        android:checked="false"
+        android:icon="@drawable/ic_input_black_24dp"/>
+    </group>
+
+</menu>
