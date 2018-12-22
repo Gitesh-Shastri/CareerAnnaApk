@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawelayout"
-    tools:context=".MyCourses">
+    tools:context=".NewCourseActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -52,12 +52,12 @@
 
         </FrameLayout>
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/main_content"
-                android:layout_below="@id/pager">
-            </FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/main_content"
+            android:layout_below="@id/pager">
+        </FrameLayout>
 
     </RelativeLayout>
     <android.support.design.widget.NavigationView
@@ -78,14 +78,15 @@
             android:orientation="vertical">
 
             <include layout="@layout/header"
-                android:id="@+id/header_header"/>
+                android:id="@+id/header"/>
 
             <ListView
                 android:id="@+id/list_menu_items"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@color/white"/>
+                android:background="@color/white"
+                android:dividerHeight="1dp"/>
         </LinearLayout>
 
     </android.support.design.widget.NavigationView>

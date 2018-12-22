@@ -20,7 +20,7 @@ public class TrendingVideosAdapter extends RecyclerView.Adapter<TrendingVideosAd
     private ArrayList<FreeVideos> freeVideos;
     private Context mContext;
 
-    private ArticleAdapter.OnItemClickListener mListener;
+    private OnItemClickListener mListener;
 
     @NonNull
     @Override
@@ -46,7 +46,7 @@ public class TrendingVideosAdapter extends RecyclerView.Adapter<TrendingVideosAd
         void onItemClick1(int position);
     }
 
-    public void setOnItemClicklistener(ArticleAdapter.OnItemClickListener listener) {
+    public void setOnItemClicklistener(OnItemClickListener listener) {
         mListener = listener;
     }
 
@@ -70,6 +70,18 @@ public class TrendingVideosAdapter extends RecyclerView.Adapter<TrendingVideosAd
             title = itemView.findViewById(R.id.title);
             rating = itemView.findViewById(R.id.ratings);
             views = itemView.findViewById(R.id.views);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mListener != null) {
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION) {
+                            mListener.onItemClick1(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }

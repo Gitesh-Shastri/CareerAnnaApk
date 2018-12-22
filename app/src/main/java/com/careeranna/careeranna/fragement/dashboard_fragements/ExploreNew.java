@@ -1,6 +1,7 @@
 package com.careeranna.careeranna.fragement.dashboard_fragements;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,6 +23,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.careeranna.careeranna.R;
+import com.careeranna.careeranna.VideoWithComment;
 import com.careeranna.careeranna.adapter.FreeCourseAdapter;
 import com.careeranna.careeranna.adapter.TrendingVideosAdapter;
 import com.careeranna.careeranna.data.Course;
@@ -36,17 +38,38 @@ import java.util.ArrayList;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
-public class ExploreNew extends Fragment {
+public class ExploreNew extends Fragment implements TrendingVideosAdapter.OnItemClickListener, FreeCourseAdapter.OnItemClickListener{
 
     ArrayList<FreeVideos> freeVideos, trendingvVideos;
 
-    ArrayList<Course> courses;
+    ArrayList<Course> courses, freecourse;
 
     RecyclerView recyclerView, recyclerView1, freeCorse, paidCourse;
 
     ProgressDialog progressDialog;
 
+
     public ExploreNew() {
+    }
+
+    public void addPaidCourses(ArrayList<Course> courses, ArrayList<Course> freecourse) {
+
+        this.courses = courses;
+
+        this.freecourse = freecourse;
+
+        FreeCourseAdapter freeCourseAdapter = new FreeCourseAdapter(this.courses, getApplicationContext());
+
+        paidCourse.setAdapter(freeCourseAdapter);
+
+        freeCourseAdapter.setOnItemClicklistener(this);
+
+        FreeCourseAdapter freeCourseAdapter1 = new FreeCourseAdapter(this.freecourse, getApplicationContext());
+
+        freeCorse.setAdapter(freeCourseAdapter1);
+
+        initalizeVideos();
+
     }
 
     @Nullable
@@ -61,8 +84,6 @@ public class ExploreNew extends Fragment {
         freeCorse = view.findViewById(R.id.free_course_rv);
 
         paidCourse = view.findViewById(R.id.paid_courses_rv);
-
-        initalizeVideos();
 
         return view;
     }
@@ -79,9 +100,6 @@ public class ExploreNew extends Fragment {
         freeVideos.add(new FreeVideos());
         freeVideos.add(new FreeVideos());
 
-
-        courses = new ArrayList<>();
-
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(linearLayoutManager1);
 
@@ -95,11 +113,6 @@ public class ExploreNew extends Fragment {
 
         recyclerView.setAdapter(trendingVideosAdapter);
         recyclerView1.setAdapter(trendingVideosAdapter);
-
-        FreeCourseAdapter freeCourseAdapter = new FreeCourseAdapter(courses, getApplicationContext());
-
-        freeCorse.setAdapter(freeCourseAdapter);
-        paidCourse.setAdapter(freeCourseAdapter);
 
         initalizeVideo();
     }
@@ -182,6 +195,8 @@ public class ExploreNew extends Fragment {
 
                                         recyclerView.setAdapter(trendingVideosAdapter);
 
+                                        trendingVideosAdapter.setOnItemClicklistener(ExploreNew.this);
+
                                         progressDialog.dismiss();
                                     }
                                 },
@@ -209,4 +224,9 @@ public class ExploreNew extends Fragment {
     }
 
 
+    @Override
+    public void onItemClick1(int position) {
+
+        startActivity(new Intent(getApplicationContext(), VideoWithComment.class).putExtra("course", trendingvVideos.get(position)));
+    }
 }
