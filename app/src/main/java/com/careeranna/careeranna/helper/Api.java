@@ -9,7 +9,7 @@ public interface Api {
 
     //this is the URL of the paytm folder that we added in the server
     //make sure you are using your ip else it will not work
-    String BASE_URL = "http://careeranna.in/paytm/";
+    String BASE_URL = "https://careeranna.com/api/paytm/";
 
     @FormUrlEncoded
     @POST("generateChecksum.php")

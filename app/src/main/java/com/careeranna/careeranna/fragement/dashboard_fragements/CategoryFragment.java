@@ -126,7 +126,7 @@ public class CategoryFragment extends Fragment {
         progressDialog.setCancelable(false);
 
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        final String url = "http://careeranna.in/subCategory.php?id="+id;
+        final String url = "https://careeranna.com/api/subCategory.php?id="+id;
         Log.d("url_res", url);
         StringRequest stringRequest  = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -193,7 +193,7 @@ public class CategoryFragment extends Fragment {
         progressDialog.setCancelable(false);
 
         RequestQueue requestQueue1 = Volley.newRequestQueue(getContext());
-        String url1 = "http://careeranna.in/getAllCourse.php";
+        String url1 = "https://careeranna.com/api/getAllCourse.php";
         Log.d("url_res", url1);
         StringRequest stringRequest1 = new StringRequest(Request.Method.GET, url1,
                 new Response.Listener<String>() {

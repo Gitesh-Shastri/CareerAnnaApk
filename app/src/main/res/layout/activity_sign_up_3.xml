@@ -65,7 +65,7 @@
     <TextView
         android:text="Continue with"
         android:layout_above="@+id/bt_googleAndFb"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="25dp"
         android:layout_centerHorizontal="true"
         android:textColor="@color/register_screen_fields_color"
         android:layout_width="wrap_content"
@@ -95,9 +95,9 @@
 
             <Button
                 android:id="@+id/bt_facebook_login"
-                android:background="@drawable/ic_facebook_square"
-                android:layout_width="50dp"
-                android:layout_height="50dp" />
+                android:background="@drawable/ic_facebook_round_corner"
+                android:layout_width="@dimen/signin_icon_google_fb"
+                android:layout_height="@dimen/signin_icon_google_fb" />
 
         </FrameLayout>
 
@@ -116,9 +116,9 @@
 
             <Button
                 android:id="@+id/bt_google_login"
-                android:background="@drawable/ic_google_small_square"
-                android:layout_width="50dp"
-                android:layout_height="50dp" />
+                android:background="@drawable/ic_google_round_corners"
+                android:layout_width="@dimen/signin_icon_google_fb"
+                android:layout_height="@dimen/signin_icon_google_fb" />
 
         </FrameLayout>
 

@@ -1,18 +1,19 @@
-package com.careeranna.careeranna.user;
+package com.careeranna.careeranna;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,11 +24,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.careeranna.careeranna.MyCourses;
 import com.careeranna.careeranna.R;
+import com.careeranna.careeranna.adapter.FreeCourseAdapter;
+import com.careeranna.careeranna.adapter.TrendingVideosAdapter;
 import com.careeranna.careeranna.adapter.ViewPagerAdapter;
 import com.careeranna.careeranna.data.Banner;
+import com.careeranna.careeranna.data.Course;
 import com.careeranna.careeranna.data.FreeVideos;
+import com.careeranna.careeranna.user.ExploreNotSIActivity;
+import com.careeranna.careeranna.user.SignUp;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,23 +40,26 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ExploreNotSIActivity extends AppCompatActivity implements View.OnClickListener{
+import static com.facebook.FacebookSdk.getApplicationContext;
 
-    public static final String TAG = "ExploreNotSi";
+public class ExploreNotSIActivity_2 extends AppCompatActivity {
 
-    private LinearLayout freeVidLayout, trendingVidLayout, topCoursesLayout;
-    private ViewPagerAdapter bannerAdapter;
-    private LinearLayout dotsLayout;
-    private ViewPager banner;
+    ArrayList<FreeVideos> freeVideos;
 
-    ArrayList<Banner> mBanners;
+    ArrayList<Course> courses;
+
+    RecyclerView recyclerView, recyclerView1, freeCorse, paidCourse;
 
     ProgressDialog progressDialog;
 
-    ArrayList<FreeVideos> freeVideos;
+    private ViewPagerAdapter bannerAdapter;
+    private LinearLayout dotsLayout;
+    private ViewPager banner;
     private int currentPage;
     private Runnable runnable;
     private Handler handler;
+
+    ArrayList<Banner> mBanners;
 
     private int delay = 5000;       //Change the delay of the banner scroll from here
 
@@ -63,9 +71,10 @@ public class ExploreNotSIActivity extends AppCompatActivity implements View.OnCl
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_explore_not_si);
+
+        setContentView(R.layout.activity_explore_not_si2);
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle(
@@ -73,11 +82,19 @@ public class ExploreNotSIActivity extends AppCompatActivity implements View.OnCl
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        topCoursesLayout = findViewById(R.id.ll_top);
-        freeVidLayout = findViewById(R.id.ll_free_vid);
-        trendingVidLayout = findViewById(R.id.ll_trending);
-        banner = findViewById(R.id.banner);
-        dotsLayout = findViewById(R.id.bannerDots);
+        recyclerView = findViewById(R.id.not_si_trending_rv);
+        recyclerView1 = findViewById(R.id.not_si_latest_rv);
+        freeCorse = findViewById(R.id.not_si_free_course_rv);
+        paidCourse = findViewById(R.id.not_si_paid_courses_rv);
+
+        View ll_free_vids = findViewById(R.id.not_si_ll_free);
+        View ll_paid_vids = findViewById(R.id.not_si_ll_paid);
+
+        ll_free_vids.setVisibility(View.INVISIBLE);
+        ll_paid_vids.setVisibility(View.INVISIBLE);
+
+        banner = findViewById(R.id.not_si_banner);
+        dotsLayout = findViewById(R.id.not_si_bannerDots);
 
         /*
         Setting the banners and it's adapter
@@ -103,68 +120,55 @@ public class ExploreNotSIActivity extends AppCompatActivity implements View.OnCl
             }
         };
 
-        /*
-        Only for testing purpose, to check how the activity will look like when the actual video
-        thumbnails will be shown.
-        ********************************************************************************************
-         */
-        for(int i=0; i<10; i++){
-            View view = layoutInflater.inflate(R.layout.video_thumbnail, topCoursesLayout, false);
-
-            TextView title = view.findViewById(R.id.tv_vid_thumbnail_title);
-            ImageView imageView = view.findViewById(R.id.iv_vid_thumbnail_img);
-
-            title.setText("Video "+i);
-            imageView.setImageResource(R.mipmap.ic_launcher);
-
-            topCoursesLayout.addView(view);
-        }
 
         initalizeVideos();
-
-        for(int i=0; i<10; i++){
-            View view = layoutInflater.inflate(R.layout.video_thumbnail,trendingVidLayout, false);
-
-            TextView title = view.findViewById(R.id.tv_vid_thumbnail_title);
-            ImageView imageView = view.findViewById(R.id.iv_vid_thumbnail_img);
-
-            title.setText("Video "+i);
-            imageView.setImageResource(R.mipmap.ic_launcher);
-
-            trendingVidLayout.addView(view);
-        }
-
-        // *************ONLY FOR TESTING PURPOSE CODE, ENDS HERE***********************************
-    }
-
-    public void initializeBanner() {
-        // Initializing ArrayList
-        mBanners = new ArrayList<>();
-
-        mBanners.add(new Banner("1", "Machine Learning", imageUrls[0]));
-        mBanners.add(new Banner("2", "Python", imageUrls[1]));
-        mBanners.add(new Banner("3", "Marketing", imageUrls[2]));
-
-        // Setting Adapter for banner viewPage
-        bannerAdapter = new ViewPagerAdapter(getApplicationContext(), mBanners);
-        banner.setAdapter(bannerAdapter);
-        banner.addOnPageChangeListener(bannerListener);
-        currentPage = 0;
-        addDots(0);
     }
 
     private void initalizeVideos() {
 
         freeVideos = new ArrayList<>();
 
+        freeVideos.add(new FreeVideos());
+        freeVideos.add(new FreeVideos());
+        freeVideos.add(new FreeVideos());
+        freeVideos.add(new FreeVideos());
+        freeVideos.add(new FreeVideos());
+
+
+        courses = new ArrayList<>();
+
+        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL,false);
+        recyclerView.setLayoutManager(linearLayoutManager1);
+
+        recyclerView1.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL,false));
+
+        freeCorse.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL,false));
+
+        paidCourse.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL,false));
+
+        TrendingVideosAdapter trendingVideosAdapter = new TrendingVideosAdapter(freeVideos, getApplicationContext());
+
+        recyclerView.setAdapter(trendingVideosAdapter);
+        recyclerView1.setAdapter(trendingVideosAdapter);
+
+        FreeCourseAdapter freeCourseAdapter = new FreeCourseAdapter(courses, getApplicationContext());
+
+        freeCorse.setAdapter(freeCourseAdapter);
+        paidCourse.setAdapter(freeCourseAdapter);
+
+        initalizeVideo();
+    }
+
+    private void initalizeVideo() {
+
+        freeVideos = new ArrayList<>();
+
         progressDialog = new ProgressDialog(this);
 
-        progressDialog.setMessage("Loading My Courses Please Wait ... ");
+        progressDialog.setMessage("Loading Free Videos Please Wait ... ");
         progressDialog.show();
 
         progressDialog.setCancelable(false);
-
-        final LayoutInflater layoutInflater = LayoutInflater.from(this);
 
         RequestQueue requestQueue1 = Volley.newRequestQueue(this);
         String url1 = "https://careeranna.com/api/getFreeVideos.php";
@@ -174,35 +178,27 @@ public class ExploreNotSIActivity extends AppCompatActivity implements View.OnCl
                     @Override
                     public void onResponse(String response) {
                         try {
-                            Log.i("url_response", response.toString());
+                            Log.i("url_response_free_video", response);
                             JSONArray VideosArray = new JSONArray(response);
-                            for(int i=0;i<10;i++) {
+                            for(int i=0;i<VideosArray.length();i++) {
                                 JSONObject videos = VideosArray.getJSONObject(i);
                                 freeVideos.add(new FreeVideos(
                                         videos.getString("id"),
                                         videos.getString("video_url").replace("\\",""),
                                         "https://www.careeranna.com/thumbnail/" +videos.getString("thumbnail"),
-                                        videos.getString("tags"),
-                                        videos.getString("totalViews"),""));
-
-                                View view = layoutInflater.inflate(R.layout.video_thumbnail, freeVidLayout, false);
-
-                                TextView title = view.findViewById(R.id.tv_vid_thumbnail_title);
-                                ImageView imageView = view.findViewById(R.id.iv_vid_thumbnail_img);
-
-                                if(!videos.getString("tags").equals("")&&!videos.getString("tags").equals("null")) {
-
-                                    if(!videos.getString("thumbnail").equals("")) {
-                                        title.setText(videos.getString("tags"));
-                                        Glide.with(ExploreNotSIActivity.this).load("https://www.careeranna.com/thumbnail/" + videos.getString("thumbnail")).into(imageView);
-
-                                        freeVidLayout.addView(view);
-                                    }
-                                }
+                                        videos.getString("totalViews"),"",
+                                        videos.getString("heading")));
                             }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
+                        TrendingVideosAdapter trendingVideosAdapter = new TrendingVideosAdapter(freeVideos, getApplicationContext());
+
+                        recyclerView.setAdapter(trendingVideosAdapter);
+                        recyclerView1.setAdapter(trendingVideosAdapter);
+
                         progressDialog.dismiss();
                     }
                 },
@@ -215,18 +211,6 @@ public class ExploreNotSIActivity extends AppCompatActivity implements View.OnCl
 
         requestQueue1.add(stringRequest1);
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        handler.postDelayed(runnable, delay);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        handler.removeCallbacks(runnable);
     }
 
     @Override
@@ -252,12 +236,24 @@ public class ExploreNotSIActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    @Override
-    public void onClick(View view) {
 
+    public void initializeBanner() {
+        // Initializing ArrayList
+        mBanners = new ArrayList<>();
+
+        mBanners.add(new Banner("1", "Machine Learning", imageUrls[0]));
+        mBanners.add(new Banner("2", "Python", imageUrls[1]));
+        mBanners.add(new Banner("3", "Marketing", imageUrls[2]));
+
+        // Setting Adapter for banner viewPage
+        bannerAdapter = new ViewPagerAdapter(getApplicationContext(), mBanners);
+        banner.setAdapter(bannerAdapter);
+        banner.addOnPageChangeListener(bannerListener);
+        currentPage = 0;
+        addDots(0);
     }
 
-    /*
+      /*
     To make the dots, change the dots attributes from here.
     */
 
@@ -294,4 +290,16 @@ public class ExploreNotSIActivity extends AppCompatActivity implements View.OnCl
 
         }
     };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        handler.postDelayed(runnable, delay);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        handler.removeCallbacks(runnable);
+    }
 }

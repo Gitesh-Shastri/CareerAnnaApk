@@ -95,7 +95,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                     phoneNumber = countryCode+phoneLayout.getEditText().getText().toString();
 
                     StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                            "http://careeranna.in/signUp.php", new Response.Listener<String>() {
+                            "https://careeranna.com/api/signUp.php", new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             Log.d("url_response", "Register Response: " + response);

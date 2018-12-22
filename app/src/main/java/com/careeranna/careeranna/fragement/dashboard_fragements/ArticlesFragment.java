@@ -119,7 +119,7 @@ public class ArticlesFragment extends Fragment implements ArticleAdapter.OnItemC
                             "Python for data science requires data scientists to learn the usage of regular expressions, work with the scientific libraries and master the data visualization concepts.";
 
                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                    String url = "http://careeranna.in/articlewithimage.php?pageno="+page;
+                    String url = "https://careeranna.com/api/articlewithimage.php?pageno="+page;
                     page += 1;
                     articles = new ArrayList<>();
                     StringRequest stringRequest  = new StringRequest(Request.Method.GET, url,

@@ -114,14 +114,14 @@ public class ExploreNew extends Fragment {
         progressDialog.setCancelable(false);
 
         RequestQueue requestQueue1 = Volley.newRequestQueue(getContext());
-        String url1 = "http://careeranna.in/getFreeVideos.php";
+        String url1 = "https://careeranna.com/api/getFreeVideos.php";
         Log.d("url_res", url1);
         StringRequest stringRequest1  = new StringRequest(Request.Method.GET, url1,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            Log.i("url_response", response);
+                            Log.i("url_response_free_video", response);
                             JSONArray VideosArray = new JSONArray(response);
                             for(int i=0;i<VideosArray.length();i++) {
                                 JSONObject videos = VideosArray.getJSONObject(i);
@@ -130,7 +130,7 @@ public class ExploreNew extends Fragment {
                                         videos.getString("video_url").replace("\\",""),
                                         "https://www.careeranna.com/thumbnail/" +videos.getString("thumbnail"),
                                         videos.getString("totalViews"),"",
-                                        videos.getString("tags")));
+                                        videos.getString("heading")));
                             }
 
                         } catch (JSONException e) {

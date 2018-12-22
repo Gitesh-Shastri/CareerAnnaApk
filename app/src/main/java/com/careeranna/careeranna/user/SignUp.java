@@ -396,7 +396,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
             progressBar.setVisibility(View.VISIBLE);
 
             StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                    "http://careeranna.in/google_login.php", new Response.Listener<String>() {
+                    "https://careeranna.com/api/google_login.php", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     Log.i("url_respon", response.toString());
@@ -461,7 +461,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
         verificationCode =String.valueOf(number);
         Log.i("valus", "email : "+email + " code : " + verificationCode);
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                "http://careeranna.in/forgotEmail.php", new Response.Listener<String>() {
+                "https://careeranna.com/api/forgotEmail.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.i("url_respon", response.toString());
@@ -497,7 +497,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener, F
 
     public void loginWithEmailPw(final String email, final String pw){
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                "http://careeranna.in/login.php", new Response.Listener<String>() {
+                "https://careeranna.com/api/login.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.i("url_respon", response.toString());

@@ -3,6 +3,7 @@ package com.careeranna.careeranna.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import com.careeranna.careeranna.data.FreeVideos;
 import java.util.ArrayList;
 
 public class TrendingVideosAdapter extends RecyclerView.Adapter<TrendingVideosAdapter.ViewHolder> {
+
+    public static final String TAG = "TrendingVideoAdapter";
 
     private ArrayList<FreeVideos> freeVideos;
     private Context mContext;
@@ -50,16 +53,13 @@ public class TrendingVideosAdapter extends RecyclerView.Adapter<TrendingVideosAd
         mListener = listener;
     }
 
-
     public TrendingVideosAdapter(ArrayList<FreeVideos> freeVideos, Context mContext) {
+        Log.d(TAG, "TrendingVideosAdapter: videos received = "+freeVideos.size());
         this.freeVideos = freeVideos;
         this.mContext = mContext;
     }
 
-
-
     public class ViewHolder extends RecyclerView.ViewHolder{
-
         ImageView imageView;
         TextView title, rating, views;
 

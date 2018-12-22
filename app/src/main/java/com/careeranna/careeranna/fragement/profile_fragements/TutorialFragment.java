@@ -127,7 +127,7 @@ public class TutorialFragment extends Fragment implements ExpandableList_Adapter
         videoUrl = "";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        String url = "http://careeranna.in/getCourseVideos.php?id="+id;
+        String url = "https://careeranna.com/api/getCourseVideos.php?id="+id;
         Log.i("url", url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 url,

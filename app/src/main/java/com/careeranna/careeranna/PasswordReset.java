@@ -90,7 +90,7 @@ public class PasswordReset extends AppCompatActivity {
                     snackbar.show();
                     progressBar.setVisibility(View.VISIBLE);
                     StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                            "http://careeranna.in/changePassword.php", new Response.Listener<String>() {
+                            "https://careeranna.com/api/changePassword.php", new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             progressBar.setVisibility(View.INVISIBLE);

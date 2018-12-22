@@ -83,15 +83,14 @@
         <activity android:name=".PaytmPayment" />
         <activity android:name=".ExampPrepParticular" />
         <activity android:name=".DashBoard" />
-      
-        <activity android:name=".FilterOfCategory"
-            android:label="Filter Course"
-            />
-        <activity android:name=".SortByCourse"
-            android:label="Sort Course"
-            />
-
-        <activity android:name=".InstructorProfileActivity"></activity>
+        <activity
+            android:name=".FilterOfCategory"
+            android:label="Filter Course" />
+        <activity
+            android:name=".SortByCourse"
+            android:label="Sort Course" />
+        <activity android:name=".InstructorProfileActivity" />
+        <activity android:name=".ExploreNotSIActivity_2"></activity>
     </application>
 
 </manifest>

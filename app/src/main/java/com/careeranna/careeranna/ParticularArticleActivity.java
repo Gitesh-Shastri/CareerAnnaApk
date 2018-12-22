@@ -96,7 +96,7 @@ public class ParticularArticleActivity extends AppCompatActivity {
         articleCategory.setText("Category : " + article.getCategory());
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "http://careeranna.in/particularArticle.php?id="+article.getId();
+        String url = "https://careeranna.com/api/particularArticle.php?id="+article.getId();
         StringRequest stringRequest  = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

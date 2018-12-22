@@ -21,6 +21,9 @@
     <color name="red">#da3c21</color>
     <color name="middle_line_and_circle_color">#A4A4A4</color>
 
+    <color name="sign_in_button_color">#0780c9</color>
+    <color name="sign_in_button_color_pressed">#004ba0</color>
+
     <color name="dark_gray">#8d8d8d</color>
 
 </resources>

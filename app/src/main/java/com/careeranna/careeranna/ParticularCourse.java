@@ -212,7 +212,7 @@ public class ParticularCourse extends AppCompatActivity implements NavigationVie
         progressDialog.show();
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "http://careeranna.in/course_videos.php?product_id="+id;
+        String url = "https://careeranna.com/api/course_videos.php?product_id="+id;
         Log.i("url", url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 url,
@@ -249,7 +249,7 @@ public class ParticularCourse extends AppCompatActivity implements NavigationVie
         progressDialog.show();
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "http://careeranna.in/coursePdf.php?id="+id;
+        String url = "https://careeranna.com/api/coursePdf.php?id="+id;
         Log.i("url", url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 url,

@@ -87,7 +87,7 @@ public class CategoriesSection extends AppCompatActivity implements RecyclerView
         String id = category.getId();
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        final String url = "http://careeranna.in/subCategory.php?id="+id;
+        final String url = "https://careeranna.com/api/subCategory.php?id="+id;
         Log.d("url_res", url);
         StringRequest stringRequest  = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -137,7 +137,7 @@ public class CategoriesSection extends AppCompatActivity implements RecyclerView
                 progressDialog.setCancelable(false);
 
                 RequestQueue requestQueue1 = Volley.newRequestQueue(CategoriesSection.this);
-                String url1 = "http://careeranna.in/product.php?id="+subCategory.getEXAM_NAME_ID();
+                String url1 = "https://careeranna.com/api/product.php?id="+subCategory.getEXAM_NAME_ID();
                 Log.d("url_res", url1);
                 StringRequest stringRequest1  = new StringRequest(Request.Method.GET, url1,
                         new Response.Listener<String>() {

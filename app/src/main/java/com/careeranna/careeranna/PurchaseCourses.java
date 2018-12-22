@@ -174,7 +174,7 @@ public class PurchaseCourses extends AppCompatActivity implements VideoPlayerEve
                 dialogInterface.dismiss();
                 progressBar.setVisibility(View.VISIBLE);
                 RequestQueue requestQueue =Volley.newRequestQueue(PurchaseCourses.this);
-                String url = "http://careeranna.in/addProduct.php";
+                String url = "https://careeranna.com/api/addProduct.php";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                         new Response.Listener<String>() {
                             @Override

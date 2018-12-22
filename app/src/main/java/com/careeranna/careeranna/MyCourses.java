@@ -112,6 +112,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
 
     ProgressDialog progressDialog;
 
+
     ViewPagerAdapter viewPagerAdapter;
 
     private int currentPage;
@@ -216,7 +217,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
 /*
 
         RequestQueue requestQueue1 = Volley.newRequestQueue(MyCourses.this);
-        final String url1 = "http://careeranna.in/getMyCourse.php?user="+user.getUser_id()+"&category=15";
+        final String url1 = "https://careeranna.com/api/getMyCourse.php?user="+user.getUser_id()+"&category=15";
         Log.d("url_res", url1);
         StringRequest stringRequest1  = new StringRequest(Request.Method.GET, url1,
                 new Response.Listener<String>() {
@@ -597,7 +598,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
         progressDialog.setCancelable(false);
 
         RequestQueue requestQueue1 = Volley.newRequestQueue(MyCourses.this);
-        final String url1 = "http://careeranna.in/getMyExam.php?user="+user.getUser_id();
+        final String url1 = "https://careeranna.com/api/getMyExam.php?user="+user.getUser_id();
         Log.d("url_res", url1);
         StringRequest stringRequest1  = new StringRequest(Request.Method.GET, url1,
                 new Response.Listener<String>() {
@@ -641,8 +642,9 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
         progressDialog.setCancelable(false);
 
         RequestQueue requestQueue1 = Volley.newRequestQueue(MyCourses.this);
-        final String url1 = "http://careeranna.in/getMyCourse.php?user="+user.getUser_id()+"&category=15";
+        final String url1 = "https://careeranna.com/api/getMyCourse.php?user="+user.getUser_id()+"&category=15";
         Log.d("url_res", url1);
+
         StringRequest stringRequest1  = new StringRequest(Request.Method.GET, url1,
                 new Response.Listener<String>() {
                     @Override
@@ -668,8 +670,10 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
                     public void onErrorResponse(VolleyError error) {
                         progressDialog.dismiss();
                     }
-                }
-        ) {
+                })
+
+
+        {
             @Override
             protected Map<String, String> getParams() {
                 // Posting params to login url
@@ -703,7 +707,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
                 "Python for data science requires data scientists to learn the usage of regular expressions, work with the scientific libraries and master the data visualization concepts.";
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "http://careeranna.in/articlewithimage.php";
+        String url = "https://careeranna.com/api/articlewithimage.php";
         StringRequest stringRequest  = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -754,7 +758,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
         progressDialog.setCancelable(false);
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "http://careeranna.in/category.php";
+        String url = "https://careeranna.com/api/category.php";
         StringRequest stringRequest  = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -772,7 +776,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
                             e.printStackTrace();
                         }
                         RequestQueue requestQueue1 = Volley.newRequestQueue(MyCourses.this);
-                        String url1 = "http://careeranna.in/getCertficateCourse.php";
+                        String url1 = "https://careeranna.com/api/getCertficateCourse.php";
                         Log.d("url_res", url1);
                         StringRequest stringRequest1  = new StringRequest(Request.Method.GET, url1,
                                 new Response.Listener<String>() {
@@ -830,7 +834,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
                 "Python for data science requires data scientists to learn the usage of regular expressions, work with the scientific libraries and master the data visualization concepts.";
 
         RequestQueue requestQueue1 = Volley.newRequestQueue(MyCourses.this);
-        String url1 = "http://careeranna.in/explore.php";
+        String url1 = "https://careeranna.com/api/explore.php";
         Log.d("url_res", url1);
         StringRequest stringRequest1  = new StringRequest(Request.Method.GET, url1,
                 new Response.Listener<String>() {

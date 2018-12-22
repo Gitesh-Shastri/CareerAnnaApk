@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.bt_explore:
-                Intent openExplorePage = new Intent(this, ExploreNotSIActivity.class);
+                Intent openExplorePage = new Intent(this, ExploreNotSIActivity_2.class);
                 startActivity(openExplorePage);
                 break;
         }
