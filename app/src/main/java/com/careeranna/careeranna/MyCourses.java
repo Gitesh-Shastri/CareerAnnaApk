@@ -3,7 +3,6 @@ package com.careeranna.careeranna;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Handler;
@@ -16,15 +15,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,28 +34,26 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 
-import com.careeranna.careeranna.adapter.CoursesSectionAdapter;
-import com.careeranna.careeranna.adapter.ExpandableListAdapter;
+import com.careeranna.careeranna.adapter.FreeCourseAdapter;
+import com.careeranna.careeranna.adapter.ListViewAdapter;
 import com.careeranna.careeranna.adapter.ViewPagerAdapter;
 import com.careeranna.careeranna.data.Article;
 import com.careeranna.careeranna.data.Banner;
 import com.careeranna.careeranna.data.Category;
 import com.careeranna.careeranna.data.Course;
 import com.careeranna.careeranna.data.ExamPrep;
-import com.careeranna.careeranna.data.ExpandedMenuModel;
+import com.careeranna.careeranna.data.SubCategory;
 import com.careeranna.careeranna.data.User;
 import com.careeranna.careeranna.fragement.dashboard_fragements.CategoryFragment;
 import com.careeranna.careeranna.fragement.dashboard_fragements.ExamPrepFragment;
 import com.careeranna.careeranna.fragement.dashboard_fragements.ExploreNew;
 import com.careeranna.careeranna.helper.CountDrawable;
-import com.careeranna.careeranna.helper.RecyclerViewCoursesAdapter;
 import com.careeranna.careeranna.user.MyProfile;
 import com.careeranna.careeranna.fragement.dashboard_fragements.ArticlesFragment;
 import com.careeranna.careeranna.fragement.dashboard_fragements.ExploreFragement;
 import com.careeranna.careeranna.fragement.dashboard_fragements.MyCoursesFragment;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -73,6 +69,7 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.paperdb.Paper;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -102,6 +99,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
     ExamPrepFragment myExamPrepFragment;
     CategoryFragment categoryFragment;
 
+
     FragmentManager fragmentManager;
 
     ArrayList<Banner> mBanners;
@@ -124,7 +122,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
     User user;
 
     ArrayList<Category> categories;
-    ArrayList<Course> courses;
+    ArrayList<Course> courses, freecourse;
     ArrayList<ExamPrep> examPreps;
     ArrayList<Article> mArticles;
 
@@ -133,6 +131,8 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
     NavigationView navigationView;
 
     ArrayList<String> names, urls, ids;
+
+    ListView listView;
 
     @Override
     public void onBackPressed() {
@@ -203,6 +203,155 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
 
         Paper.init(this);
 
+
+        listView = findViewById(R.id.list_menu_items);
+
+
+        final ArrayList<String> your_array_list = new ArrayList<String>();
+        your_array_list.add("MBA");
+        your_array_list.add("Banking");
+        your_array_list.add("Professional Development");
+        your_array_list.add("General Knowledge");
+        your_array_list.add("Govt. Jobs");
+        your_array_list.add("Law");
+        your_array_list.add("Finance");
+        your_array_list.add("Marketing");
+        your_array_list.add("Certificate Courses");
+        your_array_list.add("My Courses");
+        your_array_list.add("Explore");
+        your_array_list.add("Articles");
+        your_array_list.add("Our Mentors");
+        your_array_list.add("My Profile");
+        your_array_list.add("Sign Out");
+
+        ListViewAdapter adapter = new ListViewAdapter(this, your_array_list);
+        //
+        //// Attach the adapter to a ListView
+        //
+        //ListView listView = (ListView) findViewById(R.id.lvItems);
+        //
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        categoryFragment = new CategoryFragment();
+                        categoryFragment.addSubCategory("1", user.getUser_id());
+
+                        fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
+                        getSupportActionBar().setTitle("MBA");
+                        break;
+                    case 1:
+                        categoryFragment = new CategoryFragment();
+
+                        categoryFragment.addSubCategory("2", user.getUser_id());
+
+                        fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
+                        getSupportActionBar().setTitle("Banking");
+                        break;
+                    case 2:
+                        categoryFragment = new CategoryFragment();
+
+                        categoryFragment.addSubCategory("5", user.getUser_id());
+
+                        fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
+                        getSupportActionBar().setTitle("Professional Development");
+                        break;
+                        case 3:
+                        categoryFragment = new CategoryFragment();
+
+                        categoryFragment.addSubCategory("6", user.getUser_id());
+
+                        fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
+                        getSupportActionBar().setTitle("General Knowledge");
+                            break;
+                        case 4:
+                        categoryFragment = new CategoryFragment();
+
+                        categoryFragment.addSubCategory("9", user.getUser_id());
+
+                        fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
+                        getSupportActionBar().setTitle("Govt. Jobs");
+                            break;
+                    case 5:
+                        categoryFragment = new CategoryFragment();
+                        categoryFragment.addSubCategory("12", user.getUser_id());
+
+                        fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
+                        getSupportActionBar().setTitle("Law");
+                        break;
+                    case 6:
+                        categoryFragment = new CategoryFragment();
+                        categoryFragment.addSubCategory("13", user.getUser_id());
+
+                        fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
+                        getSupportActionBar().setTitle("Finance");
+                        break;
+                    case 7:
+                        categoryFragment = new CategoryFragment();
+                        categoryFragment.addSubCategory("14", user.getUser_id());
+
+                        fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
+                        navigationView.setCheckedItem(R.id.marketing);
+                        getSupportActionBar().setTitle("Marketing");
+                        break;
+                    case 8:
+                        categoryFragment = new CategoryFragment();
+                        categoryFragment.addSubCategory("15", user.getUser_id());
+
+                        fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
+                        getSupportActionBar().setTitle("Certificate Courses");
+                        break;
+                    case 9:
+                        myCourse();
+                        fragmentManager.beginTransaction().replace(R.id.main_content, myCoursesFragement).commit();
+                        getSupportActionBar().setTitle("My Courses");
+                        break;
+                    case 10:
+                        fragmentManager.beginTransaction().replace(R.id.main_content, exploreNew).commit();
+                        getSupportActionBar().setTitle("Explorer");
+
+                        addExam();
+                        break;
+                    case 11:
+                        initArticle();
+                        fragmentManager.beginTransaction().replace(R.id.main_content, myArticleFragment).commit();
+                        getSupportActionBar().setTitle("Articles");
+                        break;
+                    case 13:
+                        startActivity(new Intent(MyCourses.this, MyProfile.class));
+                        break;
+                    case 14:
+                        mAuth = FirebaseAuth.getInstance();
+                        if(mAuth != null) {
+                            mAuth.signOut();
+                            LoginManager.getInstance().logOut();
+                        }
+                        Paper.delete("user");
+                        startActivity(new Intent(MyCourses.this, MainActivity.class));
+                        finish();
+                        break;
+                }
+                String cart = Paper.book().read("cart");
+
+                if(cart != null && !cart.isEmpty()) {
+                    Gson gson = new Gson();
+
+                    Type type = new TypeToken<ArrayList<String>>() {}.getType();
+
+                    ArrayList<String> arrayList = gson.fromJson(cart, type);
+
+                    setCount(MyCourses.this, arrayList.size()+"");
+
+                } else {
+                    setCount(MyCourses.this, "0");
+                }
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+
         // Binding NavigationView To Toolbar
         mToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(mToggle);
@@ -268,6 +417,8 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
 
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.main_content, exploreNew).commit();
+
+        addExam();
 
         // Set Navigation View Information
         setNavigationView();
@@ -367,9 +518,9 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
         TextView username, useremail;
         CircleImageView profile;
 
-        navigationView.setNavigationItemSelectedListener(this);
+        LinearLayout headerView;
 
-        View headerView = navigationView.getHeaderView(0);
+        headerView = findViewById(R.id.header_header);
 
         profile = headerView.findViewById(R.id.navImage);
         username = headerView.findViewById(R.id.navUsername);
@@ -500,7 +651,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
 
             fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
             navigationView.setCheckedItem(R.id.MBA);
-            getSupportActionBar().setTitle("MBA in India");
+            getSupportActionBar().setTitle("MBA");
 
         } else if(id == R.id.Professional) {
 
@@ -522,26 +673,6 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
             navigationView.setCheckedItem(R.id.Banking);
             getSupportActionBar().setTitle("General Knowledge");
 
-        } else if(id == R.id.cover) {
-
-            categoryFragment = new CategoryFragment();
-
-            categoryFragment.addSubCategory("7", user.getUser_id());
-
-            fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
-            navigationView.setCheckedItem(R.id.govt);
-            getSupportActionBar().setTitle("Cover Story");
-
-        } else if(id == R.id.gates) {
-
-            categoryFragment = new CategoryFragment();
-
-            categoryFragment.addSubCategory("8", user.getUser_id());
-
-            fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
-            navigationView.setCheckedItem(R.id.govt);
-            getSupportActionBar().setTitle("GATES AND IES");
-
         }  else if(id == R.id.govt) {
 
             categoryFragment = new CategoryFragment();
@@ -551,24 +682,6 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
             fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
             navigationView.setCheckedItem(R.id.govt);
             getSupportActionBar().setTitle("Govt. Jobs");
-
-        } else if(id == R.id.study) {
-
-            categoryFragment = new CategoryFragment();
-
-            categoryFragment.addSubCategory("10", user.getUser_id());
-
-            fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
-            navigationView.setCheckedItem(R.id.study);
-            getSupportActionBar().setTitle("Study Abroad");
-
-        } else if(id == R.id.eight) {
-            categoryFragment = new CategoryFragment();
-            categoryFragment.addSubCategory("11", user.getUser_id());
-
-            fragmentManager.beginTransaction().replace(R.id.main_content, categoryFragment).commit();
-            navigationView.setCheckedItem(R.id.eight);
-            getSupportActionBar().setTitle("8-12");
 
         } else if(id == R.id.law) {
             categoryFragment = new CategoryFragment();
@@ -772,7 +885,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
 
             progressDialog = new ProgressDialog(this);
 
-            progressDialog.setMessage("Loading Category Please Wait ... ");
+            progressDialog.setMessage("Loading Paid Please Wait ... ");
             progressDialog.show();
 
             progressDialog.setCancelable(false);
@@ -796,7 +909,7 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
                                 e.printStackTrace();
                             }
                             RequestQueue requestQueue1 = Volley.newRequestQueue(MyCourses.this);
-                            String url1 = "http://careeranna.com/apigetCertficateCourse.php";
+                            String url1 = "http://careeranna.com/api/getCertficateCourse.php";
                             Log.d("url_res", url1);
                             StringRequest stringRequest1  = new StringRequest(Request.Method.GET, url1,
                                     new Response.Listener<String>() {
@@ -845,50 +958,119 @@ public class MyCourses extends AppCompatActivity implements NavigationView.OnNav
             requestQueue.add(stringRequest);
         }
 
-        private  void addExam() {
 
-            final String desc = "Organizations of all sizes and Industries, be it a financial institution or a small big data start up, everyone is using Python for their business.\n" +
-                    "Python is among the popular data science programming languages not only in Big data companies but also in the tech start up crowd. Around 46% of data scientists use Python.\n" +
-                    "Python has overtaken Java as the preferred programming language and is only second to SQL in usage today. \n" +
-                    "Python is finding Increased adoption in numerical computations, machine learning and several data science applications.\n" +
-                    "Python for data science requires data scientists to learn the usage of regular expressions, work with the scientific libraries and master the data visualization concepts.";
 
-            RequestQueue requestQueue1 = Volley.newRequestQueue(MyCourses.this);
-            String url1 = "https://careeranna.com/api/explore.php";
-            Log.d("url_res", url1);
-            StringRequest stringRequest1  = new StringRequest(Request.Method.GET, url1,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                Log.i("url_response", response.toString());
-                                JSONArray CategoryArray = new JSONArray(response.toString());
-                                for(int i=0;i<10;i++) {
-                                    JSONObject Category = CategoryArray.getJSONObject(i);
-                                    examPreps.add(new ExamPrep(Category.getString("product_id"),
-                                            Category.getString("course_name"),
-                                            "https://www.careeranna.com/"+Category.getString("product_image").replace("\\",""),
-                                            Category.getString("category_id"),
-                                            Category.getString("discount"),
-                                            desc,
-                                            Category.getString("video_url").replace("\\","")));
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+    private void addExam() {
+
+        courses = new ArrayList<>();
+
+        progressDialog = new ProgressDialog(this);
+
+        progressDialog.setMessage("Loading Paid Courses Please Wait ... ");
+        progressDialog.show();
+
+        progressDialog.setCancelable(false);
+
+        RequestQueue requestQueue1 = Volley.newRequestQueue(MyCourses.this);
+        String url1 = "https://careeranna.com/api/getAllCourse.php";
+        Log.d("url_res", url1);
+        StringRequest stringRequest1 = new StringRequest(Request.Method.GET, url1,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+
+                            courses = new ArrayList<>();
+                            names = new ArrayList<>();
+                            urls = new ArrayList<>();
+
+                            Log.i("url_response", response.toString());
+                            JSONArray CategoryArray = new JSONArray(response.toString());
+                            for (int i = 0; i < 20; i++) {
+                                JSONObject Category = CategoryArray.getJSONObject(i);
+                                names.add(Category.getString("course_name"));
+                                urls.add("https://www.careeranna.com/" + Category.getString("product_image").replace("\\", ""));
+                                courses.add(new Course(Category.getString("product_id"),
+                                        Category.getString("course_name"),
+                                        "https://www.careeranna.com/" + Category.getString("product_image").replace("\\", ""),
+                                        Category.getString("exam_id"),
+                                        Category.getString("discount")
+                                        , "",
+                                        Category.getString("video_url").replace("\\", "")));
                             }
-                            progressDialog.dismiss();
-                            myExplorerFragement.setCategories(categories, courses, examPreps);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            progressDialog.dismiss();
-                            myExplorerFragement.setCategories(categories, courses, examPreps);
-                        }
+
+                        progressDialog.dismiss();
+
+                        addFree();
                     }
-            );
-            requestQueue1.add(stringRequest1);
-        }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.dismiss();
+
+                        addFree();
+                    }
+                }
+        );
+
+        requestQueue1.add(stringRequest1);
+    }
+
+
+    private void addFree() {
+
+        freecourse = new ArrayList<>();
+
+        progressDialog = new ProgressDialog(this);
+
+        progressDialog.setMessage("Loading Free Courses Please Wait ... ");
+        progressDialog.show();
+
+        progressDialog.setCancelable(false);
+
+        RequestQueue requestQueue1 = Volley.newRequestQueue(MyCourses.this);
+        String url1 = "https://careeranna.com/api/getFreeCourse.php";
+        Log.d("url_res", url1);
+        StringRequest stringRequest1 = new StringRequest(Request.Method.GET, url1,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+
+                            Log.i("url_response", response.toString());
+                            JSONArray CategoryArray = new JSONArray(response.toString());
+                            for (int i = 0; i < CategoryArray.length(); i++) {
+                                JSONObject Category = CategoryArray.getJSONObject(i);
+                                freecourse.add(new Course(Category.getString("course_id"),
+                                        Category.getString("name"),
+                                        "https://www.careeranna.com/" + Category.getString("image").replace("\\", ""),
+                                        Category.getString("eid"),
+                                        Category.getString("discount")
+                                        , "meta_description",""));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        progressDialog.dismiss();
+
+                        exploreNew.addPaidCourses(courses, freecourse);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.dismiss();
+                        exploreNew.addPaidCourses(courses, freecourse);
+                    }
+                }
+        );
+
+        requestQueue1.add(stringRequest1);
+    }
     }
 

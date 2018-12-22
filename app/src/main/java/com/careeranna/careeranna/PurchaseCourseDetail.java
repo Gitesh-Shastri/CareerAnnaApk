@@ -276,6 +276,7 @@ public class PurchaseCourseDetail extends AppCompatActivity implements VideoPlay
                 buyCourseInside();
             }
         });
+        
         mBuilder.setNegativeButton("Add To Cart", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
